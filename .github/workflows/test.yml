@@ -15,7 +15,6 @@ jobs:
         include:
           # Clang HEAD (w. Clang-Tidy, sanitizers)
           - name: clang-head-analyse
-            compiler: clang
             version: "14"
             os: linux
             arch: x86_64
@@ -36,7 +35,6 @@ jobs:
 
           # GCC HEAD
           - name: gcc-head
-            compiler: gcc
             version: "12"
             os: linux
             arch: x86_64
@@ -57,7 +55,6 @@ jobs:
 
           # Clang-13
           - name: clang-13
-            compiler: clang
             version: "13"
             os: linux
             arch: x86_64
@@ -78,7 +75,6 @@ jobs:
 
           # Clang-12 (Contrary)
           - name: clang-12
-            compiler: clang
             version: "12"
             os: linux
             arch: x86_64
@@ -99,7 +95,6 @@ jobs:
 
           # Clang-11
           - name: clang-11
-            compiler: clang
             version: "11"
             os: linux
             arch: x86_64
@@ -120,7 +115,6 @@ jobs:
 
           # Clang-10
           - name: clang-10
-            compiler: clang
             version: "10"
             os: linux
             arch: x86_64
@@ -141,7 +135,6 @@ jobs:
 
           # GCC-11
           - name: gcc-11
-            compiler: gcc
             version: "11"
             os: linux
             arch: x86_64
@@ -162,7 +155,6 @@ jobs:
 
           # GCC-10
           - name: gcc-10
-            compiler: gcc
             version: "10"
             os: linux
             arch: x86_64
@@ -184,7 +176,6 @@ jobs:
           # OS X Clang (latest)
           - name: osx-clang-13
             os: osx
-            compiler: clang
             version: "13"
             arch: x86_64
             build-type: Release
@@ -204,7 +195,6 @@ jobs:
           # OS X GCC-11
           - name: osx-gcc-11
             os: osx
-            compiler: gcc
             version: "11"
             arch: x86_64
             build-type: Release
@@ -224,7 +214,6 @@ jobs:
           # GCC-10 (for ARMv7)
           - name: gcc-10-armv7
             arch: armv7
-            compiler: gcc
             version: "10"
             os: linux
             build-type: Release
@@ -272,7 +261,6 @@ jobs:
       - name: Initialise Conan
         run: |
           conan config install $GITHUB_WORKSPACE/.github/conan/settings.yml
-          conan profile update settings.compiler=${{matrix.compiler}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
           conan profile update settings.compiler.libcxx=${{matrix.stdlib}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
           conan profile update settings.compiler.version=${{matrix.version}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
           conan profile update settings.build_type=${{matrix.build-type}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
@@ -346,7 +334,6 @@ jobs:
       - name: Initialise Conan
         run: |
           pip.exe install conan;
-          conan profile update settings.compiler="Visual Studio" $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
           conan profile update settings.compiler.cppstd=20 $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
           conan profile update settings.os=Windows $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
           conan profile update settings.arch=${{matrix.arch}} $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
