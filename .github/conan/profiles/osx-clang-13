@@ -1,0 +1,15 @@
+[settings]
+os=Macos
+os_build=Macos
+arch=x86_64
+arch_build=x86_64
+compiler=clang
+compiler.version=13
+compiler.libcxx=libc++
+build_type=Release
+[options]
+[build_requires]
+[env]
+CC=/usr/local/opt/llvm/bin/clang
+CXX=/usr/local/opt/llvm/bin/clang++
+CONAN_CMAKE_GENERATOR=Ninja

@@ -15,226 +15,80 @@ jobs:
         include:
           # Clang HEAD (w. Clang-Tidy, sanitizers)
           - name: clang-head-analyse
-            compiler: clang
-            version: "14"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: clang
-            clang_tidy: "True"
-            cxx: clang++
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-head
             os-version: ubuntu-20.04
-            sanitize: "True"
-            stdlib: libc++
+            profile: linux-clang-head-analyse
             toolchain: clang-libc++.cmake
 
           # GCC HEAD
           - name: gcc-head
-            compiler: gcc
-            version: "12"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: gcc
-            clang_tidy: "False"
-            cxx: g++
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:gcc-head
             os-version: ubuntu-20.04
-            sanitize: "True"
-            stdlib: libstdc++11
+            profile: linux-gcc-head
             toolchain: gcc.cmake
 
           # Clang-13
           - name: clang-13
-            compiler: clang
-            version: "13"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: clang
-            clang_tidy: "False"
-            cxx: clang++
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "False"
-            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-13-libstdcpp
             os-version: ubuntu-20.04
-            sanitize: "True"
-            stdlib: libstdc++11
+            profile: linux-clang-13
             toolchain: clang.cmake
 
           # Clang-12 (Contrary)
           - name: clang-12
-            compiler: clang
-            version: "12"
-            os: linux
-            arch: x86_64
-            build-type: Debug
-            cc: clang
-            clang_tidy: "False"
-            cxx: clang++
-            exceptions: "True"
-            generator: "Unix Makefiles"
-            int128: "False"
-            iostreams: "False"
             linux-container: johnmcfarlane/cnl_ci:clang-12-libstdcpp
             os-version: ubuntu-20.04
-            sanitize: "False"
-            stdlib: libstdc++11
+            profile: linux-clang-12
             toolchain: clang.cmake
 
           # Clang-11
           - name: clang-11
-            compiler: clang
-            version: "11"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: clang
-            clang_tidy: "False"
-            cxx: clang++
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
             os-version: ubuntu-20.04
-            sanitize: "False"
-            stdlib: libc++
+            profile: linux-clang-11
             toolchain: clang-libc++.cmake
 
           # Clang-10
           - name: clang-10
-            compiler: clang
-            version: "10"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: clang
-            clang_tidy: "False"
-            cxx: clang++
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "False"
-            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
             os-version: ubuntu-20.04
-            sanitize: "True"
-            stdlib: libc++
+            profile: linux-clang-10
             toolchain: clang-libc++.cmake
 
           # GCC-11
           - name: gcc-11
-            compiler: gcc
-            version: "11"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: gcc-11
-            clang_tidy: "False"
-            cxx: g++-11
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:gcc-11
             os-version: ubuntu-20.04
-            sanitize: "True"
-            stdlib: libstdc++11
+            profile: linux-gcc-11
             toolchain: gcc.cmake
 
-          # GCC-10 (Contrary)
+          # GCC-10
           - name: gcc-10
-            compiler: gcc
-            version: "10"
-            os: linux
-            arch: x86_64
-            build-type: Debug
-            cc: gcc-10
-            clang_tidy: "False"
-            cxx: g++-10
-            exceptions: "False"
-            generator: "Unix Makefiles"
-            int128: "False"
-            iostreams: "False"
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
-            sanitize: "False"
-            stdlib: libstdc++11
+            profile: linux-gcc-10
             toolchain: gcc.cmake
 
           # OS X Clang (latest)
           - name: osx-clang-13
-            os: osx
-            compiler: clang
-            version: "13"
-            arch: x86_64
-            build-type: Release
-            cc: "/usr/local/opt/llvm/bin/clang"
-            clang_tidy: "False"
-            cxx: "/usr/local/opt/llvm/bin/clang++"
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            iostreams: "True"
             os-version: macos-10.15
-            sanitize: "True"
-            stdlib: libc++
+            profile: osx-clang-13
             toolchain: clang-libc++.cmake
 
           # OS X GCC-11
           - name: osx-gcc-11
-            os: osx
-            compiler: gcc
-            version: "11"
-            arch: x86_64
-            build-type: Release
-            cc: gcc-11
-            clang_tidy: "False"
-            cxx: g++-11
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            iostreams: "True"
             os-version: macos-10.15
-            sanitize: "True"
-            stdlib: libstdc++11
+            profile: osx-gcc-11
             toolchain: gcc.cmake
 
           # GCC-10 (for ARMv7)
           - name: gcc-10-armv7
-            arch: armv7
-            compiler: gcc
-            version: "10"
-            os: linux
-            build-type: Release
-            cc: arm-linux-gnueabi-gcc-10
-            clang_tidy: "False"
-            cxx: arm-linux-gnueabi-g++-10
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "False"
-            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:gcc-10-arm
             os-version: ubuntu-20.04
-            sanitize: "True"
-            stdlib: libstdc++11
+            profile: linux-gcc-10-armv7
             toolchain: gcc-armv7.cmake
 
     container: ${{matrix.linux-container}}
-    env:
-      CC: ${{matrix.cc}}
-      CXX: ${{matrix.cxx}}
 
     runs-on: ${{matrix.os-version}}
 
@@ -255,42 +109,31 @@ jobs:
             test-${{matrix.name}}-
 
       - name: Install Brew packages
-        if: ( matrix.os == 'osx' )
+        if: ( matrix.os-version == 'macos-10.15' )
         run: brew install ccache conan ninja
 
       - name: Initialise Conan
         run: |
-          conan config install $GITHUB_WORKSPACE/.github/settings.yml
-          conan profile new default --detect
-          conan profile update settings.compiler=${{matrix.compiler}} default
-          conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default
-          conan profile update settings.compiler.version=${{matrix.version}} default
-          conan profile update settings.build_type=${{matrix.build-type}} default
-          conan profile update settings.arch=${{matrix.arch}} default
+          conan config install $GITHUB_WORKSPACE/.github/conan/settings.yml
 
       - name: Install dependencies
         run: |
           conan install \
             --build=missing \
-            --env CONAN_CMAKE_GENERATOR="${{matrix.generator}}" \
             --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            --options clang_tidy=${{matrix.clang_tidy}} \
-            --options int128=${{matrix.int128}} \
-            --options iostreams=${{matrix.iostreams}} \
-            --options enable_exceptions=${{matrix.exceptions}} \
-            --options sanitize=${{matrix.sanitize}} \
             --options test=all \
+            --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
             $GITHUB_WORKSPACE
 
       - name: Build tests
         run: conan build --build --configure $GITHUB_WORKSPACE
 
       - name: Test library
-        if: ( matrix.arch != 'armv7' )
+        if: ( matrix.name != 'gcc-10-armv7' )
         run: conan build --test $GITHUB_WORKSPACE
 
       - name: Run benchmarks
-        if: ( matrix.name != 'clang-11' && matrix.arch != 'armv7' )
+        if: ( matrix.name != 'clang-11' && matrix.name != 'gcc-10-armv7' )
         run: |
           ./test/benchmark/test-benchmark --benchmark_format=csv | tee result.csv \
           "${GITHUB_WORKSPACE}"/test/benchmark/report.py result.csv
@@ -306,13 +149,11 @@ jobs:
         arch: [x86_64, x86]
         include:
           - arch: x86_64
-            cmake_arch: x64
-            exceptions: "True"
             msbuild_property: x64
+            profile: msvc-x86_64
           - arch: x86
-            cmake_arch: Win32
-            exceptions: "False"
             msbuild_property: win32
+            profile: msvc-x86
 
     steps:
       - uses: actions/checkout@v2
@@ -330,15 +171,9 @@ jobs:
             test-${{matrix.arch}}-main-
             test-${{matrix.arch}}-
 
-      - name: Initialise Conan
+      - name: Install Conan
         run: |
           pip.exe install conan;
-          conan profile new default;
-          conan profile update settings.compiler="Visual Studio" default;
-          conan profile update settings.compiler.cppstd=20 default;
-          conan profile update settings.os=Windows default;
-          conan profile update settings.arch=${{matrix.arch}} default;
-          conan profile update settings.compiler.version=16 default
 
       - name: Create build directory
         run: mkdir ${{runner.workspace}}\build
@@ -350,9 +185,9 @@ jobs:
             --build=missing `
             --env CONAN_CMAKE_GENERATOR="Visual Studio 16 2019" `
             --env CONAN_CMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE"\test\toolchain\msvc.cmake `
-            --options enable_exceptions=${{matrix.exceptions}} `
             --options test=all `
             --settings build_type=Release `
+            --profile $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} `
             $env:GITHUB_WORKSPACE
 
       - name: Build and run tests
