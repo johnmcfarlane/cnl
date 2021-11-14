@@ -1,11 +1,6 @@
+include(linux-clang)
 [settings]
-os=Linux
-os_build=Linux
-arch=x86_64
-arch_build=x86_64
-compiler=clang
 compiler.version=12
-compiler.libcxx=libstdc++11
 build_type=Debug
 [options]
 int128=False
@@ -13,7 +8,4 @@ iostreams=False
 sanitize=True
 [build_requires]
 [env]
-CC=clang
-CXX=clang++
 CONAN_CMAKE_GENERATOR=Unix Makefiles
-CONAN_CMAKE_TOOLCHAIN_FILE=$PROFILE_DIR/../../../test/toolchain/clang.cmake

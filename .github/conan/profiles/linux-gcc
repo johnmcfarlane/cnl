@@ -1,12 +1,10 @@
-include(osx)
+include(linux)
 [settings]
 compiler=gcc
-compiler.version=11
 compiler.libcxx=libstdc++11
 [options]
-sanitize=True
 [build_requires]
 [env]
-CC=gcc-11
-CXX=g++-11
+CC=gcc
+CXX=g++
 CONAN_CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_DIR/gcc.cmake
