@@ -174,7 +174,6 @@ jobs:
       - name: Initialise Conan
         run: |
           pip.exe install conan;
-          conan profile update settings.compiler.cppstd=20 $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
 
       - name: Create build directory
         run: mkdir ${{runner.workspace}}\build
