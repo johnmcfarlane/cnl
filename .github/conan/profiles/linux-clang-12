@@ -9,6 +9,7 @@ compiler.libcxx=libstdc++11
 build_type=Debug
 [options]
 int128=False
+iostreams=False
 [build_requires]
 [env]
 CC=clang
