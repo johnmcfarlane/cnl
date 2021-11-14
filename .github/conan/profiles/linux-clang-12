@@ -10,6 +10,7 @@ build_type=Debug
 [options]
 int128=False
 iostreams=False
+sanitize=True
 [build_requires]
 [env]
 CC=clang

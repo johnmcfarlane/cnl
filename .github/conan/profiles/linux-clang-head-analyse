@@ -9,6 +9,7 @@ compiler.libcxx=libstdc++11
 build_type=Release
 [options]
 clang_tidy=True
+sanitize=True
 [build_requires]
 [env]
 CC=clang
