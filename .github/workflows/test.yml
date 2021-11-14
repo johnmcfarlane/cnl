@@ -18,7 +18,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:clang-head
             os-version: ubuntu-20.04
             profile: linux-clang-head-analyse
-            stdlib: libc++
             toolchain: clang-libc++.cmake
 
           # GCC HEAD
@@ -26,7 +25,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:gcc-head
             os-version: ubuntu-20.04
             profile: linux-gcc-head
-            stdlib: libstdc++11
             toolchain: gcc.cmake
 
           # Clang-13
@@ -34,7 +32,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:clang-13-libstdcpp
             os-version: ubuntu-20.04
             profile: linux-clang-13
-            stdlib: libstdc++11
             toolchain: clang.cmake
 
           # Clang-12 (Contrary)
@@ -42,7 +39,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:clang-12-libstdcpp
             os-version: ubuntu-20.04
             profile: linux-clang-12
-            stdlib: libstdc++11
             toolchain: clang.cmake
 
           # Clang-11
@@ -50,7 +46,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
             os-version: ubuntu-20.04
             profile: linux-clang-11
-            stdlib: libc++
             toolchain: clang-libc++.cmake
 
           # Clang-10
@@ -58,7 +53,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
             os-version: ubuntu-20.04
             profile: linux-clang-10
-            stdlib: libc++
             toolchain: clang-libc++.cmake
 
           # GCC-11
@@ -66,7 +60,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:gcc-11
             os-version: ubuntu-20.04
             profile: linux-gcc-11
-            stdlib: libstdc++11
             toolchain: gcc.cmake
 
           # GCC-10
@@ -74,21 +67,18 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
             profile: linux-gcc-10
-            stdlib: libstdc++11
             toolchain: gcc.cmake
 
           # OS X Clang (latest)
           - name: osx-clang-13
             os-version: macos-10.15
             profile: osx-clang-13
-            stdlib: libc++
             toolchain: clang-libc++.cmake
 
           # OS X GCC-11
           - name: osx-gcc-11
             os-version: macos-10.15
             profile: osx-gcc-11
-            stdlib: libstdc++11
             toolchain: gcc.cmake
 
           # GCC-10 (for ARMv7)
@@ -96,7 +86,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:gcc-10-arm
             os-version: ubuntu-20.04
             profile: linux-gcc-10-armv7
-            stdlib: libstdc++11
             toolchain: gcc-armv7.cmake
 
     container: ${{matrix.linux-container}}
@@ -126,7 +115,6 @@ jobs:
       - name: Initialise Conan
         run: |
           conan config install $GITHUB_WORKSPACE/.github/conan/settings.yml
-          conan profile update settings.compiler.libcxx=${{matrix.stdlib}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
 
       - name: Install dependencies
         run: |
