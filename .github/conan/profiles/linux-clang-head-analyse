@@ -11,3 +11,5 @@ build_type=Release
 clang_tidy=True
 [build_requires]
 [env]
+CC=clang
+CXX=clang++

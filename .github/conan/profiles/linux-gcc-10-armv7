@@ -10,3 +10,5 @@ build_type=Release
 [options]
 [build_requires]
 [env]
+CC=arm-linux-gnueabi-gcc-10
+CXX=arm-linux-gnueabi-g++-10

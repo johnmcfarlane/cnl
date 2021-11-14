@@ -15,8 +15,6 @@ jobs:
         include:
           # Clang HEAD (w. Clang-Tidy, sanitizers)
           - name: clang-head-analyse
-            cc: clang
-            cxx: clang++
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
@@ -30,8 +28,6 @@ jobs:
 
           # GCC HEAD
           - name: gcc-head
-            cc: gcc
-            cxx: g++
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
@@ -45,8 +41,6 @@ jobs:
 
           # Clang-13
           - name: clang-13
-            cc: clang
-            cxx: clang++
             exceptions: "True"
             generator: "Ninja"
             int128: "False"
@@ -60,8 +54,6 @@ jobs:
 
           # Clang-12 (Contrary)
           - name: clang-12
-            cc: clang
-            cxx: clang++
             exceptions: "True"
             generator: "Unix Makefiles"
             int128: "False"
@@ -75,8 +67,6 @@ jobs:
 
           # Clang-11
           - name: clang-11
-            cc: clang
-            cxx: clang++
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
@@ -90,8 +80,6 @@ jobs:
 
           # Clang-10
           - name: clang-10
-            cc: clang
-            cxx: clang++
             exceptions: "True"
             generator: "Ninja"
             int128: "False"
@@ -105,8 +93,6 @@ jobs:
 
           # GCC-11
           - name: gcc-11
-            cc: gcc-11
-            cxx: g++-11
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
@@ -120,8 +106,6 @@ jobs:
 
           # GCC-10
           - name: gcc-10
-            cc: gcc-10
-            cxx: g++-10
             exceptions: "False"
             generator: "Unix Makefiles"
             int128: "False"
@@ -135,8 +119,6 @@ jobs:
 
           # OS X Clang (latest)
           - name: osx-clang-13
-            cc: "/usr/local/opt/llvm/bin/clang"
-            cxx: "/usr/local/opt/llvm/bin/clang++"
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
@@ -149,8 +131,6 @@ jobs:
 
           # OS X GCC-11
           - name: osx-gcc-11
-            cc: gcc-11
-            cxx: g++-11
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
@@ -163,8 +143,6 @@ jobs:
 
           # GCC-10 (for ARMv7)
           - name: gcc-10-armv7
-            cc: arm-linux-gnueabi-gcc-10
-            cxx: arm-linux-gnueabi-g++-10
             exceptions: "True"
             generator: "Ninja"
             int128: "False"
@@ -177,9 +155,6 @@ jobs:
             toolchain: gcc-armv7.cmake
 
     container: ${{matrix.linux-container}}
-    env:
-      CC: ${{matrix.cc}}
-      CXX: ${{matrix.cxx}}
 
     runs-on: ${{matrix.os-version}}
 

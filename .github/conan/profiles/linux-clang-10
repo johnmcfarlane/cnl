@@ -10,3 +10,5 @@ build_type=Release
 [options]
 [build_requires]
 [env]
+CC=clang
+CXX=clang++
