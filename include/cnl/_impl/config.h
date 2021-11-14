@@ -37,7 +37,7 @@
 #error CNL_CAN_USE_INT128 already defined
 #endif
 
-#if defined(__SIZEOF_INT128__)
+#if defined(__GLIBCXX_TYPE_INT_N_0)
 #define CNL_CAN_USE_INT128 1  // NOLINT(cppcoreguidelines-macro-usage)
 #else
 #define CNL_CAN_USE_INT128 0  // NOLINT(cppcoreguidelines-macro-usage)
