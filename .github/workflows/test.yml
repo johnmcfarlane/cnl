@@ -15,7 +15,6 @@ jobs:
         include:
           # Clang HEAD (w. Clang-Tidy, sanitizers)
           - name: clang-head-analyse
-            version: "14"
             os: linux
             arch: x86_64
             build-type: Release
@@ -35,7 +34,6 @@ jobs:
 
           # GCC HEAD
           - name: gcc-head
-            version: "12"
             os: linux
             arch: x86_64
             build-type: Release
@@ -55,7 +53,6 @@ jobs:
 
           # Clang-13
           - name: clang-13
-            version: "13"
             os: linux
             arch: x86_64
             build-type: Release
@@ -75,7 +72,6 @@ jobs:
 
           # Clang-12 (Contrary)
           - name: clang-12
-            version: "12"
             os: linux
             arch: x86_64
             build-type: Debug
@@ -95,7 +91,6 @@ jobs:
 
           # Clang-11
           - name: clang-11
-            version: "11"
             os: linux
             arch: x86_64
             build-type: Release
@@ -115,7 +110,6 @@ jobs:
 
           # Clang-10
           - name: clang-10
-            version: "10"
             os: linux
             arch: x86_64
             build-type: Release
@@ -135,7 +129,6 @@ jobs:
 
           # GCC-11
           - name: gcc-11
-            version: "11"
             os: linux
             arch: x86_64
             build-type: Release
@@ -155,7 +148,6 @@ jobs:
 
           # GCC-10
           - name: gcc-10
-            version: "10"
             os: linux
             arch: x86_64
             build-type: Debug
@@ -176,7 +168,6 @@ jobs:
           # OS X Clang (latest)
           - name: osx-clang-13
             os: osx
-            version: "13"
             arch: x86_64
             build-type: Release
             cc: "/usr/local/opt/llvm/bin/clang"
@@ -195,7 +186,6 @@ jobs:
           # OS X GCC-11
           - name: osx-gcc-11
             os: osx
-            version: "11"
             arch: x86_64
             build-type: Release
             cc: gcc-11
@@ -214,7 +204,6 @@ jobs:
           # GCC-10 (for ARMv7)
           - name: gcc-10-armv7
             arch: armv7
-            version: "10"
             os: linux
             build-type: Release
             cc: arm-linux-gnueabi-gcc-10
@@ -262,7 +251,6 @@ jobs:
         run: |
           conan config install $GITHUB_WORKSPACE/.github/conan/settings.yml
           conan profile update settings.compiler.libcxx=${{matrix.stdlib}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
-          conan profile update settings.compiler.version=${{matrix.version}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
           conan profile update settings.build_type=${{matrix.build-type}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
           conan profile update settings.arch=${{matrix.arch}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
 
@@ -337,7 +325,6 @@ jobs:
           conan profile update settings.compiler.cppstd=20 $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
           conan profile update settings.os=Windows $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
           conan profile update settings.arch=${{matrix.arch}} $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
-          conan profile update settings.compiler.version=16 $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
 
       - name: Create build directory
         run: mkdir ${{runner.workspace}}\build
