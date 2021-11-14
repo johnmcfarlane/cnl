@@ -16,7 +16,6 @@ jobs:
           # Clang HEAD (w. Clang-Tidy, sanitizers)
           - name: clang-head-analyse
             cc: clang
-            clang_tidy: "True"
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
@@ -32,7 +31,6 @@ jobs:
           # GCC HEAD
           - name: gcc-head
             cc: gcc
-            clang_tidy: "False"
             cxx: g++
             exceptions: "True"
             generator: "Ninja"
@@ -48,7 +46,6 @@ jobs:
           # Clang-13
           - name: clang-13
             cc: clang
-            clang_tidy: "False"
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
@@ -64,7 +61,6 @@ jobs:
           # Clang-12 (Contrary)
           - name: clang-12
             cc: clang
-            clang_tidy: "False"
             cxx: clang++
             exceptions: "True"
             generator: "Unix Makefiles"
@@ -80,7 +76,6 @@ jobs:
           # Clang-11
           - name: clang-11
             cc: clang
-            clang_tidy: "False"
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
@@ -96,7 +91,6 @@ jobs:
           # Clang-10
           - name: clang-10
             cc: clang
-            clang_tidy: "False"
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
@@ -112,7 +106,6 @@ jobs:
           # GCC-11
           - name: gcc-11
             cc: gcc-11
-            clang_tidy: "False"
             cxx: g++-11
             exceptions: "True"
             generator: "Ninja"
@@ -128,7 +121,6 @@ jobs:
           # GCC-10
           - name: gcc-10
             cc: gcc-10
-            clang_tidy: "False"
             cxx: g++-10
             exceptions: "False"
             generator: "Unix Makefiles"
@@ -144,7 +136,6 @@ jobs:
           # OS X Clang (latest)
           - name: osx-clang-13
             cc: "/usr/local/opt/llvm/bin/clang"
-            clang_tidy: "False"
             cxx: "/usr/local/opt/llvm/bin/clang++"
             exceptions: "True"
             generator: "Ninja"
@@ -159,7 +150,6 @@ jobs:
           # OS X GCC-11
           - name: osx-gcc-11
             cc: gcc-11
-            clang_tidy: "False"
             cxx: g++-11
             exceptions: "True"
             generator: "Ninja"
@@ -174,7 +164,6 @@ jobs:
           # GCC-10 (for ARMv7)
           - name: gcc-10-armv7
             cc: arm-linux-gnueabi-gcc-10
-            clang_tidy: "False"
             cxx: arm-linux-gnueabi-g++-10
             exceptions: "True"
             generator: "Ninja"
@@ -225,7 +214,6 @@ jobs:
             --build=missing \
             --env CONAN_CMAKE_GENERATOR="${{matrix.generator}}" \
             --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            --options clang_tidy=${{matrix.clang_tidy}} \
             --options int128=${{matrix.int128}} \
             --options iostreams=${{matrix.iostreams}} \
             --options enable_exceptions=${{matrix.exceptions}} \
