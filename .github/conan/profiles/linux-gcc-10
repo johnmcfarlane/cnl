@@ -8,6 +8,7 @@ compiler.version=10
 compiler.libcxx=libstdc++11
 build_type=Debug
 [options]
+enable_exceptions=False
 [build_requires]
 [env]
 CC=gcc-10
