@@ -16,3 +16,4 @@ iostreams=False
 CC=gcc-10
 CXX=g++-10
 CONAN_CMAKE_GENERATOR=Unix Makefiles
+CONAN_CMAKE_TOOLCHAIN_FILE=$PROFILE_DIR/../../../test/toolchain/gcc.cmake

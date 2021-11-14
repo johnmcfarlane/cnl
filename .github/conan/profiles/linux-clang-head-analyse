@@ -15,3 +15,4 @@ sanitize=True
 CC=clang
 CXX=clang++
 CONAN_CMAKE_GENERATOR=Ninja
+CONAN_CMAKE_TOOLCHAIN_FILE=$PROFILE_DIR/../../../test/toolchain/clang-libc++.cmake

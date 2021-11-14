@@ -14,3 +14,4 @@ int128=False
 CC=arm-linux-gnueabi-gcc-10
 CXX=arm-linux-gnueabi-g++-10
 CONAN_CMAKE_GENERATOR=Ninja
+CONAN_CMAKE_TOOLCHAIN_FILE=$PROFILE_DIR/../../../test/toolchain/gcc-armv7.cmake

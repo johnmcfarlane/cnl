@@ -18,3 +18,4 @@ test=all
 [build_requires]
 [env]
 CONAN_CMAKE_GENERATOR=Visual Studio 16 2019
+CONAN_CMAKE_TOOLCHAIN_FILE=$PROFILE_DIR/../../../test/toolchain/msvc.cmake

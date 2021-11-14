@@ -14,3 +14,4 @@ sanitize=True
 CC=gcc
 CXX=g++
 CONAN_CMAKE_GENERATOR=Ninja
+CONAN_CMAKE_TOOLCHAIN_FILE=$PROFILE_DIR/../../../test/toolchain/gcc.cmake
