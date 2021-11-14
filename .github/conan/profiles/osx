@@ -1,0 +1,11 @@
+TOOLCHAIN_DIR=$PROFILE_DIR/../../../test/toolchain
+[settings]
+os=Macos
+os_build=Macos
+arch=x86_64
+arch_build=x86_64
+build_type=Release
+[options]
+[build_requires]
+[env]
+CONAN_CMAKE_GENERATOR=Ninja
