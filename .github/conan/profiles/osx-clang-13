@@ -12,3 +12,4 @@ build_type=Release
 [env]
 CC=/usr/local/opt/llvm/bin/clang
 CXX=/usr/local/opt/llvm/bin/clang++
+CONAN_CMAKE_GENERATOR=Ninja

@@ -12,3 +12,4 @@ build_type=Debug
 [env]
 CC=clang
 CXX=clang++
+CONAN_CMAKE_GENERATOR=Unix Makefiles

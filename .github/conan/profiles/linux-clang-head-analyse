@@ -13,3 +13,4 @@ clang_tidy=True
 [env]
 CC=clang
 CXX=clang++
+CONAN_CMAKE_GENERATOR=Ninja

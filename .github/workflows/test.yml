@@ -15,7 +15,6 @@ jobs:
         include:
           # Clang HEAD (w. Clang-Tidy, sanitizers)
           - name: clang-head-analyse
-            generator: "Ninja"
             int128: "True"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-head
@@ -27,7 +26,6 @@ jobs:
 
           # GCC HEAD
           - name: gcc-head
-            generator: "Ninja"
             int128: "True"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:gcc-head
@@ -39,7 +37,6 @@ jobs:
 
           # Clang-13
           - name: clang-13
-            generator: "Ninja"
             int128: "False"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-13-libstdcpp
@@ -51,7 +48,6 @@ jobs:
 
           # Clang-12 (Contrary)
           - name: clang-12
-            generator: "Unix Makefiles"
             int128: "False"
             iostreams: "False"
             linux-container: johnmcfarlane/cnl_ci:clang-12-libstdcpp
@@ -63,7 +59,6 @@ jobs:
 
           # Clang-11
           - name: clang-11
-            generator: "Ninja"
             int128: "True"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
@@ -75,7 +70,6 @@ jobs:
 
           # Clang-10
           - name: clang-10
-            generator: "Ninja"
             int128: "False"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
@@ -87,7 +81,6 @@ jobs:
 
           # GCC-11
           - name: gcc-11
-            generator: "Ninja"
             int128: "True"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:gcc-11
@@ -99,7 +92,6 @@ jobs:
 
           # GCC-10
           - name: gcc-10
-            generator: "Unix Makefiles"
             int128: "False"
             iostreams: "False"
             linux-container: johnmcfarlane/cnl_ci:gcc-10
@@ -111,7 +103,6 @@ jobs:
 
           # OS X Clang (latest)
           - name: osx-clang-13
-            generator: "Ninja"
             int128: "True"
             iostreams: "True"
             os-version: macos-10.15
@@ -122,7 +113,6 @@ jobs:
 
           # OS X GCC-11
           - name: osx-gcc-11
-            generator: "Ninja"
             int128: "True"
             iostreams: "True"
             os-version: macos-10.15
@@ -133,7 +123,6 @@ jobs:
 
           # GCC-10 (for ARMv7)
           - name: gcc-10-armv7
-            generator: "Ninja"
             int128: "False"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:gcc-10-arm
@@ -176,7 +165,6 @@ jobs:
         run: |
           conan install \
             --build=missing \
-            --env CONAN_CMAKE_GENERATOR="${{matrix.generator}}" \
             --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
             --options int128=${{matrix.int128}} \
             --options iostreams=${{matrix.iostreams}} \

@@ -12,3 +12,4 @@ build_type=Release
 [env]
 CC=gcc-11
 CXX=g++-11
+CONAN_CMAKE_GENERATOR=Ninja

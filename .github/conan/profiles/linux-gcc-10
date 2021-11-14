@@ -13,3 +13,4 @@ enable_exceptions=False
 [env]
 CC=gcc-10
 CXX=g++-10
+CONAN_CMAKE_GENERATOR=Unix Makefiles
