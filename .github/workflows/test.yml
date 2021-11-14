@@ -266,7 +266,7 @@ jobs:
             test-${{matrix.name}}-
 
       - name: Install Brew packages
-        if: ( matrix.os == 'osx' )
+        if: ( matrix.os-version == 'macos-10.15' )
         run: brew install ccache conan ninja
 
       - name: Initialise Conan
@@ -297,11 +297,11 @@ jobs:
         run: conan build --build --configure $GITHUB_WORKSPACE
 
       - name: Test library
-        if: ( matrix.arch != 'armv7' )
+        if: ( matrix.name != 'gcc-10-armv7' )
         run: conan build --test $GITHUB_WORKSPACE
 
       - name: Run benchmarks
-        if: ( matrix.name != 'clang-11' && matrix.arch != 'armv7' )
+        if: ( matrix.name != 'clang-11' && matrix.name != 'gcc-10-armv7' )
         run: |
           ./test/benchmark/test-benchmark --benchmark_format=csv | tee result.csv \
           "${GITHUB_WORKSPACE}"/test/benchmark/report.py result.csv
