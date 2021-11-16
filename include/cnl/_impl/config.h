@@ -33,29 +33,20 @@
 #error CNL_INT128_ENABLED already defined
 #endif
 
-#if defined(CNL_CAN_USE_INT128)
-#error CNL_CAN_USE_INT128 already defined
-#endif
-
-#if defined(__GLIBCXX_TYPE_INT_N_0)
-#define CNL_CAN_USE_INT128 1  // NOLINT(cppcoreguidelines-macro-usage)
-#else
-#define CNL_CAN_USE_INT128 0  // NOLINT(cppcoreguidelines-macro-usage)
-#endif
-
 #if !defined(CNL_USE_INT128)
 /// \def CNL_USE_INT128
 /// \brief user flag enables or disables support for `__int128` on 64-bit GCC/Clang platforms;
 ///        defaults to `1` on supported platforms.
 /// \note GCC pedantic warnings must be disabled in order to use `__int128`.
 /// \sa CNL_INT128_ENABLED, cnl::int128, cnl::uint128
-#define CNL_USE_INT128 CNL_CAN_USE_INT128  // NOLINT(cppcoreguidelines-macro-usage)
+#if defined(__GLIBCXX_TYPE_INT_N_0)
+#define CNL_USE_INT128 1  // NOLINT(cppcoreguidelines-macro-usage)
+#else
+#define CNL_USE_INT128 0  // NOLINT(cppcoreguidelines-macro-usage)
+#endif
 #endif
 
 #if CNL_USE_INT128
-#if !CNL_CAN_USE_INT128
-#error CNL_USE_INT128 is defined but 128-bit integers is not enabled for this compiler
-#endif
 /// \def CNL_INT128_ENABLED
 /// \brief non-zero iff CNL is configured to support 128-bit integers
 /// \sa CNL_USE_INT128, cnl::int128, cnl::uint128
