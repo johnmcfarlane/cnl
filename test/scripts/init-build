@@ -11,48 +11,13 @@ cnl_dir=$(
   pwd
 )
 
-# parameters
-ARCH="${ARCH:-x86_64}"
-CLANG_TIDY="${CLANG_TIDY:-False}"
-COMPILER="${COMPILER:-gcc}"
-ENABLE_EXCEPTIONS="${ENABLE_EXCEPTIONS:-True}"
-GENERATOR="${GENERATOR:-Ninja}"
-INT128="${INT128:-True}"
-SANITIZE="${SANITIZE:-True}"
-STDLIB="${STDLIB:-libstdc++11}"
-TEST="${TEST:-unit}"
-TOOLCHAIN="${TOOLCHAIN:-gcc.cmake}"
-
-export CC="${CC:-gcc}"
-export CONAN_CMAKE_GENERATOR="${GENERATOR}"
-export CXX="${CXX:-g++}"
-
-# create Conan profile in the build directory
-conan profile new --detect ./profile
-conan profile update settings.arch="${ARCH}" ./profile
-conan profile update settings.compiler="${COMPILER}" ./profile
-conan profile update settings.compiler.libcxx="${STDLIB}" ./profile
-
 # get dependencies ready
 conan install \
   --build missing \
-  --options clang_tidy="${CLANG_TIDY}" \
-  --options enable_exceptions="${ENABLE_EXCEPTIONS}" \
-  --options int128="${INT128}" \
-  --options sanitize="${SANITIZE}" \
-  --options test="${TEST}" \
-  --profile ./profile \
+  --options test=all \
+  --profile "${cnl_dir}/.github/conan/profiles/linux" \
   "$@" \
   "${cnl_dir}"
-
-# Determine CMake toolchain file
-toolchain_dir="${cnl_dir}/test/toolchain"
-export CONAN_CMAKE_TOOLCHAIN_FILE="${toolchain_dir}/${TOOLCHAIN}"
-if [ ! -f "${CONAN_CMAKE_TOOLCHAIN_FILE}" ]; then
-  echo CMake toolchain file, "${CONAN_CMAKE_TOOLCHAIN_FILE}", not found. Valid TOOLCHAIN values:
-  ls -1 "${toolchain_dir}"
-  exit 1
-fi
 
 # configure build system
 conan build --configure "${cnl_dir}"

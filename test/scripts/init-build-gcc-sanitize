@@ -4,15 +4,11 @@
 
 set -euo pipefail
 
-export TOOLCHAIN="${TOOLCHAIN:-gcc.cmake}"
-export LSAN_OPTIONS=verbosity=1:log_threads=1
-
 script_dir=$(
   cd "$(dirname "$0")"
   pwd
 )
 
 "${script_dir}/init-build-gcc" \
-  --settings build_type=Debug \
   --options sanitize=True \
   "$@"

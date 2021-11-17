@@ -4,11 +4,11 @@
 
 set -euo pipefail
 
-export CLANG_TIDY="True"
-
 script_dir=$(
   cd "$(dirname "$0")"
   pwd
 )
 
-"${script_dir}/init-build-clang" "$@"
+"${script_dir}/init-build-clang" \
+  --options clang_tidy="True" \
+  "$@"

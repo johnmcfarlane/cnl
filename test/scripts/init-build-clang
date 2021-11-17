@@ -4,15 +4,12 @@
 
 set -euo pipefail
 
-export CC="${CC:-clang}"
-export COMPILER=clang
-export CXX="${CXX:-clang++}"
-export SANITIZE="${SANITIZE:-False}"
-export TOOLCHAIN="${TOOLCHAIN:-clang.cmake}"
-
-script_dir=$(
-  cd "$(dirname "$0")"
+PROJECT_DIR=$(
+  cd "$(dirname "$0")"/../..
   pwd
 )
 
-"${script_dir}/init-build" "$@"
+"${PROJECT_DIR}/test/scripts/init-build" \
+  --profile "${PROJECT_DIR}/.github/conan/profiles/linux-clang" \
+  --settings compiler.version=12 \
+  "$@"

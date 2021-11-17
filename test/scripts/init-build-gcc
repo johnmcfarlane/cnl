@@ -4,15 +4,12 @@
 
 set -euo pipefail
 
-export CC="${CC:-gcc}"
-export COMPILER="${COMPILER:-gcc}"
-export CXX="${CXX:-g++}"
-export STDLIB="${STDLIB:-libstdc++11}"
-export TOOLCHAIN="${TOOLCHAIN:-gcc.cmake}"
-
-script_dir=$(
-  cd "$(dirname "$0")"
+PROJECT_DIR=$(
+  cd "$(dirname "$0")"/../..
   pwd
 )
 
-"${script_dir}/init-build" "$@"
+"${PROJECT_DIR}/test/scripts/init-build" \
+  --profile "${PROJECT_DIR}/.github/conan/profiles/linux-gcc" \
+  --settings compiler.version=10 \
+  "$@"
