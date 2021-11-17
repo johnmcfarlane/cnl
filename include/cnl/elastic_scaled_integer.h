@@ -149,7 +149,7 @@ namespace cnl {
         template<char... Chars>
         [[nodiscard]] constexpr auto operator"" _cnl()
         {
-            constexpr auto parsed{_impl::parse_real<intmax, Chars...>()};
+            constexpr auto parsed{_impl::parse_real<intmax_t, Chars...>()};
             return _impl::make_from_udl<parsed.significand, parsed.exponent, parsed.radix, parsed.radix>();
         }
 
@@ -167,7 +167,7 @@ namespace cnl {
         template<char... Chars>
         [[nodiscard]] constexpr auto operator"" _cnl2()
         {
-            constexpr auto parsed{_impl::parse_real<intmax, Chars...>()};
+            constexpr auto parsed{_impl::parse_real<intmax_t, Chars...>()};
             return _impl::make_from_udl<parsed.significand, parsed.exponent, parsed.radix, 2>();
         }
     }

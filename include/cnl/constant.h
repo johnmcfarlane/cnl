@@ -26,7 +26,7 @@
 #define CNL_IMPL_CONSTANT_VALUE_TYPE auto  // NOLINT(cppcoreguidelines-macro-usage)
 #else
 // Otherwise it is defaulted to the widest quantity type that can be used as a template argument.
-#define CNL_IMPL_CONSTANT_VALUE_TYPE ::cnl::intmax  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_IMPL_CONSTANT_VALUE_TYPE ::cnl::intmax_t  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 /// compositional numeric library
@@ -151,7 +151,7 @@ namespace cnl {
     namespace literals {
         template<char... Chars>
         [[nodiscard]] constexpr auto operator"" _c()
-                -> constant<_impl::parse<intmax, Chars...>()>
+                -> constant<_impl::parse<intmax_t, Chars...>()>
         {
             return {};
         }

@@ -115,30 +115,30 @@ namespace {
         static_assert(identical(cnl::set_digits<std::int32_t, 32>::type{0}, std::int64_t{0}));
 
         static_assert(identical(cnl::set_digits<std::uint8_t, 1>::type{234}, std::uint8_t{234}));
-        static_assert(identical(cnl::set_digits<cnl::uintmax, 1>::type{234}, std::uint8_t{234}));
+        static_assert(identical(cnl::set_digits<cnl::uintmax_t, 1>::type{234}, std::uint8_t{234}));
         static_assert(identical(cnl::set_digits<std::int8_t, 1>::type{123}, std::int8_t{123}));
-        static_assert(identical(cnl::set_digits<cnl::intmax, 1>::type{123}, std::int8_t{123}));
+        static_assert(identical(cnl::set_digits<cnl::intmax_t, 1>::type{123}, std::int8_t{123}));
 
         static_assert(identical(cnl::set_digits<std::uint8_t, 10>::type{234}, std::uint16_t{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::uintmax, 10>::type{234}, std::uint16_t{234}));
+                identical(cnl::set_digits<cnl::uintmax_t, 10>::type{234}, std::uint16_t{234}));
         static_assert(identical(cnl::set_digits<std::int8_t, 10>::type{234}, std::int16_t{234}));
-        static_assert(identical(cnl::set_digits<cnl::intmax, 10>::type{234}, std::int16_t{234}));
+        static_assert(identical(cnl::set_digits<cnl::intmax_t, 10>::type{234}, std::int16_t{234}));
 
         static_assert(identical(cnl::set_digits<std::uint8_t, 64>::type{234}, std::uint64_t{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::uintmax, 64>::type{234}, std::uint64_t{234}));
+                identical(cnl::set_digits<cnl::uintmax_t, 64>::type{234}, std::uint64_t{234}));
         static_assert(identical(cnl::set_digits<std::int8_t, 63>::type{234}, std::int64_t{234}));
-        static_assert(identical(cnl::set_digits<cnl::intmax, 63>::type{234}, std::int64_t{234}));
+        static_assert(identical(cnl::set_digits<cnl::intmax_t, 63>::type{234}, std::int64_t{234}));
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(cnl::set_digits<std::uint8_t, 128>::type{234}, cnl::uint128_t{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::uintmax, 128>::type{234}, cnl::uint128_t{234}));
+                identical(cnl::set_digits<cnl::uintmax_t, 128>::type{234}, cnl::uint128_t{234}));
         static_assert(identical(cnl::set_digits<std::int8_t, 127>::type{234}, cnl::int128_t{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::intmax, 127>::type{234}, cnl::int128_t{234}));
+                identical(cnl::set_digits<cnl::intmax_t, 127>::type{234}, cnl::int128_t{234}));
 #endif
     }
 

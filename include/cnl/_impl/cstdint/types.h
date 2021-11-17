@@ -21,11 +21,11 @@ namespace cnl {
     using int128_t = __int128;
     using uint128_t = unsigned __int128;
 
-    using intmax = int128_t;
-    using uintmax = uint128_t;
+    using intmax_t = int128_t;
+    using uintmax_t = uint128_t;
 #else
-    using intmax = std::intmax_t;
-    using uintmax = std::uintmax_t;
+    using intmax_t = std::intmax_t;
+    using uintmax_t = std::uintmax_t;
 #endif  // defined(CNL_INT128_ENABLED)
 }
 

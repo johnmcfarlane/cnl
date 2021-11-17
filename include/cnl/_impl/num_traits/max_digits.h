@@ -21,10 +21,10 @@ namespace cnl {
         inline constexpr int max_digits_fundamental = 0;
 
         template<>
-        inline constexpr auto max_digits_fundamental<true> = digits_v<intmax>;
+        inline constexpr auto max_digits_fundamental<true> = digits_v<intmax_t>;
 
         template<>
-        inline constexpr auto max_digits_fundamental<false> = digits_v<uintmax>;
+        inline constexpr auto max_digits_fundamental<false> = digits_v<uintmax_t>;
 
         // max_digits
         template<typename T>

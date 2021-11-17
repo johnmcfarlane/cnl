@@ -171,7 +171,7 @@ static_assert(
         "using too many bytes to represent -256");
 
 // some numbers are so big that you don't have the luxury of choosing
-static constexpr auto unsigned_limit = cnl::intmax{cnl::numeric_limits<unsigned>::max()} + 1;
+static constexpr auto unsigned_limit = cnl::intmax_t{cnl::numeric_limits<unsigned>::max()} + 1;
 static_assert(
         sizeof(make_elastic_scaled_integer(cnl::constant<unsigned_limit>())) == sizeof(int),
         "using too many bytes to represent 2^32");
