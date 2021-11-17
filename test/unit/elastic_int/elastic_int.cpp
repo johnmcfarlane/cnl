@@ -57,7 +57,7 @@ namespace {
                         cnl::op_value<elastic_integer<31>>,
                         cnl::op_value<elastic_integer<31>>>()(
                         elastic_integer<31>{0x7fffffff},
-                        elastic_integer<31>{cnl::numeric_limits<cnl::int32>::min()}),
+                        elastic_integer<31>{cnl::numeric_limits<std::int32_t>::min()}),
                 "cnl::elastic_integer test failed");
         static_assert(
                 cnl::custom_operator<
@@ -65,7 +65,7 @@ namespace {
                         cnl::op_value<elastic_integer<31>>,
                         cnl::op_value<elastic_integer<31>>>()(
                         elastic_integer<31>{0x7fffffff},
-                        elastic_integer<31>{cnl::numeric_limits<cnl::int32>::min()}),
+                        elastic_integer<31>{cnl::numeric_limits<std::int32_t>::min()}),
                 "cnl::elastic_integer test failed");
         static_assert(
                 cnl::custom_operator<
@@ -118,16 +118,16 @@ namespace {
         static_assert(
                 cnl::custom_operator<
                         equal_op,
-                        cnl::op_value<elastic_integer<12, cnl::uint16>>,
+                        cnl::op_value<elastic_integer<12, std::uint16_t>>,
                         cnl::op_value<int>>()(
-                        elastic_integer<12, cnl::uint16>{1324}, 1324),
+                        elastic_integer<12, std::uint16_t>{1324}, 1324),
                 "cnl::elastic_integer test failed");
         static_assert(
                 cnl::custom_operator<
                         equal_op,
-                        cnl::op_value<elastic_integer<12, cnl::uint16>>,
+                        cnl::op_value<elastic_integer<12, std::uint16_t>>,
                         cnl::op_value<int>>()(
-                        ~elastic_integer<12, cnl::uint16>{0}, 0xFFF),
+                        ~elastic_integer<12, std::uint16_t>{0}, 0xFFF),
                 "cnl::elastic_integer test failed");
     }
 
@@ -208,8 +208,8 @@ namespace {
         static_assert(
                 assert_same<
                         cnl::elastic_integer<63>,
-                        cnl::from_value_t<cnl::elastic_integer<1>, cnl::int64>>::value,
-                "from_value<elastic_integer, int64>");
+                        cnl::from_value_t<cnl::elastic_integer<1>, std::int64_t>>::value,
+                "from_value<elastic_integer, std::int64_t>");
     }
 
     namespace test_from_rep {
@@ -424,15 +424,15 @@ namespace {
 
     namespace test_bitwise_not {
         static_assert(
-                ~elastic_integer<12, cnl::uint16>{0} == 0xFFF, "cnl::elastic_integer test failed");
+                ~elastic_integer<12, std::uint16_t>{0} == 0xFFF, "cnl::elastic_integer test failed");
         static_assert(
                 ~elastic_integer<12, int>{0x050} == ~0x50, "cnl::elastic_integer test failed");
         static_assert(
                 ~elastic_integer<12, unsigned>{0} == 0xFFFU, "cnl::elastic_integer test failed");
         static_assert(
-                ~elastic_integer<7, cnl::int8>{0x5a} == ~0x5a, "cnl::elastic_integer test failed");
+                ~elastic_integer<7, std::int8_t>{0x5a} == ~0x5a, "cnl::elastic_integer test failed");
         static_assert(
-                ~elastic_integer<50, cnl::int64>{INT64_C(0x987654321)} == ~INT64_C(0x987654321),
+                ~elastic_integer<50, std::int64_t>{INT64_C(0x987654321)} == ~INT64_C(0x987654321),
                 "cnl::elastic_integer test failed");
     }
 
@@ -648,7 +648,7 @@ namespace {
     namespace test_used_digits {
         static_assert(cnl::used_digits(elastic_integer<7>{3}) == 2, "used_digits test failed");
         static_assert(
-                cnl::used_digits(elastic_integer<12, cnl::uint16>{10}) == 4,
+                cnl::used_digits(elastic_integer<12, std::uint16_t>{10}) == 4,
                 "used_digits test failed");
     }
 
@@ -657,14 +657,14 @@ namespace {
 
         static_assert(leading_bits(elastic_integer<7>{3}) == 5, "leading_bits test failed");
         static_assert(
-                leading_bits(elastic_integer<12, cnl::uint16>{10}) == 8,
+                leading_bits(elastic_integer<12, std::uint16_t>{10}) == 8,
                 "leading_bits test failed");
     }
 
     namespace test_used_digits {
         static_assert(cnl::used_digits(elastic_integer<7>{3}) == 2, "used_digits test failed");
         static_assert(
-                cnl::used_digits(elastic_integer<12, cnl::uint16>{10}) == 4,
+                cnl::used_digits(elastic_integer<12, std::uint16_t>{10}) == 4,
                 "used_digits test failed");
     }
 
@@ -673,7 +673,7 @@ namespace {
 
         static_assert(leading_bits(elastic_integer<7>{3}) == 5, "leading_bits test failed");
         static_assert(
-                leading_bits(elastic_integer<12, cnl::uint16>{10}) == 8,
+                leading_bits(elastic_integer<12, std::uint16_t>{10}) == 8,
                 "leading_bits test failed");
     }
 

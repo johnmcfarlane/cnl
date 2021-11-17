@@ -13,21 +13,21 @@ namespace {
 
     static_assert(
             assert_same<
-                    cnl::int8,
-                    cnl::_impl::narrowest_integer_t<1, cnl::int8>>::value);
+                    std::int8_t,
+                    cnl::_impl::narrowest_integer_t<1, std::int8_t>>::value);
     static_assert(
             assert_same<
-                    cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>, cnl::uint32>,
-                    cnl::_impl::narrowest_integer_t<77, cnl::uint32>>::value);
+                    cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>, std::uint32_t>,
+                    cnl::_impl::narrowest_integer_t<77, std::uint32_t>>::value);
     static_assert(
             assert_same<
                     cnl::_impl::duplex_integer<
-                            cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>, cnl::uint64>,
-                    cnl::_impl::narrowest_integer_t<191, cnl::int64>>::value,
+                            cnl::_impl::duplex_integer<std::int64_t, std::uint64_t>, std::uint64_t>,
+                    cnl::_impl::narrowest_integer_t<191, std::int64_t>>::value,
             "cnl::_impl::narrowest_integer_t<>");
     static_assert(
             assert_same<
                     cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<short int, short unsigned int>, cnl::_impl::duplex_integer<short unsigned int, short unsigned int>>, cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<short unsigned int, short unsigned int>, cnl::_impl::duplex_integer<short unsigned int, short unsigned int>>>, cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<short unsigned int, short unsigned int>, cnl::_impl::duplex_integer<short unsigned int, short unsigned int>>, short unsigned int>>,
-                    cnl::_impl::narrowest_integer_t<192, cnl::int16>>::value,
+                    cnl::_impl::narrowest_integer_t<192, std::int16_t>>::value,
             "cnl::_impl::narrowest_integer_t<>");
 }

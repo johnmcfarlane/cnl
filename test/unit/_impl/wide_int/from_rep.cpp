@@ -16,11 +16,11 @@ using cnl::_impl::assert_same;
 namespace {
     static_assert(
             assert_same<
-                    cnl::wide_integer<16, cnl::int8>,
+                    cnl::wide_integer<16, std::int8_t>,
                     typename cnl::set_rep<
-                            cnl::_impl::wrapper<unsigned short, cnl::wide_tag<16, cnl::uint8>>,
+                            cnl::_impl::wrapper<unsigned short, cnl::wide_tag<16, std::uint8_t>>,
                             int>::type>::value,
-            "cnl::wide_integer<16, uint8> << cnl::constant");
+            "cnl::wide_integer<16, std::uint8_t> << cnl::constant");
     static_assert(
             assert_same<
                     cnl::wide_integer<31, int>,

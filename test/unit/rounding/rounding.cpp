@@ -14,14 +14,14 @@ namespace {
 
         namespace convert {
             static_assert(identical(
-                    cnl::uint8{201},
-                    cnl::convert<cnl::nearest_rounding_tag, cnl::uint8>{}(200.5)));
+                    std::uint8_t{201},
+                    cnl::convert<cnl::nearest_rounding_tag, std::uint8_t>{}(200.5)));
             static_assert(identical(
-                    cnl::int16{-1001},
-                    cnl::convert<cnl::nearest_rounding_tag, cnl::int16>{}(-1000.5L)));
+                    std::int16_t{-1001},
+                    cnl::convert<cnl::nearest_rounding_tag, std::int16_t>{}(-1000.5L)));
             static_assert(identical(
                     55,
-                    cnl::convert<cnl::nearest_rounding_tag, cnl::int32>{}(55.2F)));
+                    cnl::convert<cnl::nearest_rounding_tag, std::int32_t>{}(55.2F)));
 
             static_assert(identical(
                     -1,
@@ -37,14 +37,14 @@ namespace {
                     cnl::convert<cnl::nearest_rounding_tag, int>{}(0.50)));
 
             static_assert(identical(
-                    cnl::uint8{200},
-                    cnl::convert<cnl::native_rounding_tag, cnl::uint8>{}(200.5)));
+                    std::uint8_t{200},
+                    cnl::convert<cnl::native_rounding_tag, std::uint8_t>{}(200.5)));
             static_assert(identical(
-                    cnl::int16{-1000},
-                    cnl::convert<cnl::native_rounding_tag, cnl::int16>{}(-1000.5L)));
+                    std::int16_t{-1000},
+                    cnl::convert<cnl::native_rounding_tag, std::int16_t>{}(-1000.5L)));
             static_assert(identical(
                     55,
-                    cnl::convert<cnl::native_rounding_tag, cnl::int32>{}(55.2F)));
+                    cnl::convert<cnl::native_rounding_tag, std::int32_t>{}(55.2F)));
 
             static_assert(identical(
                     -0,
@@ -81,7 +81,7 @@ namespace {
                     cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(-9, -7)));
             static_assert(identical(
                     2,
-                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(cnl::uint16{999}, 666)));
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(std::uint16_t{999}, 666)));
             static_assert(identical(
                     1LL,
                     cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(998, 666LL)));
@@ -114,14 +114,14 @@ namespace {
 
         namespace convert {
             static_assert(identical(
-                    cnl::uint8{101},
-                    cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::uint8>{}(100.5)));
+                    std::uint8_t{101},
+                    cnl::convert<cnl::tie_to_pos_inf_rounding_tag, std::uint8_t>{}(100.5)));
             static_assert(identical(
-                    cnl::int16{-1000},
-                    cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::int16>{}(-1000.5L)));
+                    std::int16_t{-1000},
+                    cnl::convert<cnl::tie_to_pos_inf_rounding_tag, std::int16_t>{}(-1000.5L)));
             static_assert(identical(
                     55,
-                    cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::int32>{}(55.2F)));
+                    cnl::convert<cnl::tie_to_pos_inf_rounding_tag, std::int32_t>{}(55.2F)));
             static_assert(identical(
                     -0,
                     cnl::convert<cnl::tie_to_pos_inf_rounding_tag, int>{}(-0.50)));
@@ -158,7 +158,7 @@ namespace {
             static_assert(identical(
                     2,
                     cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(
-                            cnl::uint16{999}, 666)));
+                            std::uint16_t{999}, 666)));
             static_assert(identical(
                     1LL,
                     cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(998, 666LL)));

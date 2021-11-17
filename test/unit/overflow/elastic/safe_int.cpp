@@ -62,7 +62,7 @@ namespace {
     }
 
     namespace test_make_safe_int {
-        static_assert(identical(cnl::make_safe_int(cnl::int16{7}), cnl::safe_integer<15>{7}));
+        static_assert(identical(cnl::make_safe_int(std::int16_t{7}), cnl::safe_integer<15>{7}));
         static_assert(identical(cnl::safe_integer<34>{0}, cnl::safe_integer<34>{0}));
     }
 

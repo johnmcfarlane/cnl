@@ -24,25 +24,25 @@ namespace {
     namespace test_max {
         static_assert(
                 identical(
-                        cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0xffff},
+                        cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>{0xffff},
                         cnl::numeric_limits<
-                                cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>>::max()),
-                "cnl::numeric_limits<cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>>::max()");
+                                cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::max()),
+                "cnl::numeric_limits<cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::max()");
     }
 
     namespace test_max {
         static_assert(
                 identical(
                         16, cnl::numeric_limits<
-                                    cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>>::digits),
-                "cnl::numeric_limits<cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>>::digits");
+                                    cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::digits),
+                "cnl::numeric_limits<cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::digits");
         static_assert(
                 identical(
                         cnl::numeric_limits<long long>::digits
                                 + cnl::numeric_limits<unsigned>::digits,
                         cnl::numeric_limits<
                                 cnl::_impl::duplex_integer<long long, unsigned>>::digits),
-                "cnl::numeric_limits<cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>>::digits");
+                "cnl::numeric_limits<cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::digits");
     }
 
     namespace test_mnn {

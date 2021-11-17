@@ -79,7 +79,7 @@ namespace {
     namespace test_make_rounding_elastic {
         static_assert(
                 identical(
-                        cnl::make_rounding_elastic(cnl::int16{7}), rounding_elastic_integer<15>{7}));
+                        cnl::make_rounding_elastic(std::int16_t{7}), rounding_elastic_integer<15>{7}));
     }
 
     namespace test_multiply {

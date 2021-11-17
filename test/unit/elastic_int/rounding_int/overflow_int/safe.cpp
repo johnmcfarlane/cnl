@@ -63,7 +63,7 @@ namespace {
         using namespace cnl::literals;
         static_assert(
                 identical(
-                        cnl::make_rounding_safe_int(cnl::int16{7}), cnl::rounding_safe_int<15>{7}));
+                        cnl::make_rounding_safe_int(std::int16_t{7}), cnl::rounding_safe_int<15>{7}));
         static_assert(
                 identical(cnl::make_rounding_safe_int(7_c), cnl::rounding_safe_int<3>{7}));
     }

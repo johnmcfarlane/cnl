@@ -186,14 +186,14 @@ struct number_test_by_rep
     , number_test_suite<NumericType<cnl::uint128>, TypeSpecificTestSuite>
     ,
 #endif
-      number_test_suite<NumericType<cnl::int8>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::uint8>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::int16>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::uint16>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::int32>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::uint32>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::int64>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::uint64>, TypeSpecificTestSuite> {
+      number_test_suite<NumericType<std::int8_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::uint8_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::int16_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::uint16_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::int32_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::uint32_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::int64_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::uint64_t>, TypeSpecificTestSuite> {
 };
 
 // given a rounding tag, invokes number_test_suite for integers of all built-in types

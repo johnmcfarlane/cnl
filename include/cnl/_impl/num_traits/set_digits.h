@@ -47,42 +47,42 @@ namespace cnl {
 
     template<_impl::signed_integral T, int Digits>
     requires(Digits <= 7) struct set_digits<T, Digits> {
-        using type = int8;
+        using type = std::int8_t;
     };
 
     template<_impl::unsigned_integral T, int Digits>
     requires(Digits <= 8) struct set_digits<T, Digits> {
-        using type = uint8;
+        using type = std::uint8_t;
     };
 
     template<_impl::signed_integral T, int Digits>
     requires(Digits > 7 && Digits <= 15) struct set_digits<T, Digits> {
-        using type = int16;
+        using type = std::int16_t;
     };
 
     template<_impl::unsigned_integral T, int Digits>
     requires(Digits > 8 && Digits <= 16) struct set_digits<T, Digits> {
-        using type = uint16;
+        using type = std::uint16_t;
     };
 
     template<_impl::signed_integral T, int Digits>
     requires(Digits > 15 && Digits <= 31) struct set_digits<T, Digits> {
-        using type = int32;
+        using type = std::int32_t;
     };
 
     template<_impl::unsigned_integral T, int Digits>
     requires(Digits > 16 && Digits <= 32) struct set_digits<T, Digits> {
-        using type = uint32;
+        using type = std::uint32_t;
     };
 
     template<_impl::signed_integral T, int Digits>
     requires(Digits > 31 && Digits <= 63) struct set_digits<T, Digits> {
-        using type = int64;
+        using type = std::int64_t;
     };
 
     template<_impl::unsigned_integral T, int Digits>
     requires(Digits > 32 && Digits <= 64) struct set_digits<T, Digits> {
-        using type = uint64;
+        using type = std::uint64_t;
     };
 
 #if defined(CNL_INT128_ENABLED)

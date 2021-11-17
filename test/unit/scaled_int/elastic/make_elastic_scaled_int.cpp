@@ -41,9 +41,9 @@ static_assert(
         "cnl::make_elastic_scaled_integer test failed");
 static_assert(
         identical(
-                make_elastic_scaled_integer<cnl::uint8>(262143),
+                make_elastic_scaled_integer<std::uint8_t>(262143),
                 elastic_scaled_integer<
-                        cnl::numeric_limits<decltype(262143)>::digits, cnl::power<0>, cnl::uint8>{262143}),
+                        cnl::numeric_limits<decltype(262143)>::digits, cnl::power<0>, std::uint8_t>{262143}),
         "cnl::make_elastic_scaled_integer test failed");
 
 static_assert(
@@ -55,8 +55,8 @@ static_assert(
                 elastic_scaled_integer<11, cnl::power<34>>{0x123400000000}));
 static_assert(
         identical(
-                make_elastic_scaled_integer<cnl::int8>(9876543),
-                elastic_scaled_integer<31, cnl::power<0>, cnl::int8>{9876543}));
+                make_elastic_scaled_integer<std::int8_t>(9876543),
+                elastic_scaled_integer<31, cnl::power<0>, std::int8_t>{9876543}));
 
 namespace test_from_scaled_integer {
     static_assert(
@@ -191,7 +191,7 @@ static_assert(
 ////////////////////////////////////////////////////////////////////////////////
 // tests for cnl::make_elastic_scaled_integer
 
-template<cnl::int64 Value>
+template<std::int64_t Value>
 struct make_elastic_test {
     static constexpr auto value = cnl::constant<Value>{};
     static constexpr auto elastic_value = make_elastic_scaled_integer(value);
@@ -244,9 +244,9 @@ template struct make_elastic_test<-62748517>;
 template struct make_elastic_test<815730721>;
 template struct make_elastic_test<-10604499373>;
 template struct make_elastic_test<137858491849>;
-template struct make_elastic_test<cnl::numeric_limits<cnl::int64>::max() / 2>;
-template struct make_elastic_test<-cnl::numeric_limits<cnl::int64>::max() / 2>;
+template struct make_elastic_test<cnl::numeric_limits<std::int64_t>::max() / 2>;
+template struct make_elastic_test<-cnl::numeric_limits<std::int64_t>::max() / 2>;
 #if !defined(_MSC_VER)
-template struct make_elastic_test<cnl::numeric_limits<cnl::int64>::max()>;
-template struct make_elastic_test<-cnl::numeric_limits<cnl::int64>::max()>;
+template struct make_elastic_test<cnl::numeric_limits<std::int64_t>::max()>;
+template struct make_elastic_test<-cnl::numeric_limits<std::int64_t>::max()>;
 #endif

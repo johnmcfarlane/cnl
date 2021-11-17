@@ -36,10 +36,10 @@ static_assert(identical(
         cnl::sqrt(cnl::elastic_integer<64, unsigned>(0x7fffffff))));
 static_assert(identical(
         cnl::elastic_integer<32, unsigned>{100},
-        cnl::sqrt(cnl::elastic_integer<64, unsigned>(cnl::int16{10000}))));
+        cnl::sqrt(cnl::elastic_integer<64, unsigned>(std::int16_t{10000}))));
 static_assert(identical(
         cnl::elastic_integer<32, unsigned>{10},
-        cnl::sqrt(cnl::elastic_integer<64, unsigned>(cnl::int8{100}))));
+        cnl::sqrt(cnl::elastic_integer<64, unsigned>(std::int8_t{100}))));
 static_assert(identical(
         cnl::elastic_integer<32, unsigned>{0},
         cnl::sqrt(cnl::elastic_integer<64, unsigned>(0))));

@@ -172,8 +172,8 @@ namespace saturated_binary_arithmetic_operator {
                     cnl::custom_operator<
                             cnl::_impl::multiply_op,
                             cnl::op_value<unsigned>,
-                            cnl::op_value<throwing_integer<cnl::uint8>>>()(
-                            3U, throwing_integer<cnl::uint8>{4}),
+                            cnl::op_value<throwing_integer<std::uint8_t>>>()(
+                            3U, throwing_integer<std::uint8_t>{4}),
                     throwing_integer<unsigned>{12}));
 }
 
@@ -345,8 +345,8 @@ namespace test_digits {
             "cnl::digits / cnl::set_digits test failed");
     static_assert(
             identical(
-                    set_digits_t<overflow_integer<cnl::uint8>, 12>{2000},
-                    overflow_integer<cnl::uint16>{2000}),
+                    set_digits_t<overflow_integer<std::uint8_t>, 12>{2000},
+                    overflow_integer<std::uint16_t>{2000}),
             "cnl::digits / cnl::set_digits test failed");
 }
 
@@ -408,7 +408,7 @@ namespace test_to_rep {
     static_assert(
             identical(cnl::_impl::to_rep(cnl::overflow_integer<uint64_t>{54}), uint64_t{54}),
             "cnl::_impl::to_rep<overflow_integer<>>()");
-    static_assert(identical(cnl::_impl::to_rep(native_integer<cnl::uint8>{3}), cnl::uint8{3}));
+    static_assert(identical(cnl::_impl::to_rep(native_integer<std::uint8_t>{3}), std::uint8_t{3}));
 }
 
 namespace test_from_rep {
@@ -478,28 +478,28 @@ namespace test_shift_left {
 namespace test_scale {
     static_assert(
             identical(
-                    cnl::_impl::scale<15, 2>(throwing_integer<cnl::int32>{1}),
-                    throwing_integer<cnl::int32>{32768}),
+                    cnl::_impl::scale<15, 2>(throwing_integer<std::int32_t>{1}),
+                    throwing_integer<std::int32_t>{32768}),
             "fixed_width_scale<overflow_integer<>> test failed");
     static_assert(
             identical(
-                    cnl::_impl::scale<15, 2>(throwing_integer<cnl::int32>{1}),
-                    throwing_integer<cnl::int32>{32768}),
+                    cnl::_impl::scale<15, 2>(throwing_integer<std::int32_t>{1}),
+                    throwing_integer<std::int32_t>{32768}),
             "fixed_width_scale<overflow_integer<>> test failed");
 
     static_assert(
             identical(
-                    cnl::_impl::from_rep<saturated_integer<cnl::uint16>>(0x1234),
+                    cnl::_impl::from_rep<saturated_integer<std::uint16_t>>(0x1234),
                     saturated_integer<int>{0x1234}),
             "fixed_width_scale<overflow_integer<>> test failed");
     static_assert(
             identical(
-                    cnl::_impl::scale<8, 2>(saturated_integer<cnl::uint16>{0x1234}),
+                    cnl::_impl::scale<8, 2>(saturated_integer<std::uint16_t>{0x1234}),
                     saturated_integer<int>{0x123400}),
             "fixed_width_scale<overflow_integer<>> test failed");
     static_assert(
             identical(
-                    cnl::_impl::scale<4, 2>(native_integer<cnl::uint8>{3}),
+                    cnl::_impl::scale<4, 2>(native_integer<std::uint8_t>{3}),
                     native_integer<int>{48}),
             "fixed_width_scale<overflow_integer<>> test failed");
 }

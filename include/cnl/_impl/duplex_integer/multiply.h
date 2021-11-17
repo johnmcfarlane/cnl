@@ -36,7 +36,7 @@ namespace cnl {
         template<typename T>
         struct long_multiply;
 
-        // int64
+        // std::int64_t
         template<typename Word>
         struct long_multiply {
             template<typename Lhs, typename Rhs>
@@ -51,7 +51,7 @@ namespace cnl {
             }
         };
 
-        // duplex_integer<int64, int64>
+        // duplex_integer<std::int64_t, std::int64_t>
         template<typename Upper, typename Lower>
         struct long_multiply<duplex_integer<Upper, Lower>> {
         private:

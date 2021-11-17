@@ -34,7 +34,7 @@ namespace cnl {
         class join128 {
         public:
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
-            constexpr join128(uint64 upper, uint64 lower)
+            constexpr join128(std::uint64_t upper, std::uint64_t lower)
                 : _value(lower + (Integer128{upper} << 64))
             {
             }

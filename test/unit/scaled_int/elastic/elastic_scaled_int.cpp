@@ -252,21 +252,21 @@ struct test_traits {
             !cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<T, false>>);
 };
 
-template struct test_traits<cnl::uint8, false>;
+template struct test_traits<std::uint8_t, false>;
 
-template struct test_traits<cnl::uint16, false>;
+template struct test_traits<std::uint16_t, false>;
 
-template struct test_traits<cnl::uint32, false>;
+template struct test_traits<std::uint32_t, false>;
 
-template struct test_traits<cnl::uint64, false>;
+template struct test_traits<std::uint64_t, false>;
 
-template struct test_traits<cnl::int8, true>;
+template struct test_traits<std::int8_t, true>;
 
-template struct test_traits<cnl::int16, true>;
+template struct test_traits<std::int16_t, true>;
 
-template struct test_traits<cnl::int32, true>;
+template struct test_traits<std::int32_t, true>;
 
-template struct test_traits<cnl::int64, true>;
+template struct test_traits<std::int64_t, true>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // useful functions

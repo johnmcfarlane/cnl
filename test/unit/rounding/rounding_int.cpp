@@ -44,7 +44,7 @@ namespace {
                 assert_same<cnl::native_rounding_tag, cnl::rounding_t<int>>::value,
                 "cnl::rounding_t<int> test failed");
         static_assert(
-                assert_same<cnl::native_rounding_tag, cnl::rounding_t<cnl::uint16>>::value,
+                assert_same<cnl::native_rounding_tag, cnl::rounding_t<std::uint16_t>>::value,
                 "cnl::rounding_t<int> test failed");
 
         static_assert(

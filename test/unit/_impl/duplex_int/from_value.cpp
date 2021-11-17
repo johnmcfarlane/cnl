@@ -15,11 +15,11 @@
 
 using cnl::_impl::identical;
 
-using duplex_63_int = cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>;
+using duplex_63_int = cnl::_impl::duplex_integer<std::int32_t, std::uint32_t>;
 using duplex_127_int = cnl::_impl::duplex_integer<
-        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
-        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>;
-using duplex_127_long = cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>;
+        cnl::_impl::duplex_integer<std::int32_t, std::uint32_t>,
+        cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>>;
+using duplex_127_long = cnl::_impl::duplex_integer<std::int64_t, std::uint64_t>;
 
 #if defined(CNL_INT128_ENABLED)
 static_assert(identical(

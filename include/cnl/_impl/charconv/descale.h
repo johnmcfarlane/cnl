@@ -24,7 +24,7 @@ namespace cnl::_impl {
     };
 
     template<
-            integer Significand = int64, int OutRadix = 10,
+            integer Significand = std::int64_t, int OutRadix = 10,
             bool Precise = false,
             int InExponent = 0, int InRadix = 2,
             integer Rep = int>
