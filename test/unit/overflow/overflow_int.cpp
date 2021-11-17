@@ -272,7 +272,7 @@ static_assert(
         "cnl::numeric_limits<cnl::overflow_integer<>> test failed");
 #if defined(CNL_INT128_ENABLED)
 static_assert(
-        cnl::numeric_limits<cnl::int128>::is_specialized,
+        cnl::numeric_limits<cnl::int128_t>::is_specialized,
         "cnl::numeric_limits<cnl::overflow_integer<>> test failed");
 static_assert(
         cnl::numeric_limits<
@@ -280,15 +280,15 @@ static_assert(
         "cnl::numeric_limits<cnl::overflow_integer<>> test failed");
 static_assert(
         cnl::numeric_limits<
-                cnl::overflow_integer<cnl::int128, cnl::saturated_overflow_tag>>::is_specialized,
+                cnl::overflow_integer<cnl::int128_t, cnl::saturated_overflow_tag>>::is_specialized,
         "cnl::numeric_limits<cnl::overflow_integer<>> test failed");
 static_assert(
         cnl::numeric_limits<
-                cnl::overflow_integer<cnl::int128, cnl::saturated_overflow_tag>>::is_integer,
+                cnl::overflow_integer<cnl::int128_t, cnl::saturated_overflow_tag>>::is_integer,
         "cnl::numeric_limits<cnl::overflow_integer<>> test failed");
 static_assert(
         cnl::numeric_limits<
-                cnl::overflow_integer<cnl::uint128, cnl::saturated_overflow_tag> const>::is_integer,
+                cnl::overflow_integer<cnl::uint128_t, cnl::saturated_overflow_tag> const>::is_integer,
         "cnl::numeric_limits<cnl::overflow_integer<>> test failed");
 #endif
 
@@ -325,11 +325,11 @@ static_assert(
 #if defined(CNL_INT128_ENABLED)
 static_assert(
         cnl::numeric_limits<
-                cnl::overflow_integer<cnl::int128, cnl::saturated_overflow_tag> const>::is_signed,
+                cnl::overflow_integer<cnl::int128_t, cnl::saturated_overflow_tag> const>::is_signed,
         "cnl::numeric_limits<cnl::overflow_integer<>> test failed");
 static_assert(
         !cnl::numeric_limits<
-                cnl::overflow_integer<cnl::uint128, cnl::saturated_overflow_tag>>::is_signed,
+                cnl::overflow_integer<cnl::uint128_t, cnl::saturated_overflow_tag>>::is_signed,
         "cnl::numeric_limits<cnl::overflow_integer<>> test failed");
 #endif
 
@@ -614,7 +614,7 @@ namespace {
     TEST(overflow_integer, ostream128)  // NOLINT
     {
         std::stringstream out;
-        auto a = cnl::overflow_integer<cnl::int128, cnl::_impl::throwing_overflow_tag>{42};
+        auto a = cnl::overflow_integer<cnl::int128_t, cnl::_impl::throwing_overflow_tag>{42};
         out << a;
         ASSERT_EQ("42", out.str());
     }

@@ -28,22 +28,22 @@ namespace {
 
 #if defined(CNL_INT128_ENABLED)
     namespace test_cnl_numeric_limits_int128 {
-        using numeric_limits = cnl::numeric_limits<cnl::int128>;
+        using numeric_limits = cnl::numeric_limits<cnl::int128_t>;
         static_assert(numeric_limits::digits10 == 38);
         static_assert(
-                numeric_limits::is_specialized, "cnl::numeric_limits<cnl::int128> test failed");
-        static_assert(numeric_limits::is_integer, "cnl::numeric_limits<cnl::int128> test failed");
-        static_assert(numeric_limits::is_signed, "cnl::numeric_limits<cnl::int128> test failed");
+                numeric_limits::is_specialized, "cnl::numeric_limits<cnl::int128_t> test failed");
+        static_assert(numeric_limits::is_integer, "cnl::numeric_limits<cnl::int128_t> test failed");
+        static_assert(numeric_limits::is_signed, "cnl::numeric_limits<cnl::int128_t> test failed");
         static_assert(numeric_limits::max_digits10 == 0);
     }
 
     namespace test_cnl_numeric_limits_uint128 {
-        using numeric_limits = cnl::numeric_limits<cnl::uint128>;
+        using numeric_limits = cnl::numeric_limits<cnl::uint128_t>;
         static_assert(numeric_limits::digits10 == 38);
         static_assert(
-                numeric_limits::is_specialized, "cnl::numeric_limits<cnl::uint128> test failed");
-        static_assert(numeric_limits::is_integer, "cnl::numeric_limits<cnl::uint128> test failed");
-        static_assert(!numeric_limits::is_signed, "cnl::numeric_limits<cnl::uint128> test failed");
+                numeric_limits::is_specialized, "cnl::numeric_limits<cnl::uint128_t> test failed");
+        static_assert(numeric_limits::is_integer, "cnl::numeric_limits<cnl::uint128_t> test failed");
+        static_assert(!numeric_limits::is_signed, "cnl::numeric_limits<cnl::uint128_t> test failed");
         static_assert(numeric_limits::max_digits10 == 0);
     }
 #endif

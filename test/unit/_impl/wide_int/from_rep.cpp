@@ -29,7 +29,7 @@ namespace {
 #if defined(CNL_INT128_ENABLED)
     static_assert(
             assert_same<
-                    cnl::_impl::wrapper<cnl::uint128, cnl::wide_tag<128, unsigned int>>,
+                    cnl::_impl::wrapper<cnl::uint128_t, cnl::wide_tag<128, unsigned int>>,
                     typename cnl::set_rep<
                             cnl::_impl::wrapper<long unsigned int, cnl::wide_tag<128, unsigned int>>,
                             long unsigned int>::type>::value,

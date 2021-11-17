@@ -22,6 +22,6 @@ template struct number_test<std::int64_t>;
 template struct number_test<std::uint64_t>;
 
 #if defined(CNL_INT128_ENABLED)
-template struct number_test<cnl::int128>;
-template struct number_test<cnl::uint128>;
+template struct number_test<cnl::int128_t>;
+template struct number_test<cnl::uint128_t>;
 #endif

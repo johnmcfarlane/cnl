@@ -33,10 +33,10 @@ namespace cnl::numbers {
 
 #if defined(CNL_INT128_ENABLED)
     template<>
-    struct signedness<int128> : std::true_type {
+    struct signedness<int128_t> : std::true_type {
     };
     template<>
-    struct signedness<uint128> : std::false_type {
+    struct signedness<uint128_t> : std::false_type {
     };
 #endif
 

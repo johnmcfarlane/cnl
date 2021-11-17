@@ -21,7 +21,7 @@ namespace {
     static_assert(
             identical(cnl::_impl::max_digits<std::int64_t>, 127), "cnl::_impl::max_digits<>");
     static_assert(
-            identical(cnl::_impl::max_digits<cnl::uint128>, 128),
+            identical(cnl::_impl::max_digits<cnl::uint128_t>, 128),
             "cnl::_impl::max_digits<>");
 #else
     static_assert(

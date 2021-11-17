@@ -255,13 +255,13 @@ namespace {
         static_assert(
                 identical(
                         CNL_INTMAX_C(-2029872569029388),
-                        static_cast<cnl::int128>(
+                        static_cast<cnl::int128_t>(
                                 cnl::_impl::duplex_integer<std::int32_t, std::uint32_t>{
                                         INT64_C(-2029872569029388)})));
         static_assert(
                 identical(
                         CNL_INTMAX_C(0x0123456789ABCDEF),
-                        static_cast<cnl::int128>(
+                        static_cast<cnl::int128_t>(
                                 cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>{
                                         INT64_C(0x0123456789ABCDEF)})));
 #endif

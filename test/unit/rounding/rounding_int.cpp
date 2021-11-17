@@ -263,19 +263,19 @@ namespace {
                 "cnl::numeric_limits<cnl::rounding_integer<>> test failed");
 #if defined(CNL_INT128_ENABLED)
         static_assert(
-                cnl::numeric_limits<cnl::int128>::is_specialized,
+                cnl::numeric_limits<cnl::int128_t>::is_specialized,
                 "cnl::numeric_limits<cnl::rounding_integer<>> test failed");
         static_assert(
-                cnl::numeric_limits<cnl::rounding_integer<cnl::int128, cnl::nearest_rounding_tag>>::
+                cnl::numeric_limits<cnl::rounding_integer<cnl::int128_t, cnl::nearest_rounding_tag>>::
                         is_specialized,
                 "cnl::numeric_limits<cnl::rounding_integer<>> test failed");
         static_assert(
                 cnl::numeric_limits<
-                        cnl::rounding_integer<cnl::int128, cnl::nearest_rounding_tag>>::is_integer,
+                        cnl::rounding_integer<cnl::int128_t, cnl::nearest_rounding_tag>>::is_integer,
                 "cnl::numeric_limits<cnl::rounding_integer<>> test failed");
         static_assert(
                 cnl::numeric_limits<cnl::rounding_integer<
-                        cnl::uint128, cnl::nearest_rounding_tag> const>::is_integer,
+                        cnl::uint128_t, cnl::nearest_rounding_tag> const>::is_integer,
                 "cnl::numeric_limits<cnl::rounding_integer<>> test failed");
 #endif
 
@@ -315,11 +315,11 @@ namespace {
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 cnl::numeric_limits<cnl::rounding_integer<
-                        cnl::int128, cnl::nearest_rounding_tag> const>::is_signed,
+                        cnl::int128_t, cnl::nearest_rounding_tag> const>::is_signed,
                 "cnl::numeric_limits<cnl::rounding_integer<>> test failed");
         static_assert(
                 !cnl::numeric_limits<
-                        cnl::rounding_integer<cnl::uint128, cnl::nearest_rounding_tag>>::is_signed,
+                        cnl::rounding_integer<cnl::uint128_t, cnl::nearest_rounding_tag>>::is_signed,
                 "cnl::numeric_limits<cnl::rounding_integer<>> test failed");
 #endif
     }

@@ -88,12 +88,12 @@ namespace cnl {
 #if defined(CNL_INT128_ENABLED)
     template<_impl::signed_integral T, int Digits>
     requires(Digits > 63 && Digits <= 127) struct set_digits<T, Digits> {
-        using type = int128;
+        using type = int128_t;
     };
 
     template<_impl::unsigned_integral T, int Digits>
     requires(Digits > 64 && Digits <= 128) struct set_digits<T, Digits> {
-        using type = uint128;
+        using type = uint128_t;
     };
 #endif
 

@@ -16,7 +16,7 @@ namespace {
             assert_same<cnl::_impl::adopt_digits_t<std::int32_t, std::int32_t>, std::int32_t>::value);
 #if defined(CNL_INT128_ENABLED)
     static_assert(
-            assert_same<cnl::_impl::adopt_digits_t<std::int64_t, std::uint64_t>, cnl::int128>::value);
+            assert_same<cnl::_impl::adopt_digits_t<std::int64_t, std::uint64_t>, cnl::int128_t>::value);
 #endif
     static_assert(
             assert_same<cnl::_impl::adopt_digits_t<std::int64_t, std::int64_t>, std::int64_t>::value);

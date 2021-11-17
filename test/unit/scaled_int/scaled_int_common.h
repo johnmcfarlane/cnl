@@ -355,8 +355,8 @@ namespace ctor {
 #if defined(CNL_INT128_ENABLED)
     static_assert(
             identical(
-                    scaled_integer<uint128, cnl::power<-16>>(scaled_integer<uint64>{123}),
-                    scaled_integer<uint128, cnl::power<-16>>(123)),
+                    scaled_integer<uint128_t, cnl::power<-16>>(scaled_integer<uint64>{123}),
+                    scaled_integer<uint128_t, cnl::power<-16>>(123)),
             "scaled_integer<>::scaled_integer");
 #endif
 
@@ -1136,8 +1136,8 @@ static_assert(
                 scaled_integer<uint32, cnl::power<0>>{1}),
         "cnl::scaled_integer test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert(cnl::numeric_limits<uint128>::is_specialized);
-static_assert(cnl::numeric_limits<uint128>::is_integer);
+static_assert(cnl::numeric_limits<uint128_t>::is_specialized);
+static_assert(cnl::numeric_limits<uint128_t>::is_integer);
 #endif
 
 namespace test_shift_operator_right {
@@ -1277,7 +1277,7 @@ namespace test_quotient {
                     cnl::quotient(
                             scaled_integer<uint64, cnl::power<0>>{0xFFFFFFFE00000001LL},
                             scaled_integer<uint64, cnl::power<-32>>{0xffffffffULL}),
-                    scaled_integer<uint128, cnl::power<-32>>{0xffffffffULL}),
+                    scaled_integer<uint128_t, cnl::power<-32>>{0xffffffffULL}),
             "cnl::scaled_integer test failed");
 #endif
     static_assert(

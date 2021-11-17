@@ -50,18 +50,18 @@ namespace cnl {
     }
 
     template<>
-    struct numeric_limits<int128> : numeric_limits<long long> {
-        static int const digits = CHAR_BIT * sizeof(int128) - 1;
+    struct numeric_limits<int128_t> : numeric_limits<long long> {
+        static int const digits = CHAR_BIT * sizeof(int128_t) - 1;
         static int const digits10 = 38;
 
         [[nodiscard]] static constexpr auto min()
         {
-            return int128(_impl::join128<int128>(0x8000000000000000, 0x0000000000000000));
+            return int128_t(_impl::join128<int128_t>(0x8000000000000000, 0x0000000000000000));
         }
 
         [[nodiscard]] static constexpr auto max()
         {
-            return int128(_impl::join128<int128>(0x7fffffffffffffff, 0xffffffffffffffff));
+            return int128_t(_impl::join128<int128_t>(0x7fffffffffffffff, 0xffffffffffffffff));
         }
 
         [[nodiscard]] static constexpr auto lowest()
@@ -71,8 +71,8 @@ namespace cnl {
     };
 
     template<>
-    struct numeric_limits<uint128> : numeric_limits<unsigned long long> {
-        static int const digits = CHAR_BIT * sizeof(int128);
+    struct numeric_limits<uint128_t> : numeric_limits<unsigned long long> {
+        static int const digits = CHAR_BIT * sizeof(int128_t);
         static int const digits10 = 38;
 
         [[nodiscard]] static constexpr auto min()
@@ -82,7 +82,7 @@ namespace cnl {
 
         [[nodiscard]] static constexpr auto max()
         {
-            return uint128(_impl::join128<uint128>(0xffffffffffffffff, 0xffffffffffffffff));
+            return uint128_t(_impl::join128<uint128_t>(0xffffffffffffffff, 0xffffffffffffffff));
         }
 
         [[nodiscard]] static constexpr auto lowest()

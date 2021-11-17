@@ -59,7 +59,7 @@ namespace cnl {
                 return nullptr;
             }
 
-            // Note: linker may struggle with combination of clang, int128 and sanitizer.
+            // Note: linker may struggle with combination of clang, int128_t and sanitizer.
             // See clang.cmake
             auto const remainder = value - (quotient * 10);
             *next_ptr = itoc(remainder);

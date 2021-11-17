@@ -32,11 +32,11 @@ namespace {
     namespace test_from_value {
 #if defined(CNL_INT128_ENABLED)
         static_assert(
-                identical(cnl::from_value_t<cnl::uint128, int>{123}, 123),
-                "cnl::from_value_t<cnl::uint128, int>");
+                identical(cnl::from_value_t<cnl::uint128_t, int>{123}, 123),
+                "cnl::from_value_t<cnl::uint128_t, int>");
         static_assert(
-                identical(cnl::_impl::from_value<cnl::uint128>(123), 123),
-                "cnl::_impl::from_value<cnl::uint128>");
+                identical(cnl::_impl::from_value<cnl::uint128_t>(123), 123),
+                "cnl::_impl::from_value<cnl::uint128_t>");
 #endif
 
         static_assert(
@@ -133,12 +133,12 @@ namespace {
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(
-                identical(cnl::set_digits<std::uint8_t, 128>::type{234}, cnl::uint128{234}));
+                identical(cnl::set_digits<std::uint8_t, 128>::type{234}, cnl::uint128_t{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::uintmax, 128>::type{234}, cnl::uint128{234}));
-        static_assert(identical(cnl::set_digits<std::int8_t, 127>::type{234}, cnl::int128{234}));
+                identical(cnl::set_digits<cnl::uintmax, 128>::type{234}, cnl::uint128_t{234}));
+        static_assert(identical(cnl::set_digits<std::int8_t, 127>::type{234}, cnl::int128_t{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::intmax, 127>::type{234}, cnl::int128{234}));
+                identical(cnl::set_digits<cnl::intmax, 127>::type{234}, cnl::int128_t{234}));
 #endif
     }
 
@@ -152,8 +152,8 @@ namespace {
         static_assert(cnl::digits_v<std::int64_t> == 63);
         static_assert(cnl::digits_v<std::uint64_t> == 64);
 #if defined(CNL_INT128_ENABLED)
-        static_assert(cnl::digits_v<cnl::int128> == 127);
-        static_assert(cnl::digits_v<cnl::uint128> == 128);
+        static_assert(cnl::digits_v<cnl::int128_t> == 127);
+        static_assert(cnl::digits_v<cnl::uint128_t> == 128);
 #endif
     }
 

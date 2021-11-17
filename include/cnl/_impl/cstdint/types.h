@@ -18,11 +18,11 @@
 namespace cnl {
 #if defined(CNL_INT128_ENABLED)
     // to disable 128-bit integer support, #define CNL_USE_INT128=0
-    using int128 = __int128;
-    using uint128 = unsigned __int128;
+    using int128_t = __int128;
+    using uint128_t = unsigned __int128;
 
-    using intmax = int128;
-    using uintmax = uint128;
+    using intmax = int128_t;
+    using uintmax = uint128_t;
 #else
     using intmax = std::intmax_t;
     using uintmax = std::uintmax_t;

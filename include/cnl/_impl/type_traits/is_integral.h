@@ -20,11 +20,11 @@ namespace cnl {
 
 #if defined(CNL_INT128_ENABLED)
         template<>
-        struct is_integral<int128> : std::true_type {
+        struct is_integral<int128_t> : std::true_type {
         };
 
         template<>
-        struct is_integral<uint128> : std::true_type {
+        struct is_integral<uint128_t> : std::true_type {
         };
 #endif
 
