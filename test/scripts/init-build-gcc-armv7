@@ -4,17 +4,11 @@
 
 set -euo pipefail
 
-export ARCH="${ARCH:-armv7}"
-export CC="${CC:-arm-linux-gnueabi-gcc}"
-export COMPILER="${COMPILER:-gcc}"
-export CXX="${CXX:-arm-linux-gnueabi-g++}"
-export INT128=False
-export STDLIB="${STDLIB:-libstdc++11}"
-export TOOLCHAIN="${TOOLCHAIN:-gcc-armv7.cmake}"
-
-script_dir=$(
-  cd "$(dirname "$0")"
+PROJECT_DIR=$(
+  cd "$(dirname "$0")"/../..
   pwd
 )
 
-"${script_dir}/init-build-gcc" "$@"
+"${PROJECT_DIR}/test/scripts/init-build-gcc" \
+  --profile "${PROJECT_DIR}/.github/conan/profiles/linux-gcc-10-armv7" \
+  "$@"

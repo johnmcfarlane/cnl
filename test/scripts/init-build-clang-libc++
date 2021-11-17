@@ -4,12 +4,12 @@
 
 set -euo pipefail
 
-export STDLIB=libc++
-export TOOLCHAIN="${TOOLCHAIN:-clang-libc++.cmake}"
-
-script_dir=$(
-  cd "$(dirname "$0")"
+PROJECT_DIR=$(
+  cd "$(dirname "$0")"/../..
   pwd
 )
 
-"${script_dir}/init-build-clang" "$@"
+"${PROJECT_DIR}/test/scripts/init-build-clang" \
+  --env CONAN_CMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/test/toolchain/clang-libc++.cmake" \
+  --profile "${PROJECT_DIR}/.github/conan/profiles/linux-clang" \
+  "$@"
