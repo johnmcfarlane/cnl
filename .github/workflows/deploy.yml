@@ -11,16 +11,14 @@ jobs:
   deploy:
     runs-on: ubuntu-18.04
     container: johnmcfarlane/cnl_ci:gcc-10
+    env:
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
       - uses: actions/checkout@v2
-
-      - name: Deploy
         with:
           fetch-depth: 0
           submodules: true
 
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Deploy
         run: CNL_VERSION_TAG=$GITHUB_REF $GITHUB_WORKSPACE/.github/deploy
 ...
