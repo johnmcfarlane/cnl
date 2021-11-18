@@ -7,7 +7,6 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_DEFINITION_H)
 #define CNL_IMPL_DUPLEX_INTEGER_DEFINITION_H
 
-#include "../../floating_point.h"
 #include "../num_traits/width.h"
 #include "../numbers/set_signedness.h"
 #include "../power_value.h"
@@ -17,6 +16,7 @@
 #include "numbers.h"
 
 #include <cmath>
+#include <concepts>
 #include <iterator>
 
 /// compositional numeric library
@@ -58,7 +58,7 @@ namespace cnl {
             template<integer Number>
             constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,google-explicit-constructor)
 
-            template<floating_point Number>
+            template<std::floating_point Number>
             constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,google-explicit-constructor)
 
             [[nodiscard]] constexpr auto upper() const -> upper_type const&
@@ -92,7 +92,7 @@ namespace cnl {
                 return upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower);
             }
 
-            template<floating_point Number>
+            template<std::floating_point Number>
             [[nodiscard]] explicit constexpr operator Number() const
             {
                 return static_cast<Number>(_upper) * power_value<Number, lower_width, 2>()

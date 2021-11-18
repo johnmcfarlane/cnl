@@ -7,11 +7,11 @@
 #if !defined(CNL_IMPL_FRACTION_MAKE_FRACTION_H)
 #define CNL_IMPL_FRACTION_MAKE_FRACTION_H
 
-#include "../../floating_point.h"
 #include "../cnl_assert.h"
 #include "../numbers/set_signedness.h"
 #include "definition.h"
 
+#include <concepts>
 #include <limits>
 #include <type_traits>
 
@@ -36,7 +36,7 @@ namespace cnl {
         /// creates a fraction from a floating-point number
         template<
                 typename Numerator, typename Denominator = Numerator,
-                floating_point FloatingPoint = float>
+                std::floating_point FloatingPoint = float>
         [[nodiscard]] constexpr auto make_fraction(FloatingPoint d) -> cnl::fraction<Numerator, Denominator>
         {
             // merge requests gratefully received

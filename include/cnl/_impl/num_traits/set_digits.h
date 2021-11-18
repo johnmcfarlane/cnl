@@ -18,14 +18,6 @@
 #include <concepts>
 
 namespace cnl {
-    namespace _impl {
-        template<typename T>
-        concept signed_integral = std::integral<T> && numbers::signedness_v<T>;
-
-        template<typename T>
-        concept unsigned_integral = std::integral<T> && !numbers::signedness_v<T>;
-    }
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_impl::set_digits
 
@@ -36,63 +28,63 @@ namespace cnl {
     template<class T, int Digits>
     struct set_digits;
 
-    template<_impl::signed_integral T, int Digits>
+    template<std::signed_integral T, int Digits>
     struct set_digits<T, Digits> {
         static_assert(Digits <= digits_v<intmax_t>, "digits exceeds widest signed integer");
     };
 
-    template<_impl::unsigned_integral T, int Digits>
+    template<std::unsigned_integral T, int Digits>
     struct set_digits<T, Digits> {
         static_assert(Digits <= digits_v<uintmax_t>, "digits exceeds widest unsigned integer");
     };
 
-    template<_impl::signed_integral T, int Digits>
+    template<std::signed_integral T, int Digits>
     requires(Digits <= 7) struct set_digits<T, Digits> {
         using type = std::int8_t;
     };
 
-    template<_impl::unsigned_integral T, int Digits>
+    template<std::unsigned_integral T, int Digits>
     requires(Digits <= 8) struct set_digits<T, Digits> {
         using type = std::uint8_t;
     };
 
-    template<_impl::signed_integral T, int Digits>
+    template<std::signed_integral T, int Digits>
     requires(Digits > 7 && Digits <= 15) struct set_digits<T, Digits> {
         using type = std::int16_t;
     };
 
-    template<_impl::unsigned_integral T, int Digits>
+    template<std::unsigned_integral T, int Digits>
     requires(Digits > 8 && Digits <= 16) struct set_digits<T, Digits> {
         using type = std::uint16_t;
     };
 
-    template<_impl::signed_integral T, int Digits>
+    template<std::signed_integral T, int Digits>
     requires(Digits > 15 && Digits <= 31) struct set_digits<T, Digits> {
         using type = std::int32_t;
     };
 
-    template<_impl::unsigned_integral T, int Digits>
+    template<std::unsigned_integral T, int Digits>
     requires(Digits > 16 && Digits <= 32) struct set_digits<T, Digits> {
         using type = std::uint32_t;
     };
 
-    template<_impl::signed_integral T, int Digits>
+    template<std::signed_integral T, int Digits>
     requires(Digits > 31 && Digits <= 63) struct set_digits<T, Digits> {
         using type = std::int64_t;
     };
 
-    template<_impl::unsigned_integral T, int Digits>
+    template<std::unsigned_integral T, int Digits>
     requires(Digits > 32 && Digits <= 64) struct set_digits<T, Digits> {
         using type = std::uint64_t;
     };
 
 #if defined(CNL_INT128_ENABLED)
-    template<_impl::signed_integral T, int Digits>
+    template<std::signed_integral T, int Digits>
     requires(Digits > 63 && Digits <= 127) struct set_digits<T, Digits> {
         using type = int128_t;
     };
 
-    template<_impl::unsigned_integral T, int Digits>
+    template<std::unsigned_integral T, int Digits>
     requires(Digits > 64 && Digits <= 128) struct set_digits<T, Digits> {
         using type = uint128_t;
     };

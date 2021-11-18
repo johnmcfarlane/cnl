@@ -7,11 +7,12 @@
 #if !defined(CNL_IMPL_FRACTION_CTORS_H)
 #define CNL_IMPL_FRACTION_CTORS_H
 
-#include "../../floating_point.h"
 #include "../../integer.h"
 #include "make_fraction.h"
 
 #include "definition.h"
+
+#include <concepts>
 
 /// compositional numeric library
 namespace cnl {
@@ -38,7 +39,7 @@ namespace cnl {
     }
 
     template<fixed_point Numerator, fixed_point Denominator>
-    template<floating_point FloatingPoint>
+    template<std::floating_point FloatingPoint>
     constexpr fraction<Numerator, Denominator>::fraction(FloatingPoint d)
         : fraction(_impl::make_fraction<Numerator, Denominator>(d))
     {

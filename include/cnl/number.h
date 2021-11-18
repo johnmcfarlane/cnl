@@ -8,14 +8,14 @@
 #define CNL_NUMBER_H
 
 #include "fixed_point.h"
-#include "floating_point.h"
 
+#include <concepts>
 #include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<typename T>
-    inline constexpr auto is_number_v = is_fixed_point_v<T> || is_floating_point_v<T>;
+    inline constexpr auto is_number_v = is_fixed_point_v<T> || std::is_floating_point_v<T>;
 
     template<typename T>
     concept number = is_number_v<T>;

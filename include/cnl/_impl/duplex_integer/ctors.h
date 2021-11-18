@@ -7,11 +7,11 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_CTORS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_CTORS_H
 
-#include "../../floating_point.h"
 #include "../power_value.h"
 #include "definition.h"
 #include "operators.h"
 
+#include <concepts>
 #include <limits>
 
 /// compositional numeric library
@@ -70,7 +70,7 @@ namespace cnl {
         // std::fmod and std::fmod is not declared constexpr. (See wg21.link/p0533 for efforts to
         // remedy this.)
         template<typename Upper, typename Lower>
-        template<floating_point Number>
+        template<std::floating_point Number>
         constexpr duplex_integer<Upper, Lower>::duplex_integer(Number const& n)
             : _upper(Upper(n / power_value<Number, lower_width, 2>()))
             , _lower(Lower(std::fmod(n, power_value<Number, lower_width, 2>())))
