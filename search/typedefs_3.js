@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['multiprecision',['multiprecision',['../namespacecnl.html#aef02ef10da456e58c408b8911c74a5da',1,'cnl']]]
+  ['numerator_5ftype_3488',['numerator_type',['../structcnl_1_1fraction.html#a4ca97649038a4034c09e7719f889c56e',1,'cnl::fraction']]]
 ];

@@ -1,0 +1,25 @@
+var dir_a32b18515a95fcf6bda5613fe042d734 =
+[
+    [ "adopt_digits.h", "adopt__digits_8h_source.html", null ],
+    [ "adopt_width.h", "adopt__width_8h_source.html", null ],
+    [ "digits.h", "num__traits_2digits_8h_source.html", null ],
+    [ "fixed_width_scale.h", "fixed__width__scale_8h_source.html", null ],
+    [ "from_rep.h", "num__traits_2from__rep_8h_source.html", null ],
+    [ "from_value.h", "num__traits_2from__value_8h_source.html", null ],
+    [ "from_value_recursive.h", "from__value__recursive_8h_source.html", null ],
+    [ "is_composite.h", "num__traits_2is__composite_8h_source.html", null ],
+    [ "max_digits.h", "num__traits_2max__digits_8h_source.html", null ],
+    [ "rep_of.h", "num__traits_2rep__of_8h_source.html", null ],
+    [ "rounding.h", "__impl_2num__traits_2rounding_8h_source.html", null ],
+    [ "scale.h", "num__traits_2scale_8h_source.html", null ],
+    [ "set_digits.h", "num__traits_2set__digits_8h_source.html", null ],
+    [ "set_rep.h", "num__traits_2set__rep_8h_source.html", null ],
+    [ "set_rounding.h", "num__traits_2set__rounding_8h_source.html", null ],
+    [ "set_tag.h", "num__traits_2set__tag_8h_source.html", null ],
+    [ "set_width.h", "num__traits_2set__width_8h_source.html", null ],
+    [ "tag_of.h", "num__traits_2tag__of_8h_source.html", null ],
+    [ "to_rep.h", "num__traits_2to__rep_8h_source.html", null ],
+    [ "unwrap.h", "unwrap_8h_source.html", null ],
+    [ "width.h", "width_8h_source.html", null ],
+    [ "wrap.h", "wrap_8h_source.html", null ]
+];

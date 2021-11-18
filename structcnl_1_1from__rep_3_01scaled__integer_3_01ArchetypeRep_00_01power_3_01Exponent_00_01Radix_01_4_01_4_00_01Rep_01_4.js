@@ -1,0 +1,4 @@
+var structcnl_1_1from__rep_3_01scaled__integer_3_01ArchetypeRep_00_01power_3_01Exponent_00_01Radix_01_4_01_4_00_01Rep_01_4 =
+[
+    [ "operator()", "structcnl_1_1from__rep_3_01scaled__integer_3_01ArchetypeRep_00_01power_3_01Exponent_00_01Radix_01_4_01_4_00_01Rep_01_4.html#aa5e40cb8ac3785fe84a94da5555c611d", null ]
+];

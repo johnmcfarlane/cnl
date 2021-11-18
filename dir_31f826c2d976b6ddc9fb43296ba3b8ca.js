@@ -1,0 +1,26 @@
+var dir_31f826c2d976b6ddc9fb43296ba3b8ca =
+[
+    [ "comparison.h", "comparison_8h_source.html", null ],
+    [ "ctors.h", "duplex__integer_2ctors_8h_source.html", null ],
+    [ "declaration.h", "duplex__integer_2declaration_8h_source.html", null ],
+    [ "definition.h", "duplex__integer_2definition_8h_source.html", null ],
+    [ "digits.h", "duplex__integer_2digits_8h_source.html", null ],
+    [ "divide.h", "divide_8h_source.html", null ],
+    [ "from_value.h", "duplex__integer_2from__value_8h_source.html", null ],
+    [ "integer.h", "__impl_2duplex__integer_2integer_8h_source.html", null ],
+    [ "is_duplex_integer.h", "is__duplex__integer_8h_source.html", null ],
+    [ "modulo.h", "modulo_8h_source.html", null ],
+    [ "multiply.h", "multiply_8h_source.html", null ],
+    [ "narrowest_integer.h", "narrowest__integer_8h_source.html", null ],
+    [ "numbers.h", "__impl_2duplex__integer_2numbers_8h_source.html", null ],
+    [ "numeric_limits.h", "duplex__integer_2numeric__limits_8h_source.html", null ],
+    [ "operators.h", "duplex__integer_2operators_8h_source.html", null ],
+    [ "rep_of.h", "duplex__integer_2rep__of_8h_source.html", null ],
+    [ "rounding.h", "__impl_2duplex__integer_2rounding_8h_source.html", null ],
+    [ "scale.h", "duplex__integer_2scale_8h_source.html", null ],
+    [ "set_digits.h", "duplex__integer_2set__digits_8h_source.html", null ],
+    [ "set_width.h", "duplex__integer_2set__width_8h_source.html", null ],
+    [ "shift.h", "shift_8h_source.html", null ],
+    [ "to_rep.h", "duplex__integer_2to__rep_8h_source.html", null ],
+    [ "wants_generic_ops.h", "wants__generic__ops_8h_source.html", null ]
+];
