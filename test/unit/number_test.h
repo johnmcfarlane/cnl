@@ -15,6 +15,7 @@
 #include <cnl/_impl/config.h>
 #include <cnl/_impl/type_traits/identical.h>
 
+#include <concepts>
 #include <type_traits>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +142,7 @@ struct number_test {
 
     // would not pass for boost.multiprecision
     static_assert(
-            cnl::is_composite_v<value_type> != (cnl::is_floating_point_v<value_type> || cnl::_impl::is_integral_v<value_type>),
+            cnl::is_composite_v<value_type> != (cnl::is_floating_point_v<value_type> || std::is_integral_v<value_type>),
             "is_composite test failed");
 
     static constexpr auto lowest_from_rep =

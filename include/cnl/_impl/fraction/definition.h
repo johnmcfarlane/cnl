@@ -13,7 +13,6 @@
 #include "../../numeric_limits.h"
 #include "../num_traits/set_width.h"
 #include "../ssizeof.h"
-#include "../type_traits/is_integral.h"
 
 #include <type_traits>
 

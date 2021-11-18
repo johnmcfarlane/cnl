@@ -9,10 +9,11 @@
 
 #include "../cstdint/types.h"
 #include "../numbers/signedness.h"
-#include "../type_traits/is_integral.h"
 #include "digits.h"
 #include "is_composite.h"
 #include "rep_of.h"
+
+#include <concepts>
 
 namespace cnl {
     namespace _impl {
@@ -30,7 +31,7 @@ namespace cnl {
         template<typename T>
         inline constexpr int max_digits = 0;
 
-        template<_impl::integral T>
+        template<std::integral T>
         inline constexpr auto max_digits<T> = max_digits_fundamental<numbers::signedness_v<T>>;
 
         template<typename T>

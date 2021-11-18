@@ -11,6 +11,7 @@
 #include "../config.h"
 #include "../cstdint/types.h"
 
+#include <concepts>
 #include <type_traits>
 
 /// compositional numeric library, numbers header/namespace

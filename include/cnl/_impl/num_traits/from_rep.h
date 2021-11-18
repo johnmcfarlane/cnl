@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_FROM_REP_H)
 #define CNL_IMPL_NUM_TRAITS_FROM_REP_H
 
-#include "../type_traits/is_integral.h"
+#include <concepts>
 
 namespace cnl {
     /// \brief generic function object that returns the number encapsulating a given value
@@ -26,7 +26,7 @@ namespace cnl {
     ///
     /// \note This specialization *does* return integers of type, \c Number
     /// \sa to_rep, from_value
-    template<_impl::integral Number, typename Rep>
+    template<std::integral Number, typename Rep>
     struct from_rep<Number, Rep> {
         [[nodiscard]] constexpr auto operator()(Rep const& rep) const
         {

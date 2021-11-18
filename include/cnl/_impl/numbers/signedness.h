@@ -13,8 +13,8 @@
 #include "../../numeric_limits.h"
 #include "../config.h"
 #include "../cstdint/types.h"
-#include "../type_traits/is_integral.h"
 
+#include <concepts>
 #include <type_traits>
 
 /// compositional numeric library, numbers header/namespace
@@ -30,15 +30,6 @@ namespace cnl::numbers {
     requires(std::is_integral_v<T>) struct signedness<T> : std::is_signed<T> {
     };
     /// \endcond
-
-#if defined(CNL_INT128_ENABLED)
-    template<>
-    struct signedness<int128_t> : std::true_type {
-    };
-    template<>
-    struct signedness<uint128_t> : std::false_type {
-    };
-#endif
 
     /// \cond
     template<typename T>

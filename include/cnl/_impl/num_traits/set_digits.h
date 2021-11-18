@@ -13,16 +13,17 @@
 #include "../config.h"
 #include "../cstdint/types.h"
 #include "../numbers/signedness.h"
-#include "../type_traits/is_integral.h"
 #include "digits.h"
+
+#include <concepts>
 
 namespace cnl {
     namespace _impl {
         template<typename T>
-        concept signed_integral = integral<T> && numbers::signedness_v<T>;
+        concept signed_integral = std::integral<T> && numbers::signedness_v<T>;
 
         template<typename T>
-        concept unsigned_integral = integral<T> && !numbers::signedness_v<T>;
+        concept unsigned_integral = std::integral<T> && !numbers::signedness_v<T>;
     }
 
     ////////////////////////////////////////////////////////////////////////////////

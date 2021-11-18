@@ -11,10 +11,10 @@
 #define CNL_IMPL_NUM_TRAITS_DIGITS_H
 
 #include "../numbers/signedness.h"
-#include "../type_traits/is_integral.h"
 #include "../used_digits.h"
 #include "is_composite.h"
 
+#include <concepts>
 #include <type_traits>
 
 namespace cnl {
@@ -34,7 +34,7 @@ namespace cnl {
         inline constexpr auto fundamental_digits = CHAR_BIT * sizeof(Integer) - numbers::signedness_v<Integer>;
     }
 
-    template<_impl::integral Integer>
+    template<std::integral Integer>
     inline constexpr int digits_v<Integer> = _impl::fundamental_digits<Integer>;
 
     namespace _impl {

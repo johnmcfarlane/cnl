@@ -9,10 +9,10 @@
 
 #include "../../bit.h"
 #include "../num_traits/width.h"
-#include "../type_traits/is_integral.h"
 #include "canonical.h"
 #include "definition.h"
 
+#include <concepts>
 #include <functional>
 
 namespace std {
@@ -23,7 +23,7 @@ namespace std {
         // There is no equivalent to GCD for floating-point fractions.
         // The solution may be to canonicalize the exponents somehow.
         static_assert(
-                cnl::_impl::is_integral_v<Numerator> && cnl::_impl::is_integral_v<Denominator>,
+                std::is_integral_v<Numerator> && std::is_integral_v<Denominator>,
                 "std::hash<cnl::fractional<T>> - T must be an integer");
 
         [[nodiscard]] constexpr auto operator()(

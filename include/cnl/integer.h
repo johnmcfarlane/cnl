@@ -7,14 +7,12 @@
 #if !defined(CNL_INTEGER_H)
 #define CNL_INTEGER_H
 
-#include "_impl/type_traits/is_integral.h"
-
 #include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<typename T>
-    struct is_integer : _impl::is_integral<T> {
+    struct is_integer : std::is_integral<T> {
     };
 
     template<typename T>

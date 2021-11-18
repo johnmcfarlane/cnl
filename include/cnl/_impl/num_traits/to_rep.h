@@ -8,9 +8,9 @@
 #define CNL_IMPL_NUM_TRAITS_TO_REP_H
 
 #include "../../constant.h"
-#include "../type_traits/is_integral.h"
 #include "../type_traits/remove_cvref.h"
 
+#include <concepts>
 #include <type_traits>
 #include <utility>
 
@@ -42,7 +42,7 @@ namespace cnl {
 
     /// \cond
     template<typename Number>
-    requires(_impl::is_integral_v<Number> || std::is_floating_point_v<Number> || _impl::is_constant<Number>::value) struct to_rep<Number>
+    requires(std::is_integral_v<Number> || std::is_floating_point_v<Number> || _impl::is_constant<Number>::value) struct to_rep<Number>
         : _impl::default_to_rep<Number> {
     };
     /// \endcond
