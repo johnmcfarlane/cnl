@@ -17,6 +17,8 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
+
 namespace {
     using cnl::_impl::identical;
 
@@ -102,9 +104,9 @@ namespace {
                         std::uint32_t{0xFFFFFFFF}, std::int32_t{0x12345678})));
         static_assert(
                 identical(
-                        cnl::numeric_limits<decltype(2 + 2U)>::max(),
+                        std::numeric_limits<decltype(2 + 2U)>::max(),
                         cnl::_impl::operate<cnl::_impl::add_op, cnl::saturated_overflow_tag>{}(
-                                2, cnl::numeric_limits<unsigned>::max())));
+                                2, std::numeric_limits<unsigned>::max())));
 
         // subtract
         static_assert(identical(
@@ -123,9 +125,9 @@ namespace {
 #endif
         static_assert(
                 identical(
-                        cnl::numeric_limits<int>::max(),
+                        std::numeric_limits<int>::max(),
                         cnl::_impl::operate<cnl::_impl::subtract_op, cnl::saturated_overflow_tag>{}(
-                                0, cnl::numeric_limits<int>::min())));
+                                0, std::numeric_limits<int>::min())));
 
         // multiply
         static_assert(identical(
@@ -134,33 +136,33 @@ namespace {
                 std::uint16_t{576} * std::int32_t{22}));
         static_assert(identical(
                 cnl::_impl::operate<cnl::_impl::multiply_op, cnl::saturated_overflow_tag>{}(
-                        cnl::numeric_limits<int32_t>::max(), std::int32_t{2}),
-                cnl::numeric_limits<int32_t>::max()));
+                        std::numeric_limits<int32_t>::max(), std::int32_t{2}),
+                std::numeric_limits<int32_t>::max()));
 
         // convert
         static_assert(identical(
-                cnl::numeric_limits<short>::max(),
+                std::numeric_limits<short>::max(),
                 cnl::convert<cnl::saturated_overflow_tag, short>{}(
-                        cnl::numeric_limits<double>::max())));
+                        std::numeric_limits<double>::max())));
         static_assert(identical(
-                cnl::numeric_limits<short>::lowest(),
+                std::numeric_limits<short>::lowest(),
                 cnl::convert<cnl::saturated_overflow_tag, short>{}(
-                        cnl::numeric_limits<double>::lowest())));
+                        std::numeric_limits<double>::lowest())));
 
         // shift_left
         static_assert(
                 identical(
-                        cnl::numeric_limits<std::int16_t>::max() << 1,
+                        std::numeric_limits<std::int16_t>::max() << 1,
                         cnl::_impl::operate<cnl::_impl::shift_left_op, cnl::saturated_overflow_tag>{}(
-                                cnl::numeric_limits<std::int16_t>::max(), 1)));
+                                std::numeric_limits<std::int16_t>::max(), 1)));
         static_assert(
                 identical(
-                        cnl::numeric_limits<std::int32_t>::max(),
+                        std::numeric_limits<std::int32_t>::max(),
                         cnl::_impl::operate<cnl::_impl::shift_left_op, cnl::saturated_overflow_tag>{}(
-                                cnl::numeric_limits<std::int32_t>::max(), 1)));
+                                std::numeric_limits<std::int32_t>::max(), 1)));
         static_assert(
                 identical(
-                        cnl::numeric_limits<int>::max(),
+                        std::numeric_limits<int>::max(),
                         cnl::custom_operator<
                                 cnl::_impl::shift_left_op,
                                 cnl::op_value<std::uint8_t, cnl::saturated_overflow_tag>,

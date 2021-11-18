@@ -17,6 +17,8 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
+
 using cnl::_impl::identical;
 
 namespace {
@@ -128,7 +130,7 @@ namespace {
                         cnl::_impl::duplex_integer<std::int8_t, unsigned>{-650}.lower()));
         static_assert(
                 identical(
-                        unsigned{cnl::numeric_limits<unsigned>::max()},
+                        unsigned{std::numeric_limits<unsigned>::max()},
                         cnl::_impl::duplex_integer<int, unsigned>{-1}.lower()));
         static_assert(
                 identical(

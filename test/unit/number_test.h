@@ -10,12 +10,12 @@
 #include <cnl/floating_point.h>
 #include <cnl/num_traits.h>
 #include <cnl/numeric.h>
-#include <cnl/numeric_limits.h>
 
 #include <cnl/_impl/config.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <concepts>
+#include <limits>
 #include <type_traits>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
 template<class Number>
 struct number_test {
     using value_type = Number;
-    using numeric_limits = cnl::numeric_limits<value_type>;
+    using numeric_limits = std::numeric_limits<value_type>;
 
     static constexpr value_type zero = cnl::from_rep<value_type, int>{}(0);
 #if defined(_MSC_VER)
@@ -61,7 +61,7 @@ struct number_test {
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::numeric_limits
+    // std::numeric_limits
 
     static_assert(
             numeric_limits::is_specialized, "numeric_limits is not specialized for this type");

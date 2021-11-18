@@ -11,6 +11,8 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
+
 namespace {
 #if defined(CNL_INT128_ENABLED) && defined(CNL_IOSTREAMS_ENABLED)
     TEST(ostream, int128_42)  // NOLINT
@@ -25,7 +27,7 @@ namespace {
     {
         using cnl::operator<<;
         std::stringstream s;
-        s << cnl::numeric_limits<cnl::int128_t>::max();
+        s << std::numeric_limits<cnl::int128_t>::max();
         ASSERT_EQ("170141183460469231731687303715884105727", s.str());  // NOLINT
     }
 
@@ -33,7 +35,7 @@ namespace {
     {
         using cnl::operator<<;
         std::stringstream s;
-        s << cnl::numeric_limits<cnl::int128_t>::min() + 1;
+        s << std::numeric_limits<cnl::int128_t>::min() + 1;
         ASSERT_EQ("-170141183460469231731687303715884105727", s.str());  // NOLINT
     }
 
@@ -49,7 +51,7 @@ namespace {
     {
         using cnl::operator<<;
         std::stringstream s;
-        s << cnl::numeric_limits<cnl::uint128_t>::max();
+        s << std::numeric_limits<cnl::uint128_t>::max();
         ASSERT_EQ("340282366920938463463374607431768211455", s.str());  // NOLINT
     }
 
@@ -57,7 +59,7 @@ namespace {
     {
         using cnl::operator<<;
         std::stringstream s;
-        s << cnl::numeric_limits<cnl::uint128_t>::min();
+        s << std::numeric_limits<cnl::uint128_t>::min();
         ASSERT_EQ("0", s.str());  // NOLINT
     }
 #endif

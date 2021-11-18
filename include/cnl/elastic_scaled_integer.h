@@ -15,10 +15,10 @@
 #include "_impl/scaled/is_scaled_tag.h"
 #include "_impl/scaled/power.h"
 #include "elastic_integer.h"
-#include "numeric_limits.h"
 #include "scaled_integer.h"
 
 #include <algorithm>
+#include <limits>
 #include <type_traits>
 
 /// compositional numeric library
@@ -92,7 +92,7 @@ namespace cnl {
     template<typename Narrowest = void, typename Integral = int>
     [[nodiscard]] constexpr auto make_elastic_scaled_integer(Integral const& value)
             -> elastic_scaled_integer<
-                    numeric_limits<Integral>::digits, power<>,
+                    std::numeric_limits<Integral>::digits, power<>,
                     typename std::conditional<
                             std::is_same<void, Narrowest>::value,
                             _impl::adopt_signedness_t<int, Integral>, Narrowest>::type>
@@ -103,7 +103,7 @@ namespace cnl {
     template<typename Narrowest = void, typename Rep = int, scaled_tag Scale = power<>>
     [[nodiscard]] constexpr auto make_elastic_scaled_integer(scaled_integer<Rep, Scale> const& value)
             -> elastic_scaled_integer<
-                    numeric_limits<Rep>::digits, Scale,
+                    std::numeric_limits<Rep>::digits, Scale,
                     typename std::conditional<
                             std::is_same<void, Narrowest>::value,
                             _impl::adopt_signedness_t<int, Rep>, Narrowest>::type>

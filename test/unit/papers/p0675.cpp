@@ -14,6 +14,7 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
 #include <type_traits>
 
 using cnl::_impl::identical;
@@ -80,10 +81,9 @@ namespace acme {
     }
 }
 
-namespace cnl {
-    using acme::smart_integer;
+namespace std {
     template<class Rep>
-    struct numeric_limits<smart_integer<Rep>> : numeric_limits<Rep> {
+    struct numeric_limits<acme::smart_integer<Rep>> : numeric_limits<Rep> {
     };
 }
 

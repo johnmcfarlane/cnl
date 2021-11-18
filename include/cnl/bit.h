@@ -14,6 +14,8 @@
 #include "_impl/numbers/set_signedness.h"
 #include "_impl/numbers/signedness.h"
 
+#include <limits>
+
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // loosely based on P0553R1
@@ -23,13 +25,13 @@ namespace cnl {
         template<typename T>
         [[nodiscard]] constexpr auto is_integral_unsigned()
         {
-            return numeric_limits<T>::is_integer && !numbers::signedness<T>::value;
+            return std::numeric_limits<T>::is_integer && !numbers::signedness<T>::value;
         }
 
         template<typename T>
         [[nodiscard]] constexpr auto is_integral_signed()
         {
-            return numeric_limits<T>::is_integer && numbers::signedness<T>::value;
+            return std::numeric_limits<T>::is_integer && numbers::signedness<T>::value;
         }
 
         template<typename T>

@@ -8,7 +8,6 @@
 #define CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H
 
 #include "../../integer.h"
-#include "../../numeric_limits.h"
 #include "../../wide_integer.h"
 #include "../charconv/to_chars.h"
 #include "../config.h"
@@ -29,6 +28,7 @@
 #include "set_digits.h"
 #include "shift.h"
 
+#include <limits>
 #if defined(CNL_IOSTREAMS_ENABLED)
 #include <ostream>
 #endif
@@ -225,9 +225,9 @@ namespace cnl {
         [[nodiscard]] constexpr auto operator()(_impl::duplex_integer<Upper, Lower>& rhs) const
                 -> _impl::duplex_integer<Upper, Lower>
         {
-            return CNL_UNLIKELY(rhs.lower() == numeric_limits<Lower>::max())
+            return CNL_UNLIKELY(rhs.lower() == std::numeric_limits<Lower>::max())
                          ? _impl::duplex_integer<
-                                 Upper, Lower>{++rhs.upper(), numeric_limits<Lower>::lowest()}
+                                 Upper, Lower>{++rhs.upper(), std::numeric_limits<Lower>::lowest()}
                          : _impl::duplex_integer<Upper, Lower>{rhs.upper(), ++rhs.lower()};
         }
     };
@@ -238,10 +238,10 @@ namespace cnl {
         [[nodiscard]] constexpr auto operator()(_impl::duplex_integer<Upper, Lower>& rhs) const
                 -> _impl::duplex_integer<Upper, Lower>
         {
-            return CNL_UNLIKELY(rhs.lower() == numeric_limits<Lower>::lowest())
+            return CNL_UNLIKELY(rhs.lower() == std::numeric_limits<Lower>::lowest())
                          ? _impl::duplex_integer<
                                  Upper,
-                                 Lower>{static_cast<Upper>(--rhs.upper()), numeric_limits<Lower>::max()}
+                                 Lower>{static_cast<Upper>(--rhs.upper()), std::numeric_limits<Lower>::max()}
                          : _impl::duplex_integer<Upper, Lower>{rhs.upper(), --rhs.lower()};
         }
     };

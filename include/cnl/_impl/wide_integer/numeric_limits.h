@@ -7,25 +7,26 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_NUMERIC_LIMITS_H)
 #define CNL_IMPL_WIDE_INTEGER_NUMERIC_LIMITS_H
 
-#include "../../numeric_limits.h"
 #include "../duplex_integer.h"
 #include "../limits/lowest.h"
 #include "../num_traits/rep_of.h"
 #include "definition.h"
 #include "from_rep.h"
 
+#include <limits>
+
 /// compositional numeric library
-namespace cnl {
+namespace std {
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::numeric_limits specialization for overflow_integer
+    // std::numeric_limits specialization for overflow_integer
 
     template<int Digits, typename Narrowest>
-    struct numeric_limits<wide_integer<Digits, Narrowest>>
-        : numeric_limits<_impl::rep_of_t<wide_integer<Digits, Narrowest>>> {
+    struct numeric_limits<cnl::wide_integer<Digits, Narrowest>>
+        : numeric_limits<cnl::_impl::rep_of_t<cnl::wide_integer<Digits, Narrowest>>> {
     private:
         // wide_integer-specific helpers
-        using value_type = wide_integer<Digits, Narrowest>;
-        using rep = _impl::rep_of_t<value_type>;
+        using value_type = cnl::wide_integer<Digits, Narrowest>;
+        using rep = cnl::_impl::rep_of_t<value_type>;
         using rep_numeric_limits = numeric_limits<rep>;
         static_assert(rep_numeric_limits::is_integer);
 
@@ -52,8 +53,8 @@ namespace cnl {
     };
 
     template<int Digits, typename Narrowest>
-    struct numeric_limits<wide_integer<Digits, Narrowest> const>
-        : numeric_limits<wide_integer<Digits, Narrowest>> {
+    struct numeric_limits<cnl::wide_integer<Digits, Narrowest> const>
+        : numeric_limits<cnl::wide_integer<Digits, Narrowest>> {
         static constexpr bool is_integer = true;
     };
 }

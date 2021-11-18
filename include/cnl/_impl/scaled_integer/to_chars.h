@@ -8,7 +8,6 @@
 #define CNL_IMPL_SCALED_INTEGER_TO_CHARS_H
 
 #include "../../integer.h"
-#include "../../numeric_limits.h"
 #include "../../rounding_integer.h"
 #include "../charconv/constants.h"
 #include "../charconv/descale.h"

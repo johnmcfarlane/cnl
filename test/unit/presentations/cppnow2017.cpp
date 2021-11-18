@@ -68,7 +68,7 @@ namespace prototypes {
 
     using bad1 = bad_overflow_int<31, true>;
 
-    using bad2 = bad_overflow_int<cnl::numeric_limits<int>::digits, true>;
+    using bad2 = bad_overflow_int<std::numeric_limits<int>::digits, true>;
 }
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
@@ -76,7 +76,7 @@ TEST(cppnow2017, overflow_int_example)  // NOLINT
 {
     // multiplication of overflow_integer<int> cannot exceed numeric limits
     EXPECT_THROW(  // NOLINT
-            (void)(overflow_integer<int32_t>{cnl::numeric_limits<int32_t>::max()} * 2),
+            (void)(overflow_integer<int32_t>{std::numeric_limits<int32_t>::max()} * 2),
             overflow_error);
 
     // difference from overflow_integer<unsigned> cannot be negative
@@ -84,7 +84,7 @@ TEST(cppnow2017, overflow_int_example)  // NOLINT
 
     // conversion to overflow_integer<char> cannot exceed numeric limits
     EXPECT_THROW(  // NOLINT
-            (void)(overflow_integer<short>{cnl::numeric_limits<double>::max()}), overflow_error);
+            (void)(overflow_integer<short>{std::numeric_limits<double>::max()}), overflow_error);
 
     // value of overflow_integer<int> cannot be indeterminate
     // auto d = overflow_integer<int>{};  // compiler error? exception? zero-initialization?
@@ -107,7 +107,7 @@ namespace elastic_integer_example {
     // run-time overflow is not my concern
     constexpr auto d = elastic_integer<8, signed>{256};
     static_assert(identical(d, elastic_integer<8, signed>{256}), "error in CppNow 2017 slide");
-    static_assert(d > cnl::numeric_limits<decltype(d)>::max(), "error in CppNow 2017 slide");
+    static_assert(d > std::numeric_limits<decltype(d)>::max(), "error in CppNow 2017 slide");
 }
 
 namespace acme_ndebug {
@@ -228,7 +228,7 @@ namespace composite {
     {
         auto product = a.data() * b.data();
 
-        if constexpr (cnl::numeric_limits<Rep1>::digits + cnl::numeric_limits<Rep2>::digits > cnl::numeric_limits<decltype(product)>::digits) {
+        if constexpr (std::numeric_limits<Rep1>::digits + std::numeric_limits<Rep2>::digits > std::numeric_limits<decltype(product)>::digits) {
             // do some overflow checking
         }
 

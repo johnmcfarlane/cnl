@@ -18,6 +18,8 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
+
 namespace {
     using cnl::elastic_integer;
     using cnl::_impl::assert_same;
@@ -34,17 +36,17 @@ namespace {
 
     namespace test_limits {
         static_assert(identical(
-                cnl::elastic_integer<4>{-15}, cnl::numeric_limits<cnl::elastic_integer<4>>::lowest()));
+                cnl::elastic_integer<4>{-15}, std::numeric_limits<cnl::elastic_integer<4>>::lowest()));
         static_assert(identical(
-                cnl::elastic_integer<4>{15}, cnl::numeric_limits<cnl::elastic_integer<4>>::max()));
+                cnl::elastic_integer<4>{15}, std::numeric_limits<cnl::elastic_integer<4>>::max()));
         static_assert(identical(
-                cnl::elastic_integer<4>{1}, cnl::numeric_limits<cnl::elastic_integer<4>>::min()));
+                cnl::elastic_integer<4>{1}, std::numeric_limits<cnl::elastic_integer<4>>::min()));
     }
 
     namespace test_operate {
         using cnl::_impl::equal_op;
 
-        static_assert(cnl::numeric_limits<cnl::elastic_integer<>>::is_specialized);
+        static_assert(std::numeric_limits<cnl::elastic_integer<>>::is_specialized);
         static_assert(cnl::_impl::is_wrapper<cnl::elastic_integer<>>);
         static_assert(cnl::_impl::wants_generic_ops<cnl::elastic_integer<>>);
         static_assert(cnl::_impl::can_be_number_wrapper<cnl::elastic_integer<>>);
@@ -57,7 +59,7 @@ namespace {
                         cnl::op_value<elastic_integer<31>>,
                         cnl::op_value<elastic_integer<31>>>()(
                         elastic_integer<31>{0x7fffffff},
-                        elastic_integer<31>{cnl::numeric_limits<std::int32_t>::min()}),
+                        elastic_integer<31>{std::numeric_limits<std::int32_t>::min()}),
                 "cnl::elastic_integer test failed");
         static_assert(
                 cnl::custom_operator<
@@ -65,7 +67,7 @@ namespace {
                         cnl::op_value<elastic_integer<31>>,
                         cnl::op_value<elastic_integer<31>>>()(
                         elastic_integer<31>{0x7fffffff},
-                        elastic_integer<31>{cnl::numeric_limits<std::int32_t>::min()}),
+                        elastic_integer<31>{std::numeric_limits<std::int32_t>::min()}),
                 "cnl::elastic_integer test failed");
         static_assert(
                 cnl::custom_operator<
@@ -179,13 +181,13 @@ namespace {
         static_assert(std::is_same<cnl::_impl::rep_of_t<elastic_integer<7, int>>, int>::value);
         static_assert(
                 identical(
-                        elastic_integer<cnl::numeric_limits<int>::digits>{1},
+                        elastic_integer<std::numeric_limits<int>::digits>{1},
                         cnl::_impl::from_value<elastic_integer<3>>(1)),
                 "elastic_integer test failed");
         static_assert(
                 identical(
                         cnl::_impl::from_value<elastic_integer<3>>(1),
-                        elastic_integer<cnl::numeric_limits<int>::digits>{1}),
+                        elastic_integer<std::numeric_limits<int>::digits>{1}),
                 "elastic_integer test failed");
         static_assert(
                 identical(
@@ -366,15 +368,15 @@ namespace {
         static_assert(
                 identical(
                         elastic_integer<5, unsigned>{0}
-                                - cnl::numeric_limits<elastic_integer<5, unsigned>>::max(),
+                                - std::numeric_limits<elastic_integer<5, unsigned>>::max(),
                         elastic_integer<5, signed>{-31}),
                 "cnl::elastic_integer test failed");
 
         // -signed{max}-unsigned{max}
         static_assert(
                 identical(
-                        -cnl::numeric_limits<elastic_integer<7>>::max()
-                                - cnl::numeric_limits<elastic_integer<4, unsigned>>::max(),
+                        -std::numeric_limits<elastic_integer<7>>::max()
+                                - std::numeric_limits<elastic_integer<4, unsigned>>::max(),
                         elastic_integer<8>{-142}),
                 "cnl::elastic_integer test failed");
     }
@@ -383,16 +385,16 @@ namespace {
         // unsigned{max}+signed{max}
         static_assert(
                 identical(
-                        cnl::numeric_limits<elastic_integer<15, unsigned>>::max()
-                                + cnl::numeric_limits<elastic_integer<19>>::max(),
+                        std::numeric_limits<elastic_integer<15, unsigned>>::max()
+                                + std::numeric_limits<elastic_integer<19>>::max(),
                         elastic_integer<20>{((1 << 15) - 1) + ((1 << 19) - 1)}),
                 "cnl::elastic_integer test failed");
 
         // signed{max}+signed{max}
         static_assert(
                 identical(
-                        cnl::numeric_limits<elastic_integer<10>>::max()
-                                - cnl::numeric_limits<elastic_integer<9>>::max(),
+                        std::numeric_limits<elastic_integer<10>>::max()
+                                - std::numeric_limits<elastic_integer<9>>::max(),
                         elastic_integer<11>{512}),
                 "cnl::elastic_integer test failed");
     }
@@ -508,13 +510,13 @@ namespace {
     }
 
     namespace test_numeric_limits {
-        static_assert(cnl::numeric_limits<elastic_integer<8, int>>::max() == 255);
-        static_assert(cnl::numeric_limits<elastic_integer<8, int>>::lowest() == -255);
+        static_assert(std::numeric_limits<elastic_integer<8, int>>::max() == 255);
+        static_assert(std::numeric_limits<elastic_integer<8, int>>::lowest() == -255);
         static_assert(
-                cnl::numeric_limits<const int>::is_signed,
+                std::numeric_limits<const int>::is_signed,
                 "elastic_integer numeric_limits test failed");
         static_assert(
-                cnl::numeric_limits<const cnl::elastic_integer<7, int>>::is_signed,
+                std::numeric_limits<const cnl::elastic_integer<7, int>>::is_signed,
                 "elastic_integer numeric_limits test failed");
     }
 
@@ -553,7 +555,7 @@ namespace {
     struct elastic_integer_test<elastic_integer<Digits, Narrowest>, Lowest, Min, Max> {
         using value_type = elastic_integer<Digits, Narrowest>;
         using narrowest = Narrowest;
-        using numeric_limits = cnl::numeric_limits<value_type>;
+        using numeric_limits = std::numeric_limits<value_type>;
 
         static constexpr value_type lowest{Lowest};
         static constexpr value_type min{Min};
@@ -565,14 +567,14 @@ namespace {
         static constexpr int digits = cnl::digits_v<value_type>;
         static constexpr bool is_signed = numeric_limits::is_signed;
         static_assert(
-                is_signed == cnl::numeric_limits<narrowest>::is_signed,
+                is_signed == std::numeric_limits<narrowest>::is_signed,
                 "narrowest is different signedness");
 
         ////////////////////////////////////////////////////////////////////////////////
         // type traits
 
         static_assert(
-                is_signed == cnl::numeric_limits<cnl::_impl::rep_of_t<value_type>>::is_signed,
+                is_signed == std::numeric_limits<cnl::_impl::rep_of_t<value_type>>::is_signed,
                 "signage of narrowest and rep should be the same");
         static_assert(
                 !is_signed || numeric_limits::max() == -numeric_limits::lowest(),
@@ -600,8 +602,8 @@ namespace {
         static constexpr auto zero_squared = zero * zero;
         using zero_squared_type = decltype(zero_squared);
         static_assert(
-                cnl::numeric_limits<decltype(zero)>::is_signed
-                        == cnl::numeric_limits<decltype(zero * zero)>::is_signed,
+                std::numeric_limits<decltype(zero)>::is_signed
+                        == std::numeric_limits<decltype(zero * zero)>::is_signed,
                 "elastic_integer arithmetic test failed");
 
         ////////////////////////////////////////////////////////////////////////////////

@@ -12,6 +12,8 @@
 #include "is_tag.h"
 #include "overflow_operator.h"
 
+#include <limits>
+
 /// compositional numeric library
 namespace cnl {
     /// \brief tag to match the overflow behavior of fundamental arithmetic types
@@ -37,13 +39,13 @@ namespace cnl {
             template<typename Destination, typename Source>
             [[nodiscard]] constexpr auto operator()(Source const&) const
             {
-                return numeric_limits<Destination>::max();
+                return std::numeric_limits<Destination>::max();
             }
 
             template<class... Operands>
             [[nodiscard]] constexpr auto operator()(Operands const&...) const
             {
-                return numeric_limits<op_result<Operator, Operands...>>::max();
+                return std::numeric_limits<op_result<Operator, Operands...>>::max();
             }
         };
 
@@ -52,13 +54,13 @@ namespace cnl {
             template<typename Destination, typename Source>
             [[nodiscard]] constexpr auto operator()(Source const&) const
             {
-                return numeric_limits<Destination>::lowest();
+                return std::numeric_limits<Destination>::lowest();
             }
 
             template<class... Operands>
             [[nodiscard]] constexpr auto operator()(Operands const&...) const
             {
-                return numeric_limits<op_result<Operator, Operands...>>::lowest();
+                return std::numeric_limits<op_result<Operator, Operands...>>::lowest();
             }
         };
     }

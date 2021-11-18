@@ -10,6 +10,8 @@
 #include <cnl/overflow_integer.h>
 #include <cnl/rounding_integer.h>
 
+#include <limits>
+
 namespace cnl {
     // rounding safe integer
     template<
@@ -25,7 +27,7 @@ namespace cnl {
     [[nodiscard]] constexpr auto make_rounding_safe_int(Input const& input) requires(!_impl::is_constant<Input>::value)
     {
         return rounding_safe_int<
-                numeric_limits<Input>::digits, OverflowTag, RoundingTag,
+                std::numeric_limits<Input>::digits, OverflowTag, RoundingTag,
                 Narrowest>{input};
     }
 

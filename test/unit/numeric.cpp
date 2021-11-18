@@ -13,6 +13,7 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
+#include <limits>
 
 namespace {
     using namespace cnl;
@@ -34,10 +35,10 @@ namespace {
                 _impl::used_digits_signed<false>{}(int16_t{32767}, 2) == 15,
                 "cnl::_impl::used_digits_signed<false> test failed");
         static_assert(
-                _impl::used_digits_signed<false>{}(numeric_limits<int64_t>::max(), 2) == 63,
+                _impl::used_digits_signed<false>{}(std::numeric_limits<int64_t>::max(), 2) == 63,
                 "cnl::_impl::used_digits_signed<false> test failed");
         static_assert(
-                _impl::used_digits_signed<false>{}(numeric_limits<uint64_t>::max(), 2) == 64,
+                _impl::used_digits_signed<false>{}(std::numeric_limits<uint64_t>::max(), 2) == 64,
                 "cnl::_impl::used_digits_signed<false> test failed");
     }
 
@@ -67,24 +68,24 @@ namespace {
         static_assert(
                 cnl::_impl::used_digits(int8_t{-128}) == 7, "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<int64_t>::lowest()) == 63,
+                cnl::_impl::used_digits(std::numeric_limits<int64_t>::lowest()) == 63,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<int64_t>::lowest() + 1) == 63,
+                cnl::_impl::used_digits(std::numeric_limits<int64_t>::lowest() + 1) == 63,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<int64_t>::min() + 1) == 63,
+                cnl::_impl::used_digits(std::numeric_limits<int64_t>::min() + 1) == 63,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<int64_t>::max()) == 63,
+                cnl::_impl::used_digits(std::numeric_limits<int64_t>::max()) == 63,
                 "cnl::_impl::used_digits test failed");
         static_assert(
                 cnl::_impl::used_digits(UINT64_C(0)) == 0, "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<uint64_t>::min()) == 0,
+                cnl::_impl::used_digits(std::numeric_limits<uint64_t>::min()) == 0,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<uint64_t>::max()) == 64,
+                cnl::_impl::used_digits(std::numeric_limits<uint64_t>::max()) == 64,
                 "cnl::_impl::used_digits test failed");
         static_assert(
                 cnl::_impl::used_digits(INT64_C(0x7fffffff00000000)) == 63,
@@ -122,25 +123,25 @@ namespace {
                 cnl::_impl::used_digits(int8_t{-101}, 10) == 3,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<int64_t>::lowest(), 10) == 19,
+                cnl::_impl::used_digits(std::numeric_limits<int64_t>::lowest(), 10) == 19,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<int64_t>::lowest() + 1, 10) == 19,
+                cnl::_impl::used_digits(std::numeric_limits<int64_t>::lowest() + 1, 10) == 19,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<int64_t>::min() + 1, 10) == 19,
+                cnl::_impl::used_digits(std::numeric_limits<int64_t>::min() + 1, 10) == 19,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<int64_t>::max(), 10) == 19,
+                cnl::_impl::used_digits(std::numeric_limits<int64_t>::max(), 10) == 19,
                 "cnl::_impl::used_digits test failed");
         static_assert(
                 cnl::_impl::used_digits(UINT64_C(0), 10) == 0,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<uint64_t>::min(), 10) == 0,
+                cnl::_impl::used_digits(std::numeric_limits<uint64_t>::min(), 10) == 0,
                 "cnl::_impl::used_digits test failed");
         static_assert(
-                cnl::_impl::used_digits(numeric_limits<uint64_t>::max(), 10) == 20,
+                cnl::_impl::used_digits(std::numeric_limits<uint64_t>::max(), 10) == 20,
                 "cnl::_impl::used_digits test failed");
         static_assert(
                 cnl::_impl::used_digits(INT64_C(0x7fffffff00000000), 10) == 19,
@@ -215,22 +216,22 @@ namespace {
         static_assert(trailing_bits(int8_t{-9}) == 0, "cnl::trailing_bits test failed");
         static_assert(trailing_bits(int8_t{-128}) == 7, "cnl::trailing_bits test failed");
         static_assert(
-                trailing_bits(numeric_limits<int64_t>::lowest() + 1) == 0,
+                trailing_bits(std::numeric_limits<int64_t>::lowest() + 1) == 0,
                 "cnl::trailing_bits test failed");
         static_assert(
-                trailing_bits(numeric_limits<int64_t>::min() + 1) == 0,
+                trailing_bits(std::numeric_limits<int64_t>::min() + 1) == 0,
                 "cnl::trailing_bits test failed");
         static_assert(
-                trailing_bits(numeric_limits<int64_t>::max()) == 0,
+                trailing_bits(std::numeric_limits<int64_t>::max()) == 0,
                 "cnl::trailing_bits test failed");
         static_assert(
-                trailing_bits(numeric_limits<uint64_t>::min()) == 0,
+                trailing_bits(std::numeric_limits<uint64_t>::min()) == 0,
                 "cnl::trailing_bits test failed");
         static_assert(
-                trailing_bits(numeric_limits<uint64_t>::max()) == 0,
+                trailing_bits(std::numeric_limits<uint64_t>::max()) == 0,
                 "cnl::trailing_bits test failed");
         static_assert(
-                trailing_bits(numeric_limits<uint64_t>::max()) == 0,
+                trailing_bits(std::numeric_limits<uint64_t>::max()) == 0,
                 "cnl::trailing_bits test failed");
     }
 
@@ -259,7 +260,7 @@ namespace {
         static_assert(leading_bits(UINT32_C(2)) == 30, "cnl::leading_bits");
         static_assert(leading_bits(UINT32_C(1)) == 31, "cnl::leading_bits");
 
-        static_assert(leading_bits(cnl::numeric_limits<std::int64_t>::max()) == 0, "cnl::leading_bits");
+        static_assert(leading_bits(std::numeric_limits<std::int64_t>::max()) == 0, "cnl::leading_bits");
 
         static_assert(_impl::identical(cnl::leading_bits(INT64_C(1)), 62), "cnl::leading_bits");
 #if defined(CNL_INT128_ENABLED)

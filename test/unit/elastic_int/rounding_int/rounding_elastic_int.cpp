@@ -29,7 +29,7 @@ namespace cnl {
     [[nodiscard]] auto constexpr make_rounding_elastic(Input const& input)
     {
         return rounding_elastic_integer<
-                numeric_limits<Input>::digits, RoundingTag,
+                std::numeric_limits<Input>::digits, RoundingTag,
                 Narrowest>{input};
     }
 }

@@ -14,6 +14,7 @@
 #include "../used_digits.h"
 #include "is_composite.h"
 
+#include <climits>
 #include <concepts>
 #include <type_traits>
 

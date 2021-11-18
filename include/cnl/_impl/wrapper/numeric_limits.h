@@ -7,38 +7,39 @@
 #if !defined(CNL_IMPL_WRAPPER_NUMERIC_LIMITS_H)
 #define CNL_IMPL_WRAPPER_NUMERIC_LIMITS_H
 
-#include "../../numeric_limits.h"
 #include "../custom_operator/tag.h"
 #include "definition.h"
 #include "from_rep.h"
 
+#include <limits>
+
 /// compositional numeric library
-namespace cnl {
-    template<typename Rep, tag Tag>
-    struct numeric_limits<_impl::wrapper<Rep, Tag>> : cnl::numeric_limits<Rep> {
+namespace std {
+    template<typename Rep, cnl::tag Tag>
+    struct numeric_limits<cnl::_impl::wrapper<Rep, Tag>> : numeric_limits<Rep> {
     private:
-        using value_type = _impl::wrapper<Rep, Tag>;
+        using value_type = cnl::_impl::wrapper<Rep, Tag>;
         using rep_numeric_limits = numeric_limits<Rep>;
 
     public:
         [[nodiscard]] static constexpr auto min() noexcept
         {
-            return _impl::from_rep<value_type>(rep_numeric_limits::min());
+            return cnl::_impl::from_rep<value_type>(rep_numeric_limits::min());
         }
 
         [[nodiscard]] static constexpr auto max() noexcept
         {
-            return _impl::from_rep<value_type>(rep_numeric_limits::max());
+            return cnl::_impl::from_rep<value_type>(rep_numeric_limits::max());
         }
 
         [[nodiscard]] static constexpr auto lowest() noexcept
         {
-            return _impl::from_rep<value_type>(rep_numeric_limits::lowest());
+            return cnl::_impl::from_rep<value_type>(rep_numeric_limits::lowest());
         }
 
         [[nodiscard]] static constexpr auto epsilon() noexcept
         {
-            return _impl::from_rep<value_type>(rep_numeric_limits::round_error());
+            return cnl::_impl::from_rep<value_type>(rep_numeric_limits::round_error());
         }
 
         [[nodiscard]] static constexpr auto round_error() noexcept
@@ -69,8 +70,8 @@ namespace cnl {
         }
     };
 
-    template<typename Rep, tag Tag>
-    struct numeric_limits<_impl::wrapper<Rep, Tag> const> : numeric_limits<_impl::wrapper<Rep, Tag>> {
+    template<typename Rep, cnl::tag Tag>
+    struct numeric_limits<cnl::_impl::wrapper<Rep, Tag> const> : numeric_limits<cnl::_impl::wrapper<Rep, Tag>> {
     };
 }
 

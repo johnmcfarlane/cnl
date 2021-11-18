@@ -9,6 +9,7 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
 #include <type_traits>
 
 using cnl::power;
@@ -18,7 +19,7 @@ template<class T, class U>
 inline constexpr bool is_same_v = std::is_same<T, U>::value;
 
 namespace {
-    static_assert(cnl::numeric_limits<cnl::scaled_integer<>>::is_specialized);
+    static_assert(std::numeric_limits<cnl::scaled_integer<>>::is_specialized);
     static_assert(cnl::_impl::wants_generic_ops<cnl::scaled_integer<>>);
 }
 

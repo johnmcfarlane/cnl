@@ -8,6 +8,8 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
+
 template<int IntegerDigits, int FractionalDigits, class Narrowest>
 using saturated_elastic_scaled_integer = cnl::static_number<
         IntegerDigits + FractionalDigits, -FractionalDigits, cnl::native_rounding_tag,
@@ -29,7 +31,7 @@ TEST(_426, minus_150)  // NOLINT
     // clipping conversion should be constrained to min/max
     temp_wide_t tw = -150;
     temp_t t = tw;
-    temp_t lowest = cnl::numeric_limits<temp_t>::lowest();
+    temp_t lowest = std::numeric_limits<temp_t>::lowest();
     ASSERT_EQ(lowest, t);
 
     ASSERT_EQ(-32767, cnl::unwrap(t));
@@ -40,5 +42,5 @@ TEST(_426, plus_150)  // NOLINT
 {
     temp_wide_t tw = 150;  // NOLINT(cppcoreguidelines-init-variables)
     temp_t t = tw;  // NOLINT(cppcoreguidelines-init-variables)
-    ASSERT_EQ(cnl::numeric_limits<temp_t>::max(), t);
+    ASSERT_EQ(std::numeric_limits<temp_t>::max(), t);
 }

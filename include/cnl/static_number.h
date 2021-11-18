@@ -15,6 +15,8 @@
 #include "integer.h"
 #include "scaled_integer.h"
 
+#include <limits>
+
 /// compositional numeric library
 namespace cnl {
     /// \brief a general-purpose fixed-point real number type
@@ -37,7 +39,7 @@ namespace cnl {
             rounding_tag RoundingTag = nearest_rounding_tag, overflow_tag OverflowTag = undefined_overflow_tag,
             integer Narrowest = int, class Input = int>
     [[nodiscard]] constexpr auto make_static_number(Input const& input)
-            -> static_number<numeric_limits<Input>::digits, 0, RoundingTag, OverflowTag, Narrowest>
+            -> static_number<std::numeric_limits<Input>::digits, 0, RoundingTag, OverflowTag, Narrowest>
     {
         return input;
     }

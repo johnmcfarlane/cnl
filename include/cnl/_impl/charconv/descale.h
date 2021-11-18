@@ -8,11 +8,12 @@
 #define CNL_IMPL_CHARCONV_DESCALE_H
 
 #include "../../integer.h"
-#include "../../numeric_limits.h"
 #include "../cstdint/types.h"
 #include "../numbers/signedness.h"
 #include "../scaled/declaration.h"
 #include "../unreachable.h"
+
+#include <limits>
 
 /// compositional numeric library
 namespace cnl::_impl {
@@ -40,13 +41,13 @@ namespace cnl::_impl {
                 (input < Rep{0})
                 ? []([[maybe_unused]] Significand const& n) -> bool {
                       if constexpr (numbers::signedness_v<Significand>) {
-                          return n < -numeric_limits<Significand>::max() / OutRadix;
+                          return n < -std::numeric_limits<Significand>::max() / OutRadix;
                       } else {
                           return unreachable<bool>("negative unsigned integer");
                       }
                   }
                 : [](Significand const& n) {
-                      return n > Significand{numeric_limits<Significand>::max() / OutRadix};
+                      return n > Significand{std::numeric_limits<Significand>::max() / OutRadix};
                   }};
 
         if constexpr (InExponent < 0) {

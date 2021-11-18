@@ -8,6 +8,7 @@
 
 #include <cnl/_impl/type_traits/identical.h>
 
+#include <limits>
 #include <string>
 
 namespace {
@@ -16,7 +17,7 @@ namespace {
     namespace testint {
         static_assert(
                 std::is_same<
-                        typename std::remove_cv<decltype(cnl::numeric_limits<void>::digits)>::type,
+                        typename std::remove_cv<decltype(std::numeric_limits<void>::digits)>::type,
                         int>::value,
                 "int test failed");
     }

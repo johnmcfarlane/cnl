@@ -13,6 +13,8 @@
 #include "../wide_integer.h"
 #include "num_traits/digits.h"
 
+#include <limits>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
@@ -33,7 +35,7 @@ namespace cnl {
         requires(!_impl::is_constant<Input>::value)
                 [[nodiscard]] constexpr auto make_static_integer(Input const& input)
                         -> static_integer<
-                                numeric_limits<Input>::digits, RoundingTag, OverflowTag,
+                                std::numeric_limits<Input>::digits, RoundingTag, OverflowTag,
                                 Narrowest>
         {
             return input;

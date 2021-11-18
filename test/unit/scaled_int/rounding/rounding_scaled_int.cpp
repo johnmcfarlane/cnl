@@ -11,6 +11,7 @@
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <cinttypes>
+#include <limits>
 
 #define TEST_NATIVE_INTEGER
 #define TEST_LABEL rounding_integer_  // NOLINT(cppcoreguidelines-macro-usage)
@@ -35,11 +36,11 @@ namespace {
 
     namespace test_numeric_limits {
         static_assert(
-                cnl::numeric_limits<rounding_integer<>>::is_specialized,
-                "cnl::numeric_limits<rounding_integer<>> test failed");
+                std::numeric_limits<rounding_integer<>>::is_specialized,
+                "std::numeric_limits<rounding_integer<>> test failed");
         static_assert(
-                cnl::numeric_limits<rounding_integer<>>::is_integer,
-                "cnl::numeric_limits<rounding_integer<>> test failed");
+                std::numeric_limits<rounding_integer<>>::is_integer,
+                "std::numeric_limits<rounding_integer<>> test failed");
     }
 
     namespace test_ctor {

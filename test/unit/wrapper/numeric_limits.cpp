@@ -11,6 +11,8 @@
 
 #include <cnl/_impl/wrapper/from_rep.h>
 
+#include <limits>
+
 namespace {
-    static_assert(cnl::numeric_limits<cnl::_impl::wrapper<>>::is_specialized);
+    static_assert(std::numeric_limits<cnl::_impl::wrapper<>>::is_specialized);
 }

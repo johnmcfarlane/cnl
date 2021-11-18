@@ -13,41 +13,43 @@
 
 #include <cnl/_impl/type_traits/identical.h>
 
+#include <limits>
+
 using cnl::_impl::identical;
 
 namespace {
     namespace test_is_specialize {
         static_assert(
-                cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned int>>::is_specialized);
+                std::numeric_limits<cnl::_impl::duplex_integer<int, unsigned int>>::is_specialized);
     }
 
     namespace test_max {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>{0xffff},
-                        cnl::numeric_limits<
+                        std::numeric_limits<
                                 cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::max()),
-                "cnl::numeric_limits<cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::max()");
+                "std::numeric_limits<cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::max()");
     }
 
     namespace test_max {
         static_assert(
                 identical(
-                        16, cnl::numeric_limits<
+                        16, std::numeric_limits<
                                     cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::digits),
-                "cnl::numeric_limits<cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::digits");
+                "std::numeric_limits<cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::digits");
         static_assert(
                 identical(
-                        cnl::numeric_limits<long long>::digits
-                                + cnl::numeric_limits<unsigned>::digits,
-                        cnl::numeric_limits<
+                        std::numeric_limits<long long>::digits
+                                + std::numeric_limits<unsigned>::digits,
+                        std::numeric_limits<
                                 cnl::_impl::duplex_integer<long long, unsigned>>::digits),
-                "cnl::numeric_limits<cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::digits");
+                "std::numeric_limits<cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>>::digits");
     }
 
     namespace test_mnn {
         static_assert(
-                cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned>>::lowest()
-                < -cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned>>::max());
+                std::numeric_limits<cnl::_impl::duplex_integer<int, unsigned>>::lowest()
+                < -std::numeric_limits<cnl::_impl::duplex_integer<int, unsigned>>::max());
     }
 }

@@ -15,6 +15,8 @@
 #include "_impl/num_traits/unwrap.h"
 #include "_impl/used_digits.h"
 
+#include <limits>
+
 /// compositional numeric library
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +54,7 @@ namespace cnl {
 
     template<typename Integer>
     [[nodiscard]] constexpr auto used_digits(
-            Integer const& value, int radix = numeric_limits<Integer>::radix)
+            Integer const& value, int radix = std::numeric_limits<Integer>::radix)
     {
         return _impl::used_digits_signed<numbers::signedness_v<Integer>>{}(unwrap(value), radix);
     }

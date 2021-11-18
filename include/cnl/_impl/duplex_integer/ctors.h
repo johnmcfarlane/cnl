@@ -8,10 +8,11 @@
 #define CNL_IMPL_DUPLEX_INTEGER_CTORS_H
 
 #include "../../floating_point.h"
-#include "../../numeric_limits.h"
 #include "../power_value.h"
 #include "definition.h"
 #include "operators.h"
+
+#include <limits>
 
 /// compositional numeric library
 namespace cnl {
@@ -21,14 +22,14 @@ namespace cnl {
         requires(digits_v<Lower> >= digits_v<Integer>)
                 [[nodiscard]] constexpr auto calculate_lower(Integer const& input) -> Lower
         {
-            return Lower(input) & numeric_limits<Lower>::max();
+            return Lower(input) & std::numeric_limits<Lower>::max();
         }
 
         template<typename Lower, typename Integer>
         requires(digits_v<Lower> < digits_v<Integer>)
                 [[nodiscard]] constexpr auto calculate_lower(Integer const& input) -> Lower
         {
-            return static_cast<Lower>(input & static_cast<Integer>(numeric_limits<Lower>::max()));
+            return static_cast<Lower>(input & static_cast<Integer>(std::numeric_limits<Lower>::max()));
         }
 
         // cnl::_impl::calculate upper

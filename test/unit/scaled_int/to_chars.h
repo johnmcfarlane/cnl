@@ -15,6 +15,7 @@
 
 #include <array>
 #include <iterator>
+#include <limits>
 #include <string>
 
 namespace test_max_to_chars_chars {
@@ -106,7 +107,7 @@ namespace test_to_chars_natural {
 
     TEST(to_chars_natural, int8_max)  // NOLINT
     {
-        test<3>(cnl::numeric_limits<int8>::max());
+        test<3>(std::numeric_limits<int8>::max());
     }
 
     TEST(to_chars_natural, scaled_integer)  // NOLINT
