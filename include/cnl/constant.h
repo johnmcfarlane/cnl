@@ -16,8 +16,8 @@
 #include "_impl/numbers/signedness.h"
 #include "_impl/parse.h"
 #include "integer.h"
-#include "numeric_limits.h"
 
+#include <limits>
 #include <type_traits>
 
 // CNL_IMPL_CONSTANT_VALUE_TYPE - determines cnl::constant<>::value_type
@@ -26,7 +26,7 @@
 #define CNL_IMPL_CONSTANT_VALUE_TYPE auto  // NOLINT(cppcoreguidelines-macro-usage)
 #else
 // Otherwise it is defaulted to the widest quantity type that can be used as a template argument.
-#define CNL_IMPL_CONSTANT_VALUE_TYPE ::cnl::intmax  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_IMPL_CONSTANT_VALUE_TYPE ::cnl::intmax_t  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 /// compositional numeric library
@@ -56,8 +56,8 @@ namespace cnl {
         constexpr explicit constant(S const& init)
         {
             static_assert(
-                    value <= cnl::numeric_limits<S>::max()
-                            && value >= cnl::numeric_limits<S>::lowest(),
+                    value <= std::numeric_limits<S>::max()
+                            && value >= std::numeric_limits<S>::lowest(),
                     "initial value couldn't possibly represent value");
             CNL_ASSERT(value == init);
         }
@@ -151,7 +151,7 @@ namespace cnl {
     namespace literals {
         template<char... Chars>
         [[nodiscard]] constexpr auto operator"" _c()
-                -> constant<_impl::parse<intmax, Chars...>()>
+                -> constant<_impl::parse<intmax_t, Chars...>()>
         {
             return {};
         }
@@ -182,15 +182,17 @@ namespace cnl {
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct is_integer<constant<Value> const> : is_integer<decltype(Value)> {
     };
+}
 
+namespace std {
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::numeric_limits<cnl::constant>
+    // std::numeric_limits<cnl::constant>
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct numeric_limits<constant<Value>>
-        : cnl::numeric_limits<typename constant<Value>::value_type> {
+    struct numeric_limits<cnl::constant<Value>>
+        : numeric_limits<typename cnl::constant<Value>::value_type> {
     private:
-        using value_type = typename constant<Value>::value_type;
+        using value_type = typename cnl::constant<Value>::value_type;
 
     public:
         [[nodiscard]] static constexpr auto min()

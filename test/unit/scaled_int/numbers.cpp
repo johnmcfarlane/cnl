@@ -26,8 +26,8 @@ namespace {
     // 8-bit pi
     static_assert(
             identical(
-                    cnl::scaled_integer<cnl::uint8, cnl::power<-6>>{3.140625},
-                    std::numbers::pi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>),
+                    cnl::scaled_integer<std::uint8_t, cnl::power<-6>>{3.140625},
+                    std::numbers::pi_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>),
             "std::numbers::pi_v test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -49,23 +49,23 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::e_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::e_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::e_v<long double>),
                 .006L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::e_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::e_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::e_v<long double>),
                 .015L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::e_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::e_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::e_v<long double>),
                 .000002L);
 #if !defined(__arm__)
         EXPECT_LT(
                 get_error(
-                        std::numbers::e_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::e_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::e_v<long double>),
                 .000000001L);
 #endif
@@ -75,22 +75,22 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::log2e_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::log2e_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::log2e_v<long double>),
                 .006L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::log2e_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::log2e_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::log2e_v<long double>),
                 .015L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::log2e_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::log2e_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::log2e_v<long double>),
                 .000005L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::log2e_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::log2e_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::log2e_v<long double>),
                 .0000000000000000002L);
     }
@@ -99,22 +99,22 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::log10e_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::log10e_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::log10e_v<long double>),
                 .03L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::log10e_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::log10e_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::log10e_v<long double>),
                 .16L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::log10e_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::log10e_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::log10e_v<long double>),
                 .0000325L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::log10e_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::log10e_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::log10e_v<long double>),
                 .0000000000000000004L);
     }
@@ -123,23 +123,23 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::pi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::pi_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::pi_v<long double>),
                 .006L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::pi_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::pi_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::pi_v<long double>),
                 .015L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::pi_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::pi_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::pi_v<long double>),
                 .0000021L);
 #if !defined(__arm__)
         EXPECT_LT(
                 get_error(
-                        std::numbers::pi_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::pi_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::pi_v<long double>),
                 .000000001L);
 #endif
@@ -149,22 +149,22 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::inv_pi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::inv_pi_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::inv_pi_v<long double>),
                 .02L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::inv_pi_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::inv_pi_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::inv_pi_v<long double>),
                 .02L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::inv_pi_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::inv_pi_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::inv_pi_v<long double>),
                 .00005L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::inv_pi_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::inv_pi_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::inv_pi_v<long double>),
                 .0000000000000000003L);
     }
@@ -173,24 +173,24 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::inv_sqrtpi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::inv_sqrtpi_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::inv_sqrtpi_v<long double>),
                 .02L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::inv_sqrtpi_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::inv_sqrtpi_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::inv_sqrtpi_v<long double>),
                 .02L);
         EXPECT_LT(
                 get_error(
                         std::numbers::inv_sqrtpi_v<
-                                cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                                cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::inv_sqrtpi_v<long double>),
                 .00005L);
         EXPECT_LT(
                 get_error(
                         std::numbers::inv_sqrtpi_v<
-                                cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                                cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::inv_sqrtpi_v<long double>),
                 .0000000000000000003L);
     }
@@ -199,22 +199,22 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::ln2_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::ln2_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::ln2_v<long double>),
                 .01L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::ln2_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::ln2_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::ln2_v<long double>),
                 .015L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::ln2_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::ln2_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::ln2_v<long double>),
                 .0000021L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::ln2_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::ln2_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::ln2_v<long double>),
                 .0000000000000000002L);
     }
@@ -223,22 +223,22 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::ln10_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::ln10_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::ln10_v<long double>),
                 .006L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::ln10_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::ln10_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::ln10_v<long double>),
                 .025L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::ln10_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::ln10_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::ln10_v<long double>),
                 .0000021L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::ln10_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::ln10_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::ln10_v<long double>),
                 .0000000000000000002L);
     }
@@ -247,22 +247,22 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::sqrt2_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::sqrt2_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::sqrt2_v<long double>),
                 .006L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::sqrt2_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::sqrt2_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::sqrt2_v<long double>),
                 .03L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::sqrt2_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::sqrt2_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::sqrt2_v<long double>),
                 .00001L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::sqrt2_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::sqrt2_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::sqrt2_v<long double>),
                 .0000000000000000002L);
     }
@@ -271,22 +271,22 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::sqrt3_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::sqrt3_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::sqrt3_v<long double>),
                 .02L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::sqrt3_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::sqrt3_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::sqrt3_v<long double>),
                 .03L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::sqrt3_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::sqrt3_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::sqrt3_v<long double>),
                 .00005L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::sqrt3_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::sqrt3_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::sqrt3_v<long double>),
                 .0000000000000000003L);
     }
@@ -295,23 +295,23 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::inv_sqrt3_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::inv_sqrt3_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::inv_sqrt3_v<long double>),
                 .03L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::inv_sqrt3_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::inv_sqrt3_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::inv_sqrt3_v<long double>),
                 .03L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::inv_sqrt3_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::inv_sqrt3_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::inv_sqrt3_v<long double>),
                 .00005L);
         EXPECT_LT(
                 get_error(
                         std::numbers::inv_sqrt3_v<
-                                cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                                cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::inv_sqrt3_v<long double>),
                 .0000000000000000003L);
     }
@@ -320,22 +320,22 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::egamma_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::egamma_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::egamma_v<long double>),
                 .03L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::egamma_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::egamma_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::egamma_v<long double>),
                 .03L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::egamma_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::egamma_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::egamma_v<long double>),
                 .00005L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::egamma_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::egamma_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::egamma_v<long double>),
                 .0000000000000000003L);
     }
@@ -344,22 +344,22 @@ namespace {
     {
         EXPECT_LT(
                 get_error(
-                        std::numbers::phi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
+                        std::numbers::phi_v<cnl::scaled_integer<std::uint8_t, cnl::power<-6>>>,
                         std::numbers::phi_v<long double>),
                 .02L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::phi_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
+                        std::numbers::phi_v<cnl::scaled_integer<std::int16_t, cnl::power<-4>>>,
                         std::numbers::phi_v<long double>),
                 .04L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::phi_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>,
+                        std::numbers::phi_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::phi_v<long double>),
                 .00005L);
         EXPECT_LT(
                 get_error(
-                        std::numbers::phi_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>,
+                        std::numbers::phi_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::phi_v<long double>),
                 .0000000000000000003L);
     }

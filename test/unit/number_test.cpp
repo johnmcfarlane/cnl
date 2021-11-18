@@ -9,19 +9,19 @@
 
 template struct number_test<char>;
 
-template struct number_test<cnl::int8>;
-template struct number_test<cnl::uint8>;
+template struct number_test<std::int8_t>;
+template struct number_test<std::uint8_t>;
 
-template struct number_test<cnl::int16>;
-template struct number_test<cnl::uint16>;
+template struct number_test<std::int16_t>;
+template struct number_test<std::uint16_t>;
 
-template struct number_test<cnl::int32>;
-template struct number_test<cnl::uint32>;
+template struct number_test<std::int32_t>;
+template struct number_test<std::uint32_t>;
 
-template struct number_test<cnl::int64>;
-template struct number_test<cnl::uint64>;
+template struct number_test<std::int64_t>;
+template struct number_test<std::uint64_t>;
 
 #if defined(CNL_INT128_ENABLED)
-template struct number_test<cnl::int128>;
-template struct number_test<cnl::uint128>;
+template struct number_test<cnl::int128_t>;
+template struct number_test<cnl::uint128_t>;
 #endif

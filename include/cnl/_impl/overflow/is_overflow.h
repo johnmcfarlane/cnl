@@ -8,13 +8,13 @@
 #define CNL_IMPL_OVERFLOW_IS_OVERFLOW_H
 
 #include "../../numeric.h"
-#include "../../numeric_limits.h"
 #include "../custom_operator/op.h"
 #include "../num_traits/digits.h"
 #include "../numbers/signedness.h"
 #include "../polarity.h"
 
 #include <algorithm>
+#include <limits>
 #include <type_traits>
 
 /// compositional numeric library
@@ -28,7 +28,7 @@ namespace cnl {
 
         template<class T>
         struct overflow_digits<T, polarity::positive>
-            : public std::integral_constant<int, numeric_limits<T>::digits> {
+            : public std::integral_constant<int, std::numeric_limits<T>::digits> {
         };
 
         template<class T>
@@ -50,7 +50,7 @@ namespace cnl {
         template<typename Operand>
         struct has_most_negative_number<Operand, true>
             : std::integral_constant<
-                      bool, numeric_limits<Operand>::lowest() < -numeric_limits<Operand>::max()> {
+                      bool, std::numeric_limits<Operand>::lowest() < -std::numeric_limits<Operand>::max()> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ namespace cnl {
             {
                 return overflow_digits<Destination, polarity::positive>::value
                              < overflow_digits<Source, polarity::positive>::value
-                    && rhs > static_cast<Source>(numeric_limits<Destination>::max());
+                    && rhs > static_cast<Source>(std::numeric_limits<Destination>::max());
             }
         };
 
@@ -75,7 +75,7 @@ namespace cnl {
             template<typename Destination, typename Source>
             [[nodiscard]] constexpr auto operator()(Source const& rhs) const
             {
-                return rhs > static_cast<Source>(numeric_limits<Destination>::max());
+                return rhs > static_cast<Source>(std::numeric_limits<Destination>::max());
             }
         };
 
@@ -84,7 +84,7 @@ namespace cnl {
             template<typename Destination, typename Source>
             [[nodiscard]] constexpr auto operator()(Source const& rhs) const
             {
-                return static_cast<Destination>(rhs) > numeric_limits<Destination>::max();
+                return static_cast<Destination>(rhs) > std::numeric_limits<Destination>::max();
             }
         };
 
@@ -104,7 +104,7 @@ namespace cnl {
             {
                 return overflow_digits<Destination, polarity::negative>::value
                              < overflow_digits<Source, polarity::negative>::value
-                    && rhs < static_cast<Source>(numeric_limits<Destination>::lowest());
+                    && rhs < static_cast<Source>(std::numeric_limits<Destination>::lowest());
             }
         };
 
@@ -113,7 +113,7 @@ namespace cnl {
             template<typename Destination, typename Source>
             [[nodiscard]] constexpr auto operator()(Source const& rhs) const
             {
-                return rhs < static_cast<Source>(numeric_limits<Destination>::lowest());
+                return rhs < static_cast<Source>(std::numeric_limits<Destination>::lowest());
             }
         };
 
@@ -122,7 +122,7 @@ namespace cnl {
             template<typename Destination, typename Source>
             [[nodiscard]] constexpr auto operator()(Source const& rhs) const
             {
-                return static_cast<Destination>(rhs) < numeric_limits<Destination>::lowest();
+                return static_cast<Destination>(rhs) < std::numeric_limits<Destination>::lowest();
             }
         };
 
@@ -141,7 +141,6 @@ namespace cnl {
         template<op Operator, typename... Operands>
         struct operator_overflow_traits {
             using result = op_result<Operator, Operands...>;
-            using numeric_limits = cnl::numeric_limits<result>;
 
             static constexpr int positive_digits =
                     _impl::overflow_digits<result, polarity::positive>::value;
@@ -150,12 +149,12 @@ namespace cnl {
 
             [[nodiscard]] static constexpr auto lowest()
             {
-                return numeric_limits::lowest();
+                return std::numeric_limits<result>::lowest();
             }
 
             [[nodiscard]] static constexpr auto max()
             {
-                return numeric_limits::max();
+                return std::numeric_limits<result>::max();
             }
 
             template<typename Operand>
@@ -198,7 +197,7 @@ namespace cnl {
             template<typename Rhs>
             [[nodiscard]] constexpr auto operator()(Rhs const& rhs) const
             {
-                return has_most_negative_number<Rhs>::value && rhs < -numeric_limits<Rhs>::max();
+                return has_most_negative_number<Rhs>::value && rhs < -std::numeric_limits<Rhs>::max();
             }
         };
 
@@ -256,7 +255,7 @@ namespace cnl {
                                 + 1
                         > traits::positive_digits)
                     && rhs < Rhs{0}  // NOLINTNEXTLINE(bugprone-misplaced-widening-cast)
-                    && lhs > static_cast<typename traits::result>(numeric_limits<Rhs>::max() + rhs);
+                    && lhs > static_cast<typename traits::result>(std::numeric_limits<Rhs>::max() + rhs);
             }
         };
 

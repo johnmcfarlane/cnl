@@ -8,6 +8,7 @@
 #include <cnl/elastic_scaled_integer.h>
 
 #include <algorithm>
+#include <limits>
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::make_elastic_scaled_integer
@@ -17,7 +18,7 @@ using cnl::_impl::identical;
 using namespace cnl::literals;
 using cnl::elastic_scaled_integer;
 
-static constexpr auto int_digits = cnl::numeric_limits<int>::digits;
+static constexpr auto int_digits = std::numeric_limits<int>::digits;
 
 static_assert(
         identical(
@@ -41,9 +42,9 @@ static_assert(
         "cnl::make_elastic_scaled_integer test failed");
 static_assert(
         identical(
-                make_elastic_scaled_integer<cnl::uint8>(262143),
+                make_elastic_scaled_integer<std::uint8_t>(262143),
                 elastic_scaled_integer<
-                        cnl::numeric_limits<decltype(262143)>::digits, cnl::power<0>, cnl::uint8>{262143}),
+                        std::numeric_limits<decltype(262143)>::digits, cnl::power<0>, std::uint8_t>{262143}),
         "cnl::make_elastic_scaled_integer test failed");
 
 static_assert(
@@ -55,8 +56,8 @@ static_assert(
                 elastic_scaled_integer<11, cnl::power<34>>{0x123400000000}));
 static_assert(
         identical(
-                make_elastic_scaled_integer<cnl::int8>(9876543),
-                elastic_scaled_integer<31, cnl::power<0>, cnl::int8>{9876543}));
+                make_elastic_scaled_integer<std::int8_t>(9876543),
+                elastic_scaled_integer<31, cnl::power<0>, std::int8_t>{9876543}));
 
 namespace test_from_scaled_integer {
     static_assert(
@@ -171,7 +172,7 @@ static_assert(
         "using too many bytes to represent -256");
 
 // some numbers are so big that you don't have the luxury of choosing
-static constexpr auto unsigned_limit = cnl::intmax{cnl::numeric_limits<unsigned>::max()} + 1;
+static constexpr auto unsigned_limit = cnl::intmax_t{std::numeric_limits<unsigned>::max()} + 1;
 static_assert(
         sizeof(make_elastic_scaled_integer(cnl::constant<unsigned_limit>())) == sizeof(int),
         "using too many bytes to represent 2^32");
@@ -191,7 +192,7 @@ static_assert(
 ////////////////////////////////////////////////////////////////////////////////
 // tests for cnl::make_elastic_scaled_integer
 
-template<cnl::int64 Value>
+template<std::int64_t Value>
 struct make_elastic_test {
     static constexpr auto value = cnl::constant<Value>{};
     static constexpr auto elastic_value = make_elastic_scaled_integer(value);
@@ -223,7 +224,7 @@ struct make_elastic_test {
     static constexpr int lsz1 = lsz * 2;
     static_assert(Value == 0 || Value != ((Value / lsz1) * lsz1), "fractional_digits is too high");
 
-    static_assert(cnl::numeric_limits<type>::is_signed, "signage doesn't match value");
+    static_assert(std::numeric_limits<type>::is_signed, "signage doesn't match value");
     //    static_assert(elastic_value==elastic_scaled_integer<63, 0>{Value}, "make_elasticd value
     //    doesn't equal its source value");
 };
@@ -244,9 +245,9 @@ template struct make_elastic_test<-62748517>;
 template struct make_elastic_test<815730721>;
 template struct make_elastic_test<-10604499373>;
 template struct make_elastic_test<137858491849>;
-template struct make_elastic_test<cnl::numeric_limits<cnl::int64>::max() / 2>;
-template struct make_elastic_test<-cnl::numeric_limits<cnl::int64>::max() / 2>;
+template struct make_elastic_test<std::numeric_limits<std::int64_t>::max() / 2>;
+template struct make_elastic_test<-std::numeric_limits<std::int64_t>::max() / 2>;
 #if !defined(_MSC_VER)
-template struct make_elastic_test<cnl::numeric_limits<cnl::int64>::max()>;
-template struct make_elastic_test<-cnl::numeric_limits<cnl::int64>::max()>;
+template struct make_elastic_test<std::numeric_limits<std::int64_t>::max()>;
+template struct make_elastic_test<-std::numeric_limits<std::int64_t>::max()>;
 #endif

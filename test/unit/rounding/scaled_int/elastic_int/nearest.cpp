@@ -8,6 +8,8 @@
 #include <cnl/elastic_scaled_integer.h>
 #include <cnl/rounding.h>
 
+#include <limits>
+
 using cnl::_impl::identical;
 
 namespace {
@@ -88,7 +90,7 @@ namespace {
     [[nodiscard]] constexpr auto make_rounding_elastic(Input const& input)
     {
         return rounding_elastic_integer<
-                cnl::numeric_limits<Input>::digits, RoundingTag,
+                std::numeric_limits<Input>::digits, RoundingTag,
                 Narrowest>{input};
     }
 

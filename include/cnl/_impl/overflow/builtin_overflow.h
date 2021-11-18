@@ -10,8 +10,9 @@
 #include "../config.h"
 #include "../custom_operator/op.h"
 #include "../polarity.h"
-#include "../type_traits/is_integral.h"
 #include "overflow_operator.h"
+
+#include <concepts>
 
 /// compositional numeric library
 namespace cnl {
@@ -73,7 +74,7 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct are_builtin_operands
             : std::integral_constant<
-                      bool, _impl::is_integral_v<Lhs> && _impl::is_integral_v<Rhs>> {
+                      bool, std::is_integral_v<Lhs> && std::is_integral_v<Rhs>> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////

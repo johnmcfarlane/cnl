@@ -9,12 +9,12 @@
 
 #include "../../constant.h"
 #include "../numbers/set_signedness.h"
-#include "../type_traits/is_integral.h"
 #include "definition.h"
 #include "homogeneous_deduction_tag_base.h"
 #include "homogeneous_operator_tag_base.h"
 #include "op.h"
 
+#include <concepts>
 #include <type_traits>
 
 /// compositional numeric library
@@ -31,7 +31,7 @@ namespace cnl {
         template<typename T>
         struct has_native_operators
             : std::integral_constant<
-                      bool, is_constant<T>::value || is_integral_v<T> || std::is_floating_point<T>::value> {
+                      bool, is_constant<T>::value || std::is_integral_v<T> || std::is_floating_point<T>::value> {
         };
     }
 

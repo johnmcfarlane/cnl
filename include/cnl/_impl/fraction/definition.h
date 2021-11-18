@@ -10,11 +10,10 @@
 #include "../../fixed_point.h"
 #include "../../floating_point.h"
 #include "../../integer.h"
-#include "../../numeric_limits.h"
 #include "../num_traits/set_width.h"
 #include "../ssizeof.h"
-#include "../type_traits/is_integral.h"
 
+#include <limits>
 #include <type_traits>
 
 /// compositional numeric library
@@ -28,7 +27,7 @@ namespace cnl {
     template<fixed_point Numerator = int, fixed_point Denominator = Numerator>
     struct fraction {
         static_assert(
-                numeric_limits<Numerator>::is_iec559 == numeric_limits<Denominator>::is_iec559,
+                std::numeric_limits<Numerator>::is_iec559 == std::numeric_limits<Denominator>::is_iec559,
                 "ill-formed if only one template parameter is floating-point");
 
         /// alias to `Numerator`

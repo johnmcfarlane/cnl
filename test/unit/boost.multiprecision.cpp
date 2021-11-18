@@ -159,11 +159,11 @@ TEST(multiprecision, subtract)  // NOLINT
 TEST(multiprecision, multiply)  // NOLINT
 {
     using int64 = unsigned_multiprecision<64>;
-    using int128 = unsigned_multiprecision<128>;
+    using int128_t = unsigned_multiprecision<128>;
 
     auto factor = int64{123456789012345678LL};
 
-    auto product = static_cast<int128>(factor) * static_cast<int128>(factor);
+    auto product = static_cast<int128_t>(factor) * static_cast<int128_t>(factor);
     ASSERT_GT(product, factor);
 
     auto quotient = product / factor;
@@ -214,11 +214,11 @@ TEST(scaled_integer_multiprecision, subtract)  // NOLINT
 TEST(scaled_integer_multiprecision, multiply)  // NOLINT
 {
     using int64 = scaled_integer<unsigned_multiprecision<64>>;
-    using int128 = scaled_integer<unsigned_multiprecision<128>>;
+    using int128_t = scaled_integer<unsigned_multiprecision<128>>;
 
     auto factor = int64{123456789012345678LL};
 
-    auto product = static_cast<int128>(factor) * static_cast<int128>(factor);
+    auto product = static_cast<int128_t>(factor) * static_cast<int128_t>(factor);
     ASSERT_GT(product, factor);
 
     auto quotient = product / factor;

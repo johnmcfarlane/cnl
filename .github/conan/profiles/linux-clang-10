@@ -1,10 +1,10 @@
 include(linux-clang)
 [settings]
 compiler.version=10
-compiler.libcxx=libc++
+compiler.libcxx=libstdc++11
 [options]
 int128=False
 sanitize=True
 [build_requires]
 [env]
-CONAN_CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_DIR/clang-libc++.cmake
+CONAN_CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_DIR/clang.cmake

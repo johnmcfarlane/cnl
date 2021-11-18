@@ -7,6 +7,8 @@
 #include <cnl/_impl/overflow/is_overflow.h>
 #include <cnl/_impl/type_traits/identical.h>
 
+#include <limits>
+
 namespace {
     namespace test_overflow_digits_positive {
         using cnl::_impl::overflow_digits;
@@ -631,10 +633,10 @@ namespace {
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
 
         static_assert(
-                test_subtract_positive{}(0, cnl::numeric_limits<int>::min()),
+                test_subtract_positive{}(0, std::numeric_limits<int>::min()),
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
         static_assert(
-                !test_subtract_positive{}(-1, cnl::numeric_limits<int>::min()),
+                !test_subtract_positive{}(-1, std::numeric_limits<int>::min()),
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
     }
 
@@ -656,10 +658,10 @@ namespace {
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
 
         static_assert(
-                !test_subtract_negative{}(0, cnl::numeric_limits<int>::min()),
+                !test_subtract_negative{}(0, std::numeric_limits<int>::min()),
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
         static_assert(
-                !test_subtract_negative{}(-1, cnl::numeric_limits<int>::min()),
+                !test_subtract_negative{}(-1, std::numeric_limits<int>::min()),
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
 
         static_assert(

@@ -11,6 +11,8 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
+
 namespace cnl {
     // safe elastic integer
     template<int IntegerDigits, overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = int>
@@ -20,7 +22,7 @@ namespace cnl {
     [[nodiscard]] constexpr auto make_safe_int(Input const& input)
     {
         return safe_integer<
-                numeric_limits<Input>::digits, OverflowTag,
+                std::numeric_limits<Input>::digits, OverflowTag,
                 Narrowest>{input};
     }
 }
@@ -41,15 +43,15 @@ namespace {
                 cnl::overflow_integer<cnl::elastic_integer<2, char>, cnl::saturated_overflow_tag>;
         static_assert(
                 identical(
-                        cnl::numeric_limits<safe_saturating_integer_2>::lowest(),
+                        std::numeric_limits<safe_saturating_integer_2>::lowest(),
                         safe_saturating_integer_2{-3}));
         static_assert(
                 identical(
-                        cnl::numeric_limits<safe_saturating_integer_2>::max(),
+                        std::numeric_limits<safe_saturating_integer_2>::max(),
                         safe_saturating_integer_2{3}));
         static_assert(
-                cnl::numeric_limits<safe_saturating_integer_2>::lowest()
-                < cnl::numeric_limits<safe_saturating_integer_2>::max());
+                std::numeric_limits<safe_saturating_integer_2>::lowest()
+                < std::numeric_limits<safe_saturating_integer_2>::max());
     }
 
     namespace test_comparison {
@@ -62,7 +64,7 @@ namespace {
     }
 
     namespace test_make_safe_int {
-        static_assert(identical(cnl::make_safe_int(cnl::int16{7}), cnl::safe_integer<15>{7}));
+        static_assert(identical(cnl::make_safe_int(std::int16_t{7}), cnl::safe_integer<15>{7}));
         static_assert(identical(cnl::safe_integer<34>{0}, cnl::safe_integer<34>{0}));
     }
 

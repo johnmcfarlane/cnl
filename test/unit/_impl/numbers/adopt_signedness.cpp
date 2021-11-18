@@ -12,23 +12,23 @@ namespace {
 
     static_assert(
             assert_same<
-                    cnl::_impl::adopt_signedness_t<cnl::int32, cnl::uint32>, cnl::uint32>::value);
+                    cnl::_impl::adopt_signedness_t<std::int32_t, std::uint32_t>, std::uint32_t>::value);
     static_assert(
-            assert_same<cnl::_impl::adopt_signedness_t<cnl::int32, cnl::int32>, cnl::int32>::value);
-    static_assert(
-            assert_same<
-                    cnl::_impl::adopt_signedness_t<cnl::int64, cnl::uint64>, cnl::uint64>::value);
+            assert_same<cnl::_impl::adopt_signedness_t<std::int32_t, std::int32_t>, std::int32_t>::value);
     static_assert(
             assert_same<
-                    cnl::_impl::adopt_signedness_t<cnl::int64, cnl::uint64>, cnl::uint64>::value);
+                    cnl::_impl::adopt_signedness_t<std::int64_t, std::uint64_t>, std::uint64_t>::value);
     static_assert(
             assert_same<
-                    cnl::_impl::adopt_signedness_t<cnl::uint32, cnl::uint32>, cnl::uint32>::value);
-    static_assert(
-            assert_same<cnl::_impl::adopt_signedness_t<cnl::uint32, cnl::int32>, cnl::int32>::value);
+                    cnl::_impl::adopt_signedness_t<std::int64_t, std::uint64_t>, std::uint64_t>::value);
     static_assert(
             assert_same<
-                    cnl::_impl::adopt_signedness_t<cnl::uint64, cnl::uint64>, cnl::uint64>::value);
+                    cnl::_impl::adopt_signedness_t<std::uint32_t, std::uint32_t>, std::uint32_t>::value);
     static_assert(
-            assert_same<cnl::_impl::adopt_signedness_t<cnl::uint64, cnl::int64>, cnl::int64>::value);
+            assert_same<cnl::_impl::adopt_signedness_t<std::uint32_t, std::int32_t>, std::int32_t>::value);
+    static_assert(
+            assert_same<
+                    cnl::_impl::adopt_signedness_t<std::uint64_t, std::uint64_t>, std::uint64_t>::value);
+    static_assert(
+            assert_same<cnl::_impl::adopt_signedness_t<std::uint64_t, std::int64_t>, std::int64_t>::value);
 }

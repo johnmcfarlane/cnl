@@ -22,14 +22,14 @@ namespace cnl {
 #if defined(CNL_INT128_ENABLED) && defined(CNL_IOSTREAMS_ENABLED)
         /// \brief output-streaming operator for native signed 128-bit integer
         /// \note must be used in same scope following a `using cnl::operator<<;` directive
-        inline auto& operator<<(std::ostream& out, int128 const n)
+        inline auto& operator<<(std::ostream& out, int128_t const n)
         {
             return out << cnl::to_chars_static(n).chars.data();
         }
 
         /// \brief output-streaming operator for native unsigned 128-bit integer
         /// \note must be used in same scope following a `using cnl::operator<<;` directive
-        inline auto& operator<<(std::ostream& out, uint128 const n)
+        inline auto& operator<<(std::ostream& out, uint128_t const n)
         {
             return out << cnl::to_chars_static(n).chars.data();
         }

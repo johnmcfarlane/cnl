@@ -22,13 +22,13 @@ namespace {
     namespace test_power_value {
         static_assert(
                 identical(
-                        cnl::wide_integer<16, cnl::int8>{256},
-                        cnl::_impl::power_value<cnl::wide_integer<16, cnl::uint8>, 8, 2>()),
+                        cnl::wide_integer<16, std::int8_t>{256},
+                        cnl::_impl::power_value<cnl::wide_integer<16, std::uint8_t>, 8, 2>()),
                 "cnl::_impl::power_value<cnl::wide_integer<16>, ...>");
         static_assert(
                 identical(
-                        cnl::wide_integer<100, cnl::uint8>{1} << 80,
-                        cnl::_impl::power_value<cnl::wide_integer<100, cnl::uint8>, 80, 2>()),
+                        cnl::wide_integer<100, std::uint8_t>{1} << 80,
+                        cnl::_impl::power_value<cnl::wide_integer<100, std::uint8_t>, 80, 2>()),
                 "cnl::_impl::power_value<cnl::wide_integer<16>, ...>");
     }
 
@@ -47,18 +47,18 @@ namespace {
 
         static_assert(
                 identical(
-                        cnl::wide_integer<16, cnl::int8>{0x12},
-                        cnl::scale<-8, 2, cnl::wide_integer<16, cnl::uint8>>{}(0x1234)),
+                        cnl::wide_integer<16, std::int8_t>{0x12},
+                        cnl::scale<-8, 2, cnl::wide_integer<16, std::uint8_t>>{}(0x1234)),
                 "cnl::_impl::scale test failed");
         static_assert(
                 identical(
-                        cnl::wide_integer<16, cnl::int8>{0x12},
-                        cnl::_impl::scale<-8, 2, cnl::wide_integer<16, cnl::uint8>>(0x1234)),
+                        cnl::wide_integer<16, std::int8_t>{0x12},
+                        cnl::_impl::scale<-8, 2, cnl::wide_integer<16, std::uint8_t>>(0x1234)),
                 "cnl::_impl::scale test failed");
         static_assert(
                 identical(
-                        cnl::wide_integer<16, cnl::int8>{-0x12},
-                        cnl::_impl::scale<-8, 2, cnl::wide_integer<16, cnl::int8>>(-0x1234)),
+                        cnl::wide_integer<16, std::int8_t>{-0x12},
+                        cnl::_impl::scale<-8, 2, cnl::wide_integer<16, std::int8_t>>(-0x1234)),
                 "cnl::_impl::scale test failed");
         static_assert(
                 identical(

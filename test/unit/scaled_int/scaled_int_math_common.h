@@ -15,6 +15,8 @@
 #include <array>
 #include <cstdint>
 
+#include <limits>
+
 TEST(math, FPTESTFORMAT)  // NOLINT
 {
     using fp = cnl::scaled_integer<int32_t, cnl::power<FPTESTEXP>>;
@@ -42,11 +44,11 @@ TEST(math, FPTESTFORMAT)  // NOLINT
     // TODO: it should be possible in a non-routine unit test to test over all
     // 2^32 values of a 32-bit integer
     constexpr std::array<double, 13> fracts{{
-            static_cast<double>(cnl::numeric_limits<fp>::min()),  // As close to zero as possible
+            static_cast<double>(std::numeric_limits<fp>::min()),  // As close to zero as possible
             0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
             std::min(
                     1., static_cast<double>(
-                                cnl::numeric_limits<fp>::max()))  // As close to one as possible
+                                std::numeric_limits<fp>::max()))  // As close to one as possible
     }};
 
     for (int i = -cnl::_impl::fractional_digits<fp>;

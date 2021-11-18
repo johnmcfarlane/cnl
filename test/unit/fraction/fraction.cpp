@@ -217,7 +217,7 @@ namespace {
     TEST(fraction, to_string)  // NOLINT
     {
         using namespace std::literals::string_literals;
-        ASSERT_EQ("5/7"s, cnl::to_string(cnl::fraction{cnl::int8{5}, cnl::uint8{7}}));
+        ASSERT_EQ("5/7"s, cnl::to_string(cnl::fraction{std::int8_t{5}, std::uint8_t{7}}));
     }
 
 #if defined(CNL_IOSTREAMS_ENABLED)
@@ -225,7 +225,7 @@ namespace {
     {
         using namespace std::literals::string_literals;
         std::stringstream s;
-        s << cnl::fraction{cnl::int8{5}, cnl::uint8{7}};
+        s << cnl::fraction{std::int8_t{5}, std::uint8_t{7}};
         ASSERT_EQ("5/7"s, s.str());
     }
 #endif

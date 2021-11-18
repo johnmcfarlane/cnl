@@ -16,26 +16,16 @@
 
 /// compositional numeric library
 namespace cnl {
-
-    using int8 = std::int8_t;
-    using uint8 = std::uint8_t;
-    using int16 = std::int16_t;
-    using uint16 = std::uint16_t;
-    using int32 = std::int32_t;
-    using uint32 = std::uint32_t;
-    using int64 = std::int64_t;
-    using uint64 = std::uint64_t;
-
 #if defined(CNL_INT128_ENABLED)
     // to disable 128-bit integer support, #define CNL_USE_INT128=0
-    using int128 = __int128;
-    using uint128 = unsigned __int128;
+    using int128_t = __int128;
+    using uint128_t = unsigned __int128;
 
-    using intmax = int128;
-    using uintmax = uint128;
+    using intmax_t = int128_t;
+    using uintmax_t = uint128_t;
 #else
-    using intmax = std::intmax_t;
-    using uintmax = std::uintmax_t;
+    using intmax_t = std::intmax_t;
+    using uintmax_t = std::uintmax_t;
 #endif  // defined(CNL_INT128_ENABLED)
 }
 

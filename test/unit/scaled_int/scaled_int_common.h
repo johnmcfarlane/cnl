@@ -22,6 +22,8 @@
 #include "to_chars.h"
 #include "to_string.h"
 
+#include <limits>
+
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
 
@@ -355,8 +357,8 @@ namespace ctor {
 #if defined(CNL_INT128_ENABLED)
     static_assert(
             identical(
-                    scaled_integer<uint128, cnl::power<-16>>(scaled_integer<uint64>{123}),
-                    scaled_integer<uint128, cnl::power<-16>>(123)),
+                    scaled_integer<uint128_t, cnl::power<-16>>(scaled_integer<uint64>{123}),
+                    scaled_integer<uint128_t, cnl::power<-16>>(123)),
             "scaled_integer<>::scaled_integer");
 #endif
 
@@ -1136,8 +1138,8 @@ static_assert(
                 scaled_integer<uint32, cnl::power<0>>{1}),
         "cnl::scaled_integer test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert(cnl::numeric_limits<uint128>::is_specialized);
-static_assert(cnl::numeric_limits<uint128>::is_integer);
+static_assert(std::numeric_limits<uint128_t>::is_specialized);
+static_assert(std::numeric_limits<uint128_t>::is_integer);
 #endif
 
 namespace test_shift_operator_right {
@@ -1247,8 +1249,8 @@ namespace test_bitwise_xor {
 ////////////////////////////////////////////////////////////////////////////////
 // quotient
 
-static_assert(cnl::numeric_limits<uint8>::max() / 5 == 51);
-static_assert(cnl::numeric_limits<uint8>::max() / 3 == 85);
+static_assert(std::numeric_limits<uint8>::max() / 5 == 51);
+static_assert(std::numeric_limits<uint8>::max() / 3 == 85);
 
 namespace test_quotient {
     static_assert(
@@ -1277,7 +1279,7 @@ namespace test_quotient {
                     cnl::quotient(
                             scaled_integer<uint64, cnl::power<0>>{0xFFFFFFFE00000001LL},
                             scaled_integer<uint64, cnl::power<-32>>{0xffffffffULL}),
-                    scaled_integer<uint128, cnl::power<-32>>{0xffffffffULL}),
+                    scaled_integer<uint128_t, cnl::power<-32>>{0xffffffffULL}),
             "cnl::scaled_integer test failed");
 #endif
     static_assert(
@@ -1298,22 +1300,22 @@ namespace test_quotient {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::numeric_limits<scaled_integer<>>
+// std::numeric_limits<scaled_integer<>>
 
 template<class Rep, int Exponent, class Min, class Max, class Lowest>
 [[nodiscard]] constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
 {
     using fp = scaled_integer<Rep, cnl::power<Exponent>>;
-    using nl = cnl::numeric_limits<fp>;
-    using rnl = cnl::numeric_limits<Rep>;
+    using nl = std::numeric_limits<fp>;
+    using rnl = std::numeric_limits<Rep>;
 
     static_assert(
-            cnl::numeric_limits<Rep>::is_specialized, "cnl::numeric_limits<Rep>::is_specialized");
-    static_assert(cnl::numeric_limits<Rep>::is_integer, "cnl::numeric_limits<Rep>::is_integer");
+            std::numeric_limits<Rep>::is_specialized, "std::numeric_limits<Rep>::is_specialized");
+    static_assert(std::numeric_limits<Rep>::is_integer, "std::numeric_limits<Rep>::is_integer");
 
     static_assert(
-            cnl::numeric_limits<fp>::is_specialized,
-            "cnl::numeric_limits<scaled_integer<Rep>>::is_specialized");
+            std::numeric_limits<fp>::is_specialized,
+            "std::numeric_limits<scaled_integer<Rep>>::is_specialized");
 
     static_assert(nl::is_specialized, "numeric_limits<scaled_integer>::is_specialized");
     static_assert(nl::is_signed == rnl::is_signed, "numeric_limits<scaled_integer>::is_signed");
@@ -1359,86 +1361,86 @@ template<class Rep, int Exponent, class Min, class Max, class Lowest>
 }
 
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_int, cnl::power<-256>>>::lowest() < -.1e-67,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_int, cnl::power<-256>>>::lowest() < -.1e-67,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_int, cnl::power<-256>>>::min() > 0.,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_int, cnl::power<-256>>>::min() > 0.,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_int, cnl::power<-256>>>::min() < .1e-76,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_int, cnl::power<-256>>>::min() < .1e-76,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_int, cnl::power<-256>>>::max() > .1e-67,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_int, cnl::power<-256>>>::max() > .1e-67,
+        "std::numeric_limits<scaled_integer> test failed");
 
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_unsigned, cnl::power<-256>>>::lowest() == 0.,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_unsigned, cnl::power<-256>>>::lowest() == 0.,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_unsigned, cnl::power<-256>>>::min() > 0.,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_unsigned, cnl::power<-256>>>::min() > 0.,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_unsigned, cnl::power<-256>>>::min() < .1e-76,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_unsigned, cnl::power<-256>>>::min() < .1e-76,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_unsigned, cnl::power<-256>>>::max() > .1e-67,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_unsigned, cnl::power<-256>>>::max() > .1e-67,
+        "std::numeric_limits<scaled_integer> test failed");
 
 static_assert(
         test_numeric_limits<test_signed, -16>(
-                1 / 65536., cnl::numeric_limits<test_signed>::max() / 65536.,
-                cnl::numeric_limits<test_signed>::lowest() / 65536.));
+                1 / 65536., std::numeric_limits<test_signed>::max() / 65536.,
+                std::numeric_limits<test_signed>::lowest() / 65536.));
 
 static_assert(
         test_numeric_limits<test_unsigned, -16>(
-                1 / 65536., cnl::numeric_limits<test_unsigned>::max() / 65536.,
-                cnl::numeric_limits<test_unsigned>::lowest() / 65536.));
+                1 / 65536., std::numeric_limits<test_unsigned>::max() / 65536.,
+                std::numeric_limits<test_unsigned>::lowest() / 65536.));
 
 static_assert(
         test_numeric_limits<test_signed, 0>(
-                1, cnl::numeric_limits<test_signed>::max(),
-                cnl::numeric_limits<test_signed>::lowest()));
+                1, std::numeric_limits<test_signed>::max(),
+                std::numeric_limits<test_signed>::lowest()));
 
 static_assert(
         test_numeric_limits<test_unsigned, 0U>(
-                1U, cnl::numeric_limits<test_unsigned>::max(),
-                cnl::numeric_limits<test_unsigned>::lowest()));
+                1U, std::numeric_limits<test_unsigned>::max(),
+                std::numeric_limits<test_unsigned>::lowest()));
 
 static_assert(
         test_numeric_limits<test_signed, 16>(
-                65536., cnl::numeric_limits<test_signed>::max() * 65536.,
-                cnl::numeric_limits<test_signed>::lowest() * 65536.));
+                65536., std::numeric_limits<test_signed>::max() * 65536.,
+                std::numeric_limits<test_signed>::lowest() * 65536.));
 
 static_assert(
         test_numeric_limits<test_unsigned, 16>(
-                65536., cnl::numeric_limits<test_unsigned>::max() * 65536.,
-                cnl::numeric_limits<test_unsigned>::lowest() * 65536.));
+                65536., std::numeric_limits<test_unsigned>::max() * 65536.,
+                std::numeric_limits<test_unsigned>::lowest() * 65536.));
 
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_int, cnl::power<256>>>::lowest() < -1.e86,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_int, cnl::power<256>>>::lowest() < -1.e86,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_int, cnl::power<256>>>::min() > 1.e77,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_int, cnl::power<256>>>::min() > 1.e77,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_int, cnl::power<256>>>::min() < 1.e78,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_int, cnl::power<256>>>::min() < 1.e78,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_int, cnl::power<256>>>::max() > 1.e86,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_int, cnl::power<256>>>::max() > 1.e86,
+        "std::numeric_limits<scaled_integer> test failed");
 
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_unsigned, cnl::power<256>>>::lowest() == 0.,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_unsigned, cnl::power<256>>>::lowest() == 0.,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_unsigned, cnl::power<256>>>::min() > 1.e77,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_unsigned, cnl::power<256>>>::min() > 1.e77,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_unsigned, cnl::power<256>>>::min() < 1.e78,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_unsigned, cnl::power<256>>>::min() < 1.e78,
+        "std::numeric_limits<scaled_integer> test failed");
 static_assert(
-        cnl::numeric_limits<scaled_integer<test_unsigned, cnl::power<256>>>::max() > 1.e86,
-        "cnl::numeric_limits<scaled_integer> test failed");
+        std::numeric_limits<scaled_integer<test_unsigned, cnl::power<256>>>::max() > 1.e86,
+        "std::numeric_limits<scaled_integer> test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::sqrt
@@ -1515,7 +1517,7 @@ struct scaled_integer_tester_outsize {
     static_assert(exponent == cnl::_impl::tag_of_t<scaled_integer>::exponent, "mismatched exponent");
 
     // simply assignment to and from underlying representation
-    using numeric_limits = cnl::numeric_limits<scaled_integer>;
+    using numeric_limits = std::numeric_limits<scaled_integer>;
     static constexpr scaled_integer min = cnl::_impl::from_rep<scaled_integer>(rep(1));
 #if !defined(_MSC_VER)
     static_assert(

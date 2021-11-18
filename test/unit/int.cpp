@@ -27,6 +27,6 @@ static_assert(!cnl::integer<void>);
 static_assert(!cnl::integer<std::pair<int, int>>);
 
 #if defined(CNL_INT128_ENABLED)
-static_assert(cnl::integer<cnl::int128>);
-static_assert(cnl::integer<cnl::uint128>);
+static_assert(cnl::integer<cnl::int128_t>);
+static_assert(cnl::integer<cnl::uint128_t>);
 #endif

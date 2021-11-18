@@ -8,7 +8,6 @@
 #define CNL_IMPL_TO_CHARS_H
 
 #include "../../integer.h"
-#include "../../numeric_limits.h"
 #include "../cnl_assert.h"
 #include "../narrow_cast.h"
 #include "../num_traits/digits.h"
@@ -19,6 +18,7 @@
 
 #include <array>
 #include <charconv>
+#include <limits>
 #include <string_view>
 #include <system_error>
 
@@ -59,7 +59,7 @@ namespace cnl {
                 return nullptr;
             }
 
-            // Note: linker may struggle with combination of clang, int128 and sanitizer.
+            // Note: linker may struggle with combination of clang, int128_t and sanitizer.
             // See clang.cmake
             auto const remainder = value - (quotient * 10);
             *next_ptr = itoc(remainder);
@@ -91,7 +91,7 @@ namespace cnl {
                     *first = '-';
 
                     // implementation does not support the most negative number
-                    CNL_ASSERT(-numeric_limits<decltype(-value)>::max() <= value);
+                    CNL_ASSERT(-std::numeric_limits<decltype(-value)>::max() <= value);
 
                     return to_chars_positive(first + 1, last, -value);
                 }

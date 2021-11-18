@@ -158,8 +158,8 @@ namespace {
 
         static_assert(
                 identical(
-                        cnl::wide_integer<16, cnl::int8>{123 << 4},
-                        cnl::wide_integer<16, cnl::uint8>{123} << 4),
-                "cnl::wide_integer<16, uint8> << cnl::constant");
+                        cnl::wide_integer<16, std::int8_t>{123 << 4},
+                        cnl::wide_integer<16, std::uint8_t>{123} << 4),
+                "cnl::wide_integer<16, std::uint8_t> << cnl::constant");
     }
 }

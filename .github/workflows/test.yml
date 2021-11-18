@@ -45,7 +45,7 @@ jobs:
 
           # Clang-10
           - name: clang-10
-            linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
+            linux-container: johnmcfarlane/cnl_ci:clang-10-libstdcpp
             os-version: ubuntu-20.04
             profile: linux-clang-10
 

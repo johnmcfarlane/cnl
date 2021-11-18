@@ -9,13 +9,13 @@
 
 #include "../../constant.h"
 #include "../numbers/set_signedness.h"
-#include "../type_traits/is_integral.h"
 #include "../type_traits/remove_cvref.h"
 #include "../used_digits.h"
 #include "digits.h"
 #include "set_digits.h"
 
 #include <algorithm>
+#include <concepts>
 
 namespace cnl {
     namespace _impl {
@@ -33,12 +33,12 @@ namespace cnl {
         void operator()(Value const&) const;
     };
 
-    template<_impl::integral Number, class Value>
+    template<std::integral Number, class Value>
     struct from_value<Number, Value>
         : _impl::from_value_simple<Value, Value> {
     };
 
-    template<_impl::integral Number, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    template<std::integral Number, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<Number, constant<Value>> {
     private:
         using result_type = set_digits_t<

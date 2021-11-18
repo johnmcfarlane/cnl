@@ -38,7 +38,7 @@ namespace {
     namespace test_make_static_number {
         using namespace cnl::literals;
         static_assert(
-                identical(cnl::make_static_number(cnl::int16{7}), cnl::static_number<15>{7}));
+                identical(cnl::make_static_number(std::int16_t{7}), cnl::static_number<15>{7}));
         static_assert(identical(cnl::make_static_number(444_c), cnl::static_number<7, 2>{444}));
     }
 

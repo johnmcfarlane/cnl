@@ -8,8 +8,8 @@
 #define CNL_IMPL_USED_DIGITS_H
 
 #include "../integer.h"
-#include "../numeric_limits.h"
 
+#include <limits>
 #include <type_traits>
 
 namespace cnl {
@@ -45,7 +45,7 @@ namespace cnl {
 
         template<integer Integer>
         [[nodiscard]] constexpr auto used_digits(
-                Integer const& value, int radix = numeric_limits<Integer>::radix)
+                Integer const& value, int radix = std::numeric_limits<Integer>::radix)
         {
             return used_digits_signed<std::is_signed<Integer>::value>{}(value, radix);
         }

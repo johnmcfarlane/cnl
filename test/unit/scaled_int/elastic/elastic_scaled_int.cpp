@@ -14,6 +14,8 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
+
 using std::is_same;
 
 using cnl::elastic_scaled_integer;
@@ -242,8 +244,8 @@ namespace test_abs {
 template<class T, bool IsSigned>
 struct test_traits {
     static_assert(
-            cnl::numeric_limits<T>::is_signed == IsSigned,
-            "cnl::numeric_limits<T>::is_signed fails for give type, T");
+            std::numeric_limits<T>::is_signed == IsSigned,
+            "std::numeric_limits<T>::is_signed fails for give type, T");
     static_assert(
             cnl::numbers::signedness_v<T> == IsSigned);
     static_assert(
@@ -252,21 +254,21 @@ struct test_traits {
             !cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<T, false>>);
 };
 
-template struct test_traits<cnl::uint8, false>;
+template struct test_traits<std::uint8_t, false>;
 
-template struct test_traits<cnl::uint16, false>;
+template struct test_traits<std::uint16_t, false>;
 
-template struct test_traits<cnl::uint32, false>;
+template struct test_traits<std::uint32_t, false>;
 
-template struct test_traits<cnl::uint64, false>;
+template struct test_traits<std::uint64_t, false>;
 
-template struct test_traits<cnl::int8, true>;
+template struct test_traits<std::int8_t, true>;
 
-template struct test_traits<cnl::int16, true>;
+template struct test_traits<std::int16_t, true>;
 
-template struct test_traits<cnl::int32, true>;
+template struct test_traits<std::int32_t, true>;
 
-template struct test_traits<cnl::int64, true>;
+template struct test_traits<std::int64_t, true>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // useful functions
@@ -419,7 +421,7 @@ struct positive_elastic_test : number_test<Elastic> {
     // core definitions
     using elastic_type = Elastic;
     using rep = cnl::_impl::rep_of_t<elastic_type>;
-    using numeric_limits = cnl::numeric_limits<elastic_type>;
+    using numeric_limits = std::numeric_limits<elastic_type>;
 
     using signed_type = cnl::numbers::set_signedness_t<elastic_type, true>;
     using unsigned_type = cnl::numbers::set_signedness_t<elastic_type, false>;
@@ -442,13 +444,13 @@ struct positive_elastic_test : number_test<Elastic> {
     // test traits
 
     static_assert(
-            cnl::numeric_limits<elastic_type>::is_signed == cnl::numeric_limits<rep>::is_signed,
+            std::numeric_limits<elastic_type>::is_signed == std::numeric_limits<rep>::is_signed,
             "signedness of elastic_scaled_integer type differs from underlying fixed-point type");
     static_assert(
-            cnl::numeric_limits<signed_type>::is_signed,
+            std::numeric_limits<signed_type>::is_signed,
             "signed version of elastic_scaled_integer type is not signed");
     static_assert(
-            !cnl::numeric_limits<unsigned_type>::is_signed,
+            !std::numeric_limits<unsigned_type>::is_signed,
             "unsigned version of elastic_scaled_integer type is signed");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -459,28 +461,28 @@ struct positive_elastic_test : number_test<Elastic> {
             "not enough digits in rep type to represent elastic_scaled_integer values");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test cnl::numeric_limits<elastic_scaled_integer>
+    // test std::numeric_limits<elastic_scaled_integer>
 
 #if !defined(_MSC_VER)
     static_assert(
-            min == cnl::_impl::from_rep<elastic_type>(rep{1}), "cnl::numeric_limits test failed");
+            min == cnl::_impl::from_rep<elastic_type>(rep{1}), "std::numeric_limits test failed");
 #endif
-    static_assert(!is_less_than(max, min), "cnl::numeric_limits test failed");
-    static_assert(is_less_than(zero, min), "cnl::numeric_limits test failed");
-    static_assert(!is_less_than(zero, lowest), "cnl::numeric_limits test failed");
-    static_assert(is_less_than(lowest, min), "cnl::numeric_limits test failed");
+    static_assert(!is_less_than(max, min), "std::numeric_limits test failed");
+    static_assert(is_less_than(zero, min), "std::numeric_limits test failed");
+    static_assert(!is_less_than(zero, lowest), "std::numeric_limits test failed");
+    static_assert(is_less_than(lowest, min), "std::numeric_limits test failed");
     static_assert(
-            cnl::numeric_limits<elastic_type>::is_signed == numeric_limits::is_signed,
-            "cnl::numeric_limits test failed");
+            std::numeric_limits<elastic_type>::is_signed == numeric_limits::is_signed,
+            "std::numeric_limits test failed");
     static_assert(
             !numeric_limits::is_integer || (elastic_type{.5} != .5),
-            "cnl::numeric_limits test failed");
+            "std::numeric_limits test failed");
 
     static constexpr rep max_integer{to_rep(max)};
 #if !defined(_MSC_VER)
     static_assert(
             bit_count<cnl::_impl::rep_of_t<rep>>(to_rep(max_integer)) == digits,
-            "cnl::numeric_limits test failed");
+            "std::numeric_limits test failed");
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -507,11 +509,11 @@ struct positive_elastic_test : number_test<Elastic> {
     // test operator+
 
     static_assert(
-            cnl::numeric_limits<decltype(zero + zero)>::is_signed
-                    == cnl::numeric_limits<elastic_type>::is_signed,
+            std::numeric_limits<decltype(zero + zero)>::is_signed
+                    == std::numeric_limits<elastic_type>::is_signed,
             "signedness is lost during add");
     static_assert(
-            cnl::numeric_limits<decltype(signed_type{zero} + unsigned_type{zero})>::is_signed,
+            std::numeric_limits<decltype(signed_type{zero} + unsigned_type{zero})>::is_signed,
             "signedness is lost during add");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -521,10 +523,10 @@ struct positive_elastic_test : number_test<Elastic> {
 
     static_assert(
             // NOLINTNEXTLINE(misc-redundant-expression)
-            cnl::numeric_limits<decltype(zero - zero)>::is_signed,
+            std::numeric_limits<decltype(zero - zero)>::is_signed,
             "signedness is lost during subtract");
     static_assert(
-            cnl::numeric_limits<decltype(signed_type{zero} - unsigned_type{zero})>::is_signed,
+            std::numeric_limits<decltype(signed_type{zero} - unsigned_type{zero})>::is_signed,
             "signedness is lost during subtract");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -542,15 +544,15 @@ struct positive_elastic_test : number_test<Elastic> {
             "operator* test failed");
 
     static_assert(
-            cnl::numeric_limits<decltype(zero * zero)>::is_signed
-                    == cnl::numeric_limits<decltype(zero)>::is_signed,
+            std::numeric_limits<decltype(zero * zero)>::is_signed
+                    == std::numeric_limits<decltype(zero)>::is_signed,
             "signedness is lost during multiply");
     static_assert(
-            cnl::numeric_limits<decltype(zero * zero)>::is_signed
-                    == cnl::numeric_limits<elastic_type>::is_signed,
+            std::numeric_limits<decltype(zero * zero)>::is_signed
+                    == std::numeric_limits<elastic_type>::is_signed,
             "signedness is lost during multiply");
     static_assert(
-            cnl::numeric_limits<decltype(signed_type{zero} * unsigned_type{zero})>::is_signed,
+            std::numeric_limits<decltype(signed_type{zero} * unsigned_type{zero})>::is_signed,
             "signedness is lost during multiply");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -569,11 +571,11 @@ struct positive_elastic_test : number_test<Elastic> {
             "operator/ test failed");
     static_assert(
             // NOLINTNEXTLINE(misc-redundant-expression)
-            cnl::numeric_limits<decltype(zero / zero)>::is_signed
-                    == cnl::numeric_limits<elastic_type>::is_signed,
+            std::numeric_limits<decltype(zero / zero)>::is_signed
+                    == std::numeric_limits<elastic_type>::is_signed,
             "signedness is lost during multiply");
     static_assert(
-            cnl::numeric_limits<decltype(signed_type{zero} / unsigned_type{zero})>::is_signed,
+            std::numeric_limits<decltype(signed_type{zero} / unsigned_type{zero})>::is_signed,
             "signedness is lost during multiply");
 #if !defined(_MSC_VER)
     static_assert(
@@ -676,7 +678,7 @@ struct signed_elastic_test
 
     using elastic_type = Elastic;
     using rep = cnl::_impl::rep_of_t<elastic_type>;
-    using numeric_limits = cnl::numeric_limits<elastic_type>;
+    using numeric_limits = std::numeric_limits<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
@@ -693,22 +695,22 @@ struct signed_elastic_test
 
     // not much point testing negative value properties of unsigned type, eh?
     static_assert(
-            cnl::numeric_limits<elastic_type>::is_signed,
+            std::numeric_limits<elastic_type>::is_signed,
             "subject of test class is not reported as signed");
     static_assert(
             is_same<cnl::numbers::set_signedness_t<elastic_type, true>, elastic_type>::value);
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test cnl::numeric_limits<elastic_scaled_integer>
+    // test std::numeric_limits<elastic_scaled_integer>
 
-    static_assert(is_less_than(negative_min, min), "cnl::numeric_limits test failed");
+    static_assert(is_less_than(negative_min, min), "std::numeric_limits test failed");
     static_assert(is_equal_to(-max, lowest), "comparison test error");
     // static_assert(is_equal_to(elastic_type{min+max+lowest}, elastic_type{1}), "comparison test
     // error");
-    static_assert(numeric_limits::is_signed, "cnl::numeric_limits test failed");
+    static_assert(numeric_limits::is_signed, "std::numeric_limits test failed");
     static_assert(
             !numeric_limits::is_integer || elastic_type{-.5} != -.5,
-            "cnl::numeric_limits test failed");
+            "std::numeric_limits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test comparison operators
@@ -751,7 +753,7 @@ struct unsigned_elastic_test
     // core definitions
 
     using elastic_type = Elastic;
-    using numeric_limits = cnl::numeric_limits<elastic_type>;
+    using numeric_limits = std::numeric_limits<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
@@ -762,10 +764,10 @@ struct unsigned_elastic_test
     static constexpr elastic_type lowest{numeric_limits::lowest()};
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test cnl::numeric_limits<elastic_scaled_integer>
+    // test std::numeric_limits<elastic_scaled_integer>
 
-    static_assert(is_equal_to(lowest, zero), "cnl::numeric_limits test failed");
-    static_assert(is_less_than(lowest, min), "cnl::numeric_limits test failed");
+    static_assert(is_equal_to(lowest, zero), "std::numeric_limits test failed");
+    static_assert(is_less_than(lowest, min), "std::numeric_limits test failed");
 };
 
 ////////////////////////////////////////////////////////////////////////////////

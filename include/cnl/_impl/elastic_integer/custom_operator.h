@@ -11,6 +11,7 @@
 #include "definition.h"
 
 #include <algorithm>
+#include <limits>
 
 /// compositional numeric library
 namespace cnl {
@@ -48,13 +49,13 @@ namespace cnl {
         struct common_elastic_type<elastic_integer<Digits1, Narrowest1>, Rhs>
             : common_elastic_type<
                       elastic_integer<Digits1, Narrowest1>,
-                      elastic_integer<numeric_limits<Rhs>::digits, Rhs>> {
+                      elastic_integer<std::numeric_limits<Rhs>::digits, Rhs>> {
         };
 
         template<class Lhs, int Digits2, class Narrowest2>
         struct common_elastic_type<Lhs, elastic_integer<Digits2, Narrowest2>>
             : common_elastic_type<
-                      elastic_integer<numeric_limits<Lhs>::digits, Lhs>,
+                      elastic_integer<std::numeric_limits<Lhs>::digits, Lhs>,
                       elastic_integer<Digits2, Narrowest2>> {
         };
 
@@ -165,7 +166,7 @@ namespace cnl {
             using rep = _impl::rep_of_t<elastic_integer>;
             return _impl::from_rep<elastic_integer>(static_cast<rep>(
                     _impl::to_rep(rhs)
-                    ^ ((static_cast<rep>(~0)) >> (numeric_limits<rep>::digits - RhsDigits))));
+                    ^ ((static_cast<rep>(~0)) >> (std::numeric_limits<rep>::digits - RhsDigits))));
         }
     };
 }

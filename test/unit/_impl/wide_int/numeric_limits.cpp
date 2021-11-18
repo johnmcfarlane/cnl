@@ -12,24 +12,26 @@
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/wide_integer.h>
 
+#include <limits>
+
 using cnl::_impl::identical;
 
 namespace {
     static_assert(
-            cnl::numeric_limits<cnl::wide_integer<>>::is_specialized,
-            "cnl::numeric_limits<cnl::wide_integer>::is_specialized");
+            std::numeric_limits<cnl::wide_integer<>>::is_specialized,
+            "std::numeric_limits<cnl::wide_integer>::is_specialized");
     static_assert(
             identical(
                     cnl::wide_integer<8, unsigned>{255},
-                    cnl::numeric_limits<cnl::wide_integer<8, unsigned>>::max()),
-            "cnl::numeric_limits<cnl::wide_integer>::max");
+                    std::numeric_limits<cnl::wide_integer<8, unsigned>>::max()),
+            "std::numeric_limits<cnl::wide_integer>::max");
     static_assert(
             identical(
-                    cnl::wide_integer<10>{1023}, cnl::numeric_limits<cnl::wide_integer<10>>::max()));
+                    cnl::wide_integer<10>{1023}, std::numeric_limits<cnl::wide_integer<10>>::max()));
     static_assert(
             identical(
-                    cnl::wide_integer<6>{-64}, cnl::numeric_limits<cnl::wide_integer<6>>::lowest()));
+                    cnl::wide_integer<6>{-64}, std::numeric_limits<cnl::wide_integer<6>>::lowest()));
     static_assert(
-            cnl::numeric_limits<cnl::wide_integer<100>>::lowest()
-            < -cnl::numeric_limits<cnl::wide_integer<100>>::max());
+            std::numeric_limits<cnl::wide_integer<100>>::lowest()
+            < -std::numeric_limits<cnl::wide_integer<100>>::max());
 }

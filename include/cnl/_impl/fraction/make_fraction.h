@@ -8,11 +8,11 @@
 #define CNL_IMPL_FRACTION_MAKE_FRACTION_H
 
 #include "../../floating_point.h"
-#include "../../numeric_limits.h"
 #include "../cnl_assert.h"
 #include "../numbers/set_signedness.h"
 #include "definition.h"
 
+#include <limits>
 #include <type_traits>
 
 /// compositional numeric library
@@ -55,7 +55,7 @@ namespace cnl {
             if (d < FloatingPoint{}) {
                 return cnl::fraction<Numerator, Denominator>(-make_fraction<int_t>(-d));
             }
-            CNL_ASSERT(d <= FloatingPoint(cnl::numeric_limits<int_t>::max()));
+            CNL_ASSERT(d <= FloatingPoint(std::numeric_limits<int_t>::max()));
             auto left{fraction<int_t>(int_t(d), 1)};
             auto right{fraction<int_t>{int_t(left.numerator + 1), 1}};
             if (FloatingPoint(left) == d) {
@@ -84,21 +84,21 @@ namespace cnl {
                     auto const divisor{
                             FloatingPoint(n.numerator) - d * FloatingPoint(n.denominator)};
                     auto const n0{dividend / divisor};
-                    CNL_ASSERT(n0 <= FloatingPoint(cnl::numeric_limits<int_t>::max()));
+                    CNL_ASSERT(n0 <= FloatingPoint(std::numeric_limits<int_t>::max()));
 
                     auto const n1{
                             ((FloatingPoint(f.denominator) + FloatingPoint(n.denominator) * n0)
-                             > FloatingPoint(cnl::numeric_limits<int_t>::max()))
+                             > FloatingPoint(std::numeric_limits<int_t>::max()))
                                     ? int_t(FloatingPoint(
-                                                    cnl::numeric_limits<int_t>::max()
+                                                    std::numeric_limits<int_t>::max()
                                                     - f.denominator)
                                             / FloatingPoint(n.denominator))
                                     : int_t(n0)};
                     auto const n2{
                             ((FloatingPoint(f.numerator) + FloatingPoint(n.numerator * n1))
-                             > FloatingPoint(cnl::numeric_limits<int_t>::max()))
+                             > FloatingPoint(std::numeric_limits<int_t>::max()))
                                     ? int_t(FloatingPoint(
-                                                    cnl::numeric_limits<int_t>::max() - f.numerator
+                                                    std::numeric_limits<int_t>::max() - f.numerator
                                                     - n.numerator)
                                             / FloatingPoint(n.numerator))
                                     : n1};

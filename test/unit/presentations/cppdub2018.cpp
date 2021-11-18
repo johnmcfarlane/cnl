@@ -110,7 +110,7 @@ namespace i {
     constexpr auto d = scaled_integer<int, power<-8>>{2.25};
     constexpr auto q = cnl::quotient(n, d);
 
-    static_assert(std::is_same<decltype(q), const scaled_integer<cnl::int64, power<-31>>>::value);
+    static_assert(std::is_same<decltype(q), const scaled_integer<std::int64_t, power<-31>>>::value);
     static_assert(q == 0.66666666651144623756408691);
 }
 
@@ -194,7 +194,7 @@ namespace o {
 
     constexpr auto b = make_scaled_integer(0b11111111111111111111111111111111111111111_c);
     static_assert(cnl::_impl::identical(
-            scaled_integer<cnl::int64, power<>>{0b11111111111111111111111111111111111111111L}, b));
+            scaled_integer<std::int64_t, power<>>{0b11111111111111111111111111111111111111111L}, b));
 
     constexpr auto c = make_elastic_integer(2018_c);
     static_assert(cnl::_impl::identical(elastic_integer<11>{2018}, c));

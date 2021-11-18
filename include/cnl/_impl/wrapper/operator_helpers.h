@@ -11,6 +11,7 @@
 #include "is_wrapper.h"
 #include "rep_of.h"
 
+#include <limits>
 #include <type_traits>
 
 /// compositional numeric library
@@ -57,7 +58,7 @@ namespace cnl {
         template<typename Rep>
         struct can_be_wrapped_by_number
             : std::integral_constant<
-                      bool, cnl::numeric_limits<Rep>::is_specialized
+                      bool, std::numeric_limits<Rep>::is_specialized
                                     && !std::is_floating_point<Rep>::value> {
         };
 

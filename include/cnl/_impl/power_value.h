@@ -11,6 +11,7 @@
 #include "num_traits/digits.h"
 #include "num_traits/from_value.h"
 
+#include <limits>
 #include <type_traits>
 
 /// compositional numeric library
@@ -22,7 +23,7 @@ namespace cnl {
         template<
                 typename S, int Exponent, int Radix, bool PositiveExponent = (0 < Exponent),
                 bool OddExponent = ((Exponent & 1) != 0),
-                bool FloatingPointS = numeric_limits<S>::is_iec559>
+                bool FloatingPointS = std::numeric_limits<S>::is_iec559>
         struct power_value_fn;
 
         template<typename S, int Radix>
@@ -37,7 +38,7 @@ namespace cnl {
         struct power_value_fn<S, Exponent, 2, true, OddExponent, false> {
             [[nodiscard]] constexpr auto operator()() const
             {
-                using result_numeric_limits = numeric_limits<decltype(
+                using result_numeric_limits = std::numeric_limits<decltype(
                         decltype(std::declval<S>() >> std::declval<constant<digits_v<S> - 1>>()){1}
                         << constant<Exponent>{})>;
                 static_assert(

@@ -7,13 +7,13 @@
 #if !defined(CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H
 
-#include "../../numeric_limits.h"
 #include "../custom_operator/native_tag.h"
 #include "native_rounding_tag.h"
 #include "nearest_rounding_tag.h"
 #include "neg_inf_rounding_tag.h"
 #include "tie_to_pos_inf_rounding_tag.h"
 
+#include <limits>
 #include <type_traits>
 
 /// compositional numeric library
@@ -22,7 +22,7 @@ namespace cnl {
         template<class N>
         struct is_arithmetic_or_integer
             : std::integral_constant<
-                      bool, std::is_floating_point<N>::value || numeric_limits<N>::is_integer> {
+                      bool, std::is_floating_point<N>::value || std::numeric_limits<N>::is_integer> {
         };
 
         template<class N1, class N2>
@@ -50,7 +50,7 @@ namespace cnl {
     requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, op_value<Source, SrcTag>, op_value<Destination, nearest_rounding_tag>> {
         [[nodiscard]] constexpr auto operator()(Source const& from) const
         {
-            return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
+            return std::numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
                          ? static_cast<Destination>(
                                  static_cast<long double>(from) + ((from >= Source{}) ? .5L : -.5L))
                          : static_cast<Destination>(from);
@@ -76,7 +76,7 @@ namespace cnl {
     public:
         [[nodiscard]] constexpr auto operator()(Source const& from) const
         {
-            return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
+            return std::numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
                          ? static_cast<Destination>(floor(from + static_cast<Source>(.5L)))
                          : static_cast<Destination>(from);
         }
@@ -101,7 +101,7 @@ namespace cnl {
     public:
         [[nodiscard]] constexpr auto operator()(Source const& from) const
         {
-            return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
+            return std::numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
                          ? static_cast<Destination>(floor(from))
                          : static_cast<Destination>(from);
         }

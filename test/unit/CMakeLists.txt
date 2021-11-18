@@ -15,7 +15,6 @@ set(test_sources
         cstdint.cpp
         fixed_point.cpp
         int.cpp
-        limits.cpp
         narrow_cast.cpp
         num_traits.cpp
         numeric.cpp

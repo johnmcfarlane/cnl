@@ -22,10 +22,10 @@
 #if defined(CNL_INT128_ENABLED)
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CNL_INTMAX_C(N) (::cnl::_impl::parse<::cnl::intmax>(CNL_STR(N)))
+#define CNL_INTMAX_C(N) (::cnl::_impl::parse<::cnl::intmax_t>(CNL_STR(N)))
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CNL_UINTMAX_C(N) (::cnl::_impl::parse<::cnl::uintmax>(CNL_STR(N)))
+#define CNL_UINTMAX_C(N) (::cnl::_impl::parse<::cnl::uintmax_t>(CNL_STR(N)))
 
 #else
 

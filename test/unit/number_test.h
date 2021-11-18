@@ -10,11 +10,12 @@
 #include <cnl/floating_point.h>
 #include <cnl/num_traits.h>
 #include <cnl/numeric.h>
-#include <cnl/numeric_limits.h>
 
 #include <cnl/_impl/config.h>
 #include <cnl/_impl/type_traits/identical.h>
 
+#include <concepts>
+#include <limits>
 #include <type_traits>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +51,7 @@ using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
 template<class Number>
 struct number_test {
     using value_type = Number;
-    using numeric_limits = cnl::numeric_limits<value_type>;
+    using numeric_limits = std::numeric_limits<value_type>;
 
     static constexpr value_type zero = cnl::from_rep<value_type, int>{}(0);
 #if defined(_MSC_VER)
@@ -60,7 +61,7 @@ struct number_test {
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::numeric_limits
+    // std::numeric_limits
 
     static_assert(
             numeric_limits::is_specialized, "numeric_limits is not specialized for this type");
@@ -141,7 +142,7 @@ struct number_test {
 
     // would not pass for boost.multiprecision
     static_assert(
-            cnl::is_composite_v<value_type> != (cnl::is_floating_point_v<value_type> || cnl::_impl::is_integral_v<value_type>),
+            cnl::is_composite_v<value_type> != (cnl::is_floating_point_v<value_type> || std::is_integral_v<value_type>),
             "is_composite test failed");
 
     static constexpr auto lowest_from_rep =
@@ -182,18 +183,18 @@ struct number_test_by_rep
     : number_test_suite<NumericType<char>, TypeSpecificTestSuite>
     ,
 #if defined(CNL_INT128_ENABLED)
-      number_test_suite<NumericType<cnl::int128>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::uint128>, TypeSpecificTestSuite>
+      number_test_suite<NumericType<cnl::int128_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<cnl::uint128_t>, TypeSpecificTestSuite>
     ,
 #endif
-      number_test_suite<NumericType<cnl::int8>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::uint8>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::int16>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::uint16>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::int32>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::uint32>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::int64>, TypeSpecificTestSuite>
-    , number_test_suite<NumericType<cnl::uint64>, TypeSpecificTestSuite> {
+      number_test_suite<NumericType<std::int8_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::uint8_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::int16_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::uint16_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::int32_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::uint32_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::int64_t>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<std::uint64_t>, TypeSpecificTestSuite> {
 };
 
 // given a rounding tag, invokes number_test_suite for integers of all built-in types

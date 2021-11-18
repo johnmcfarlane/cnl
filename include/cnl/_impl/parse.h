@@ -44,27 +44,27 @@ namespace cnl {
         template<typename Sum>
         using scale_op_t = Sum (*)(Sum const&);
 
-        constexpr auto make_scale_op(int base) -> scale_op_t<int64>
+        constexpr auto make_scale_op(int base) -> scale_op_t<std::int64_t>
         {
             switch (base) {
             case 2:
-                return [](int64 const& sum) {
-                    return int64{(sum << 1)};
+                return [](std::int64_t const& sum) {
+                    return std::int64_t{(sum << 1)};
                 };
             case 8:
-                return [](int64 const& sum) {
-                    return int64{(sum << 3)};
+                return [](std::int64_t const& sum) {
+                    return std::int64_t{(sum << 3)};
                 };
             case 10:
-                return [](int64 const& sum) {
-                    return int64{(sum * 10)};
+                return [](std::int64_t const& sum) {
+                    return std::int64_t{(sum * 10)};
                 };
             case 16:
-                return [](int64 const& sum) {
-                    return int64{(sum << 4)};
+                return [](std::int64_t const& sum) {
+                    return std::int64_t{(sum << 4)};
                 };
             default:
-                return unreachable<scale_op_t<int64>>("unsupported number base");
+                return unreachable<scale_op_t<std::int64_t>>("unsupported number base");
             }
         }
 
@@ -259,7 +259,7 @@ namespace cnl {
             auto const parse_int64 = [&num_digits, &first,
                                       char_to_digit = make_char_to_digit(is_negative, base),
                                       scale_op = make_scale_op(base)](int n) {
-                int64 init{};
+                std::int64_t init{};
                 num_digits -= n;
                 CNL_ASSERT(num_digits >= 0);
                 while (n) {

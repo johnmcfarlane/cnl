@@ -17,6 +17,6 @@ static_assert(identical(0xB505U, cnl::sqrt(0x80001219U)));
 static_assert(identical(0xB504U, cnl::sqrt(0x80001218U)));
 static_assert(identical(0xB504U, cnl::sqrt(0x80000000U)));
 static_assert(identical(0xB504, cnl::sqrt(0x7fffffff)));
-static_assert(identical(100, cnl::sqrt(cnl::int16{10000})));
-static_assert(identical(10, cnl::sqrt(cnl::int8{100})));
+static_assert(identical(100, cnl::sqrt(std::int16_t{10000})));
+static_assert(identical(10, cnl::sqrt(std::int8_t{100})));
 static_assert(identical(0, cnl::sqrt(0)));

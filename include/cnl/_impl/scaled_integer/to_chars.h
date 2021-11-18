@@ -8,7 +8,6 @@
 #define CNL_IMPL_SCALED_INTEGER_TO_CHARS_H
 
 #include "../../integer.h"
-#include "../../numeric_limits.h"
 #include "../../rounding_integer.h"
 #include "../charconv/constants.h"
 #include "../charconv/descale.h"
@@ -307,7 +306,7 @@ namespace cnl {
             return std::to_chars_result{first + 1, std::errc{}};
         }
 
-        using significand_type = std::conditional_t<(digits_v<Rep> > digits_v<int64>), Rep, int64>;
+        using significand_type = std::conditional_t<(digits_v<Rep> > digits_v<std::int64_t>), Rep, std::int64_t>;
         auto const descaled{_impl::descale<significand_type, 10>(
                 _impl::to_rep(value), power<Exponent, Radix>{})};
 

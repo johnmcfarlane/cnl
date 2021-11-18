@@ -102,7 +102,7 @@ namespace {
 
 #if defined(CNL_TEMPLATE_AUTO)
         static_assert(
-                std::is_same<cnl::uint16, cnl::constant<cnl::uint16{1234}>::value_type>::value);
+                std::is_same<std::uint16_t, cnl::constant<std::uint16_t{1234}>::value_type>::value);
 #endif
     }
 
@@ -110,40 +110,40 @@ namespace {
 #if defined(CNL_TEMPLATE_AUTO)
         static_assert(identical(
                 cnl::constant<int{11}>{},
-                cnl::constant<cnl::uint8{6}>{} + cnl::constant<cnl::int8{5}>{}));
+                cnl::constant<std::uint8_t{6}>{} + cnl::constant<std::int8_t{5}>{}));
         static_assert(identical(
                 cnl::constant<int{-115}>{},
-                cnl::constant<short{-23}>{} * cnl::constant<cnl::uint8{5}>{}));
+                cnl::constant<short{-23}>{} * cnl::constant<std::uint8_t{5}>{}));
         static_assert(identical(
-                cnl::constant<cnl::uint64{0x5F5FFAAF5A0FFFFF}>{},
-                cnl::constant<cnl::uint64{0x5A0F5A0F5A0F5A0F}>{}
-                        | cnl::constant<cnl::uint64{0x5555AAAA0000FFFF}>{}));
+                cnl::constant<std::uint64_t{0x5F5FFAAF5A0FFFFF}>{},
+                cnl::constant<std::uint64_t{0x5A0F5A0F5A0F5A0F}>{}
+                        | cnl::constant<std::uint64_t{0x5555AAAA0000FFFF}>{}));
         static_assert(identical(
-                cnl::constant<cnl::uint64{0x50050A0A00005a0F}>{},
-                cnl::constant<cnl::uint64{0x5A0F5A0F5A0F5A0F}>{}
-                        & cnl::constant<cnl::uint64{0x5555AAAA0000FFFF}>{}));
+                cnl::constant<std::uint64_t{0x50050A0A00005a0F}>{},
+                cnl::constant<std::uint64_t{0x5A0F5A0F5A0F5A0F}>{}
+                        & cnl::constant<std::uint64_t{0x5555AAAA0000FFFF}>{}));
 #else
         static_assert(
                 identical(
-                        cnl::constant<cnl::intmax{11}>{},
-                        cnl::constant<cnl::uint8{6}>{} + cnl::constant<cnl::int8{5}>{}),
+                        cnl::constant<cnl::intmax_t{11}>{},
+                        cnl::constant<std::uint8_t{6}>{} + cnl::constant<std::int8_t{5}>{}),
                 "cnl::constant test failed");
         static_assert(
                 identical(
-                        cnl::constant<cnl::intmax{-115}>{},
-                        cnl::constant<short{-23}>{} * cnl::constant<cnl::uint8{5}>{}),
+                        cnl::constant<cnl::intmax_t{-115}>{},
+                        cnl::constant<short{-23}>{} * cnl::constant<std::uint8_t{5}>{}),
                 "cnl::constant test failed");
         static_assert(
                 identical(
-                        cnl::constant<cnl::intmax{0x5F5FFAAF5A0FFFFF}>{},
-                        cnl::constant<cnl::uint64{0x5A0F5A0F5A0F5A0F}>{}
-                                | cnl::constant<cnl::uint64{0x5555AAAA0000FFFF}>{}),
+                        cnl::constant<cnl::intmax_t{0x5F5FFAAF5A0FFFFF}>{},
+                        cnl::constant<std::uint64_t{0x5A0F5A0F5A0F5A0F}>{}
+                                | cnl::constant<std::uint64_t{0x5555AAAA0000FFFF}>{}),
                 "cnl::constant test failed");
         static_assert(
                 identical(
-                        cnl::constant<cnl::intmax{0x50050A0A00005a0F}>{},
-                        cnl::constant<cnl::uint64{0x5A0F5A0F5A0F5A0F}>{}
-                                & cnl::constant<cnl::uint64{0x5555AAAA0000FFFF}>{}),
+                        cnl::constant<cnl::intmax_t{0x50050A0A00005a0F}>{},
+                        cnl::constant<std::uint64_t{0x5A0F5A0F5A0F5A0F}>{}
+                                & cnl::constant<std::uint64_t{0x5555AAAA0000FFFF}>{}),
                 "cnl::constant test failed");
 #endif
     }

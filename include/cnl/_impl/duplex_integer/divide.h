@@ -18,6 +18,7 @@
 #include "numeric_limits.h"
 
 #include <algorithm>
+#include <limits>
 
 /// compositional numeric library
 namespace cnl {
@@ -84,7 +85,7 @@ namespace cnl {
 
         static constexpr auto fls(Upper n) -> int
         {
-            auto half_digits = numeric_limits<duplex_integer>::digits / 2;
+            auto half_digits = std::numeric_limits<duplex_integer>::digits / 2;
 
             if (!n) {
                 return 0;

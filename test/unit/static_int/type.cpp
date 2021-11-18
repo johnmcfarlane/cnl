@@ -141,7 +141,7 @@ namespace {
     namespace test_make_static_integer {
         using namespace cnl::literals;
         static_assert(
-                identical(cnl::make_static_integer(cnl::int16{7}), cnl::static_integer<15>{7}));
+                identical(cnl::make_static_integer(std::int16_t{7}), cnl::static_integer<15>{7}));
         static_assert(identical(cnl::make_static_integer(7_c), cnl::static_integer<3>{7}));
     }
 

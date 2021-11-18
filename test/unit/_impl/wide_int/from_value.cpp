@@ -18,7 +18,7 @@ namespace {
     static_assert(
             identical(
                     cnl::wide_integer<64, unsigned>{654},
-                    cnl::from_value<cnl::wide_integer<>, cnl::uint64>{}(UINT64_C(654))),
+                    cnl::from_value<cnl::wide_integer<>, std::uint64_t>{}(UINT64_C(654))),
             "cnl::from_value<cnl::wide_integer>");
     static_assert(
             identical(

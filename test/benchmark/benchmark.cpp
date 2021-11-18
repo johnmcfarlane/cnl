@@ -10,7 +10,8 @@
 
 #include <benchmark/benchmark.h>
 
-using cnl::numeric_limits;
+#include <limits>
+
 using cnl::scaled_integer;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,8 +25,8 @@ BENCHMARK_MAIN();  // NOLINT
 template<class T>
 static void add(benchmark::State& state)
 {
-    auto addend1 = static_cast<T>(numeric_limits<T>::max() / 5);
-    auto addend2 = static_cast<T>(numeric_limits<T>::max() / 3);
+    auto addend1 = static_cast<T>(std::numeric_limits<T>::max() / 5);
+    auto addend2 = static_cast<T>(std::numeric_limits<T>::max() / 3);
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(addend1);
         benchmark::DoNotOptimize(addend2);
@@ -37,8 +38,8 @@ static void add(benchmark::State& state)
 template<class T>
 static void sub(benchmark::State& state)
 {
-    auto minuend = static_cast<T>(numeric_limits<T>::max() / 5);
-    auto subtrahend = static_cast<T>(numeric_limits<T>::max() / 3);
+    auto minuend = static_cast<T>(std::numeric_limits<T>::max() / 5);
+    auto subtrahend = static_cast<T>(std::numeric_limits<T>::max() / 3);
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(minuend);
         benchmark::DoNotOptimize(subtrahend);
@@ -50,8 +51,8 @@ static void sub(benchmark::State& state)
 template<class T>
 static void mul(benchmark::State& state)
 {
-    auto factor1 = static_cast<T>(numeric_limits<T>::max() / int8_t{5});
-    auto factor2 = static_cast<T>(numeric_limits<T>::max() / int8_t{3});
+    auto factor1 = static_cast<T>(std::numeric_limits<T>::max() / int8_t{5});
+    auto factor2 = static_cast<T>(std::numeric_limits<T>::max() / int8_t{3});
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(factor1);
         benchmark::DoNotOptimize(factor2);
@@ -63,8 +64,8 @@ static void mul(benchmark::State& state)
 template<class T>
 static void div(benchmark::State& state)
 {
-    auto nume = static_cast<T>(numeric_limits<T>::max() / int8_t{5});
-    auto denom = static_cast<T>(numeric_limits<T>::max() / int8_t{3});
+    auto nume = static_cast<T>(std::numeric_limits<T>::max() / int8_t{5});
+    auto denom = static_cast<T>(std::numeric_limits<T>::max() / int8_t{3});
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(nume);
         benchmark::DoNotOptimize(denom);
@@ -76,7 +77,7 @@ static void div(benchmark::State& state)
 template<class T>
 static void bm_sqrt(benchmark::State& state)
 {
-    auto input = static_cast<T>(numeric_limits<T>::max() / int8_t{5});
+    auto input = static_cast<T>(std::numeric_limits<T>::max() / int8_t{5});
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(input);
         auto output = cnl::sqrt(input);

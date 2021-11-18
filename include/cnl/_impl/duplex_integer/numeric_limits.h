@@ -7,15 +7,16 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_NUMERIC_LIMITS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_NUMERIC_LIMITS_H
 
-#include "../../numeric_limits.h"
 #include "../num_traits/from_rep.h"
 #include "ctors.h"
 #include "declaration.h"
 
+#include <limits>
+
 /// compositional numeric library
-namespace cnl {
+namespace std {
     template<typename Upper, typename Lower>
-    struct numeric_limits<_impl::duplex_integer<Upper, Lower>> : numeric_limits<Upper> {
+    struct numeric_limits<cnl::_impl::duplex_integer<Upper, Lower>> : numeric_limits<Upper> {
     private:
         using lower_numeric_limits = numeric_limits<Lower>;
         static_assert(lower_numeric_limits::is_integer);
@@ -23,7 +24,7 @@ namespace cnl {
         using upper_numeric_limits = numeric_limits<Upper>;
         static_assert(upper_numeric_limits::is_integer);
 
-        using value_type = _impl::duplex_integer<Upper, Lower>;
+        using value_type = cnl::_impl::duplex_integer<Upper, Lower>;
 
     public:
         // standard members

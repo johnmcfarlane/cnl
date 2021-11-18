@@ -7,20 +7,21 @@
 #if !defined(CNL_IMPL_ELASTIC_INTEGER_NUMERIC_LIMITS_H)
 #define CNL_IMPL_ELASTIC_INTEGER_NUMERIC_LIMITS_H
 
-#include "../../numeric_limits.h"
 #include "../limits/lowest.h"
 #include "../num_traits/rep_of.h"
 #include "../numbers/signedness.h"
 #include "definition.h"
 
+#include <limits>
+
 /// compositional numeric library
-namespace cnl {
+namespace std {
     template<int Digits, class Narrowest>
-    struct numeric_limits<elastic_integer<Digits, Narrowest>> : numeric_limits<Narrowest> {
+    struct numeric_limits<cnl::elastic_integer<Digits, Narrowest>> : numeric_limits<Narrowest> {
     private:
         // elastic integer-specific helpers
-        using value_type = elastic_integer<Digits, Narrowest>;
-        using rep = _impl::rep_of_t<value_type>;
+        using value_type = cnl::elastic_integer<Digits, Narrowest>;
+        using rep = cnl::_impl::rep_of_t<value_type>;
         using rep_numeric_limits = numeric_limits<rep>;
 
         [[nodiscard]] static constexpr auto rep_max() noexcept
@@ -45,13 +46,13 @@ namespace cnl {
 
         [[nodiscard]] static constexpr auto lowest() noexcept
         {
-            return value_type{_impl::lowest<rep, numbers::signedness_v<Narrowest>>()(rep_max())};
+            return value_type{cnl::_impl::lowest<rep, cnl::numbers::signedness_v<Narrowest>>()(rep_max())};
         }
     };
 
     template<int Digits, class Narrowest>
-    struct numeric_limits<elastic_integer<Digits, Narrowest> const>
-        : numeric_limits<elastic_integer<Digits, Narrowest>> {
+    struct numeric_limits<cnl::elastic_integer<Digits, Narrowest> const>
+        : numeric_limits<cnl::elastic_integer<Digits, Narrowest>> {
     };
 }
 

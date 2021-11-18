@@ -17,38 +17,40 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
+
 using cnl::_impl::identical;
 
 namespace {
     namespace test_ctor {
         static_assert(
                 identical(
-                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{0x1234567890abcdef},
-                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{
-                                cnl::_impl::narrowest_integer_t<95, cnl::int32>{
+                        cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>{0x1234567890abcdef},
+                        cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>{
+                                cnl::_impl::narrowest_integer_t<95, std::int32_t>{
                                         0x1234567890abcdef}}));
 
         TEST(duplex_integer, float_ctor)  // NOLINT
         {
             constexpr auto expected =
-                    cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{cnl::uint64(1.23456e15)};
-            auto const actual = cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{1.23456e15};
+                    cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>{std::uint64_t(1.23456e15)};
+            auto const actual = cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>{1.23456e15};
             ASSERT_EQ(expected, actual);
         }
     }
 
     namespace test_upper {
         static_assert(
-                identical(cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.upper()));
+                identical(std::int8_t{0}, cnl::_impl::duplex_integer<std::int8_t, unsigned>{}.upper()));
         static_assert(
-                identical(cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.upper()));
-        static_assert(
-                identical(
-                        cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.upper()));
+                identical(std::int8_t{0}, cnl::_impl::duplex_integer<std::int8_t, unsigned>{0}.upper()));
         static_assert(
                 identical(
-                        cnl::int8{-1},
-                        cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.upper()));
+                        std::int8_t{0}, cnl::_impl::duplex_integer<std::int8_t, unsigned>{650}.upper()));
+        static_assert(
+                identical(
+                        std::int8_t{-1},
+                        cnl::_impl::duplex_integer<std::int8_t, unsigned>{-650}.upper()));
         static_assert(
                 identical(short{0}, cnl::_impl::duplex_integer<short, unsigned short>{123}.upper()));
         static_assert(
@@ -64,43 +66,43 @@ namespace {
 
         TEST(duplex_integer, upper_int8_value)  // NOLINT
         {
-            auto expected = cnl::int8{0};
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.upper();
+            auto expected = std::int8_t{0};
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{}.upper();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, upper_int8_zero)  // NOLINT
         {
-            auto expected = cnl::int8{0};
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.upper();
+            auto expected = std::int8_t{0};
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{0}.upper();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, upper_int8_650)  // NOLINT
         {
-            auto expected = cnl::int8{0};
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.upper();
+            auto expected = std::int8_t{0};
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{650}.upper();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, upper_int8_minus_650)  // NOLINT
         {
-            auto expected = cnl::int8{-1};
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.upper();
+            auto expected = std::int8_t{-1};
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{-650}.upper();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, upper_int8_123)  // NOLINT
         {
-            auto expected = cnl::int8{0};
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{123}.upper();
+            auto expected = std::int8_t{0};
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{123}.upper();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, upper_int8_minus_1)  // NOLINT
         {
-            auto expected = cnl::int8{-1};
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{-1}.upper();
+            auto expected = std::int8_t{-1};
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{-1}.upper();
             ASSERT_EQ(expected, actual);
         }
 
@@ -117,18 +119,18 @@ namespace {
     }
 
     namespace test_lower {
-        static_assert(identical(0U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.lower()));
+        static_assert(identical(0U, cnl::_impl::duplex_integer<std::int8_t, unsigned>{}.lower()));
         static_assert(
-                identical(0U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.lower()));
+                identical(0U, cnl::_impl::duplex_integer<std::int8_t, unsigned>{0}.lower()));
         static_assert(
-                identical(650U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.lower()));
+                identical(650U, cnl::_impl::duplex_integer<std::int8_t, unsigned>{650}.lower()));
         static_assert(
                 identical(
                         unsigned(-650),
-                        cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.lower()));
+                        cnl::_impl::duplex_integer<std::int8_t, unsigned>{-650}.lower()));
         static_assert(
                 identical(
-                        unsigned{cnl::numeric_limits<unsigned>::max()},
+                        unsigned{std::numeric_limits<unsigned>::max()},
                         cnl::_impl::duplex_integer<int, unsigned>{-1}.lower()));
         static_assert(
                 identical(
@@ -142,42 +144,42 @@ namespace {
         TEST(duplex_integer, lower_int8_value)  // NOLINT
         {
             auto expected = 0U;
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.lower();
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{}.lower();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, lower_int8_zero)  // NOLINT
         {
             auto expected = 0U;
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.lower();
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{0}.lower();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, lower_int8_650)  // NOLINT
         {
             auto expected = 650U;
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.lower();
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{650}.lower();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, lower_int8_minus_650)  // NOLINT
         {
             auto expected = static_cast<unsigned>(-650);
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.lower();
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{-650}.lower();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, lower_int8_123)  // NOLINT
         {
             auto expected = 123U;
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{123}.lower();
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{123}.lower();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, lower_int8_minus_1)  // NOLINT
         {
             auto expected = 0xFFFFFFFFU;
-            auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{-1}.lower();
+            auto actual = cnl::_impl::duplex_integer<std::int8_t, unsigned>{-1}.lower();
             ASSERT_EQ(expected, actual);
         }
 
@@ -195,30 +197,30 @@ namespace {
 
     namespace test_bool {
         static_assert(!cnl::_impl::duplex_integer<int, unsigned>{});
-        static_assert(!cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0});
-        static_assert(cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0x1234});
-        static_assert(cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>{0x1234});
+        static_assert(!cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>{0});
+        static_assert(cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>{0x1234});
+        static_assert(cnl::_impl::duplex_integer<std::int64_t, std::uint64_t>{0x1234});
     }
 
     namespace test_int {
         static_assert(
                 identical(
-                        cnl::uint8{255},
-                        static_cast<cnl::uint8>(cnl::_impl::duplex_integer<int, unsigned>{
-                                cnl::uint8{255}})));
+                        std::uint8_t{255},
+                        static_cast<std::uint8_t>(cnl::_impl::duplex_integer<int, unsigned>{
+                                std::uint8_t{255}})));
         static_assert(
                 identical(
-                        cnl::int16{1},
-                        static_cast<cnl::int16>(cnl::_impl::duplex_integer<int, unsigned>{1})));
+                        std::int16_t{1},
+                        static_cast<std::int16_t>(cnl::_impl::duplex_integer<int, unsigned>{1})));
         static_assert(
                 identical(
-                        cnl::uint16{0x5678},
+                        std::uint16_t{0x5678},
                         cnl::_impl::duplex_integer<signed short, unsigned short>{0x12345678}
                                 .lower()));
 
         TEST(duplex_integer, lower)  // NOLINT
         {
-            auto expected = cnl::uint16{0x5678};
+            auto expected = std::uint16_t{0x5678};
             auto actual =
                     cnl::_impl::duplex_integer<signed short, unsigned short>{0x12345678}.lower();
             ASSERT_EQ(expected, actual);
@@ -226,57 +228,57 @@ namespace {
 
         static_assert(
                 identical(
-                        cnl::uint64{0x0102},
-                        static_cast<cnl::uint64>(cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{
+                        std::uint64_t{0x0102},
+                        static_cast<std::uint64_t>(cnl::_impl::duplex_integer<std::uint8_t, std::uint8_t>{
                                 0x0102})));
         static_assert(
                 identical(
-                        cnl::int64{0x0102},
-                        static_cast<cnl::int64>(cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{
+                        std::int64_t{0x0102},
+                        static_cast<std::int64_t>(cnl::_impl::duplex_integer<std::int8_t, std::uint8_t>{
                                 0x0102})));
         static_assert(
                 identical(
-                        cnl::uint64{0x12345678},
-                        static_cast<cnl::uint64>(
+                        std::uint64_t{0x12345678},
+                        static_cast<std::uint64_t>(
                                 cnl::_impl::duplex_integer<signed short, unsigned short>{
                                         0x12345678})));
 
         static_assert(
-                static_cast<cnl::uint64>(cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>{
+                static_cast<std::uint64_t>(cnl::_impl::duplex_integer<std::uint64_t, std::uint64_t>{
                         UINT64_C(0xFEDCBA9876543210)}));
         static_assert(
                 identical(
-                        cnl::uint64{0xFEDCBA9876543210},
-                        static_cast<cnl::uint64>(
-                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>{
+                        std::uint64_t{0xFEDCBA9876543210},
+                        static_cast<std::uint64_t>(
+                                cnl::_impl::duplex_integer<std::uint64_t, std::uint64_t>{
                                         UINT64_C(0xFEDCBA9876543210)})));
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
                         CNL_INTMAX_C(-2029872569029388),
-                        static_cast<cnl::int128>(
-                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{
+                        static_cast<cnl::int128_t>(
+                                cnl::_impl::duplex_integer<std::int32_t, std::uint32_t>{
                                         INT64_C(-2029872569029388)})));
         static_assert(
                 identical(
                         CNL_INTMAX_C(0x0123456789ABCDEF),
-                        static_cast<cnl::int128>(
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{
+                        static_cast<cnl::int128_t>(
+                                cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>{
                                         INT64_C(0x0123456789ABCDEF)})));
 #endif
         static_assert(
                 identical(
-                        cnl::uint16(-1 >> 16),
-                        static_cast<cnl::uint16>(
-                                cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-1, 65535})));
+                        std::uint16_t(-1 >> 16),
+                        static_cast<std::uint16_t>(
+                                cnl::_impl::duplex_integer<std::int16_t, std::uint16_t>{-1, 65535})));
         static_assert(
                 identical(
                         INT32_C(-1),
-                        static_cast<cnl::int32>(
+                        static_cast<std::int32_t>(
                                 cnl::_impl::duplex_integer<
-                                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
-                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{-1})));
+                                        cnl::_impl::duplex_integer<std::int32_t, std::uint32_t>,
+                                        cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>>{-1})));
     }
 
     namespace test_to_rep {

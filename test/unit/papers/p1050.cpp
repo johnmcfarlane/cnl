@@ -16,7 +16,7 @@ namespace {
 
     constexpr auto a = make_scaled_integer(cnl::fraction{1, 3});
     static_assert(
-            identical(scaled_integer<int64, power<-31>>{0.333333333022892475128173828125L}, a));
+            identical(scaled_integer<std::int64_t, power<-31>>{0.333333333022892475128173828125L}, a));
 
     constexpr auto b =
             make_scaled_integer(cnl::fraction{elastic_integer<1>{1}, elastic_integer<2>{3}});

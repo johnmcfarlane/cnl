@@ -27,6 +27,6 @@ static_assert(!cnl::fixed_point<void>);
 static_assert(!cnl::fixed_point<std::pair<int, int>>);
 
 #if defined(CNL_INT128_ENABLED)
-static_assert(cnl::fixed_point<cnl::int128>);
-static_assert(cnl::fixed_point<cnl::uint128>);
+static_assert(cnl::fixed_point<cnl::int128_t>);
+static_assert(cnl::fixed_point<cnl::uint128_t>);
 #endif
