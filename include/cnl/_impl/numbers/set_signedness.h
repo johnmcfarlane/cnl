@@ -28,22 +28,6 @@ namespace cnl::numbers {
         : std::make_signed<T> {
     };
 
-#if defined(CNL_INT128_ENABLED)
-    template<>
-    struct set_signedness<int128_t, false> : std::type_identity<uint128_t> {
-    };
-    template<>
-    struct set_signedness<int128_t, true> : std::type_identity<int128_t> {
-    };
-
-    template<>
-    struct set_signedness<uint128_t, false> : std::type_identity<uint128_t> {
-    };
-    template<>
-    struct set_signedness<uint128_t, true> : std::type_identity<int128_t> {
-    };
-#endif
-
     template<class T, bool IsSigned>
     using set_signedness_t = typename set_signedness<T, IsSigned>::type;
 }
