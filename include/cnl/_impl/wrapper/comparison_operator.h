@@ -7,19 +7,19 @@
 #if !defined(CNL_IMPL_WRAPPER_COMPARISON_OPERATOR_H)
 #define CNL_IMPL_WRAPPER_COMPARISON_OPERATOR_H
 
-#include "../../floating_point.h"
 #include "../custom_operator/definition.h"
 #include "../custom_operator/overloads.h"
 #include "../num_traits/from_value.h"
 #include "definition.h"
 #include "operator_helpers.h"
 
+#include <concepts>
 #include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     // higher OP wrapper
-    template<_impl::comparison_op Operator, floating_point Lhs, _impl::any_wrapper Rhs>
+    template<_impl::comparison_op Operator, std::floating_point Lhs, _impl::any_wrapper Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
@@ -28,7 +28,7 @@ namespace cnl {
     };
 
     // wrapper OP higher
-    template<_impl::comparison_op Operator, _impl::any_wrapper Lhs, floating_point Rhs>
+    template<_impl::comparison_op Operator, _impl::any_wrapper Lhs, std::floating_point Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {

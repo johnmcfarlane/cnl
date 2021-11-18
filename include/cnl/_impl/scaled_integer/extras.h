@@ -104,9 +104,9 @@ namespace cnl {
         [[nodiscard]] constexpr auto
         crib(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
         {
-            using floating_point = _impl::float_of_same_size<Rep>;
+            using fp = _impl::float_of_same_size<Rep>;
             return static_cast<scaled_integer<Rep, power<Exponent, Radix>>>(
-                    F(static_cast<floating_point>(x)));
+                    F(static_cast<fp>(x)));
         }
     }
 

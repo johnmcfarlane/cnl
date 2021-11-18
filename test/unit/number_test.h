@@ -7,7 +7,6 @@
 #if !defined(TEST_NUMBER_TEST_H)
 #define TEST_NUMBER_TEST_H
 
-#include <cnl/floating_point.h>
 #include <cnl/num_traits.h>
 #include <cnl/numeric.h>
 
@@ -142,7 +141,7 @@ struct number_test {
 
     // would not pass for boost.multiprecision
     static_assert(
-            cnl::is_composite_v<value_type> != (cnl::is_floating_point_v<value_type> || std::is_integral_v<value_type>),
+            cnl::is_composite_v<value_type> != (std::is_floating_point_v<value_type> || std::is_integral_v<value_type>),
             "is_composite test failed");
 
     static constexpr auto lowest_from_rep =

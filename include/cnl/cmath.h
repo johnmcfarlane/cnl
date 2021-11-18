@@ -13,15 +13,15 @@
 
 #include "_impl/cmath/abs.h"
 #include "_impl/cmath/sqrt.h"
-#include "floating_point.h"
 
 #include <cmath>
+#include <concepts>
 
 /// compositional numeric library
 namespace cnl {
     using _impl::abs;
 
-    [[nodiscard]] constexpr auto sqrt(floating_point auto const& x)
+    [[nodiscard]] constexpr auto sqrt(std::floating_point auto const& x)
     {
         return std::sqrt(x);
     }
