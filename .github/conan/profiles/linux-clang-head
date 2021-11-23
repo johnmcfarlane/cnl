@@ -3,7 +3,6 @@ include(linux-clang)
 compiler.version=14
 compiler.libcxx=libc++
 [options]
-clang_tidy=True
 sanitize=True
 [build_requires]
 [env]

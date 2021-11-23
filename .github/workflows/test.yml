@@ -11,17 +11,19 @@ jobs:
   linux-cmake-test:
     strategy:
       matrix:
-        compiler: [clang-13-libcpp, gcc-11]
+        compiler: [clang, gcc]
 
         include:
-          - compiler: clang-13-libcpp
+          - compiler: clang
+            clang-tidy: "clang-tidy"
             cxx_extensions: "ON"
             toolchain: clang.cmake
-            container: johnmcfarlane/cnl_ci:clang-13-libcpp
-          - compiler: gcc-11
+            container: johnmcfarlane/cnl_ci:clang-head-libcpp
+          - compiler: gcc
+            clang-tidy: ""
             cxx_extensions: "OFF"
             toolchain: gcc.cmake
-            container: johnmcfarlane/cnl_ci:gcc-11
+            container: johnmcfarlane/cnl_ci:gcc-head
 
     container: ${{matrix.container}}
     runs-on: ubuntu-20.04
@@ -54,6 +56,7 @@ jobs:
       - name: Configure CNL
         run: |
           cmake \
+            -DCMAKE_CXX_CLANG_TIDY=${{matrix.clang-tidy}} \
             -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
             -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
             $GITHUB_WORKSPACE
@@ -71,13 +74,13 @@ jobs:
   posix-conan-test:
     strategy:
       matrix:
-        name: [clang-head-analyse, gcc-head, clang-13, clang-12, clang-11, clang-10, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7]
+        name: [clang-head, gcc-head, clang-13, clang-12, clang-11, clang-10, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7]
         include:
           # Clang HEAD (w. Clang-Tidy, sanitizers)
-          - name: clang-head-analyse
+          - name: clang-head
             linux-container: johnmcfarlane/cnl_ci:clang-head-libcpp
             os-version: ubuntu-20.04
-            profile: linux-clang-head-analyse
+            profile: linux-clang-head
 
           # GCC HEAD
           - name: gcc-head
