@@ -175,7 +175,7 @@ namespace {
         TEST(overflow, trap)  // NOLINT
         {
             constexpr auto fn{cnl::_impl::operate<cnl::_impl::shift_left_op, cnl::trapping_overflow_tag>{}};
-            ASSERT_DEATH(
+            ASSERT_DEATH(  // NOLINT
                     (void)fn(-1073741825, 1),
                     "negative overflow");
         }

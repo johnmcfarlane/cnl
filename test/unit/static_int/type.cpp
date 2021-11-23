@@ -170,10 +170,10 @@ namespace {
     }
 
 #if defined(CNL_DEBUG)
-    TEST(static_integer, conversion_overflow_trapping)
-    {  // NOLINT
+    TEST(static_integer, conversion_overflow_trapping)  // NOLINT
+    {
         using si = cnl::static_integer<5>;
-        ASSERT_DEATH(si{32}, "positive overflow");
+        ASSERT_DEATH(si{32}, "positive overflow");  // NOLINT
     }
 #endif
 

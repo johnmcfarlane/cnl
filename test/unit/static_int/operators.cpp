@@ -139,7 +139,7 @@ namespace {
     {
         static_assert(cnl::static_integer<1>{1}, "in-range boundary test");
         static_assert(cnl::static_integer<1>{-1}, "in-range boundary test");
-        ASSERT_DEATH(cnl::static_integer<1>{-2}, "negative overflow");
+        ASSERT_DEATH(cnl::static_integer<1>{-2}, "negative overflow");  // NOLINT
     }
 #endif
 
@@ -193,25 +193,25 @@ namespace {
     TEST(static_integer, pre_increment_overflow)  // NOLINT
     {
         auto a = cnl::static_integer<3>{7};
-        ASSERT_DEATH(++a, "positive overflow");
+        ASSERT_DEATH(++a, "positive overflow");  // NOLINT
     }
 
     TEST(static_integer, pre_decrement_overflow)  // NOLINT
     {
         auto a = cnl::static_integer<3>{-7};
-        ASSERT_DEATH(--a, "negative overflow");
+        ASSERT_DEATH(--a, "negative overflow");  // NOLINT
     }
 
     TEST(static_integer, post_increment_overflow)  // NOLINT
     {
         auto a = cnl::static_integer<3>{7};
-        ASSERT_DEATH(a++, "positive overflow");
+        ASSERT_DEATH(a++, "positive overflow");  // NOLINT
     }
 
     TEST(static_integer, post_decrement_overflow)  // NOLINT
     {
         auto a = cnl::static_integer<3>{-7};
-        ASSERT_DEATH(a--, "negative overflow");
+        ASSERT_DEATH(a--, "negative overflow");  // NOLINT
     }
 #endif
 }

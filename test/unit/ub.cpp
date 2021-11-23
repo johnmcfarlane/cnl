@@ -44,8 +44,8 @@ void overflow_example2()
 TEST(index, faq_overflow_example)  // NOLINT
 {
 #if defined(CNL_DEBUG)
-    ASSERT_DEATH(overflow_example1(), "");
-    ASSERT_DEATH(overflow_example2(), "");
+    ASSERT_DEATH(overflow_example1(), "");  // NOLINT
+    ASSERT_DEATH(overflow_example2(), "");  // NOLINT
 #endif
 }
 #endif
