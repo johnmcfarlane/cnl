@@ -7,6 +7,66 @@ on:
       - '**'
 
 jobs:
+  # Build and test latest on Linux using only CMake
+  linux-cmake-test:
+    strategy:
+      matrix:
+        compiler: [clang-13-libcpp, gcc-11]
+
+        include:
+          - compiler: clang-13-libcpp
+            cxx_extensions: "ON"
+            toolchain: clang.cmake
+            container: johnmcfarlane/cnl_ci:clang-13-libcpp
+          - compiler: gcc-11
+            cxx_extensions: "OFF"
+            toolchain: gcc.cmake
+            container: johnmcfarlane/cnl_ci:gcc-11
+
+    container: ${{matrix.container}}
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Restore caches
+        uses: actions/cache@v2
+        with:
+          path: |
+            /github/home/.conan/data
+            /github/home/.ccache
+          key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            test-${{matrix.compiler}}-${{github.ref}}-
+            test-${{matrix.compiler}}-main-
+            test-${{matrix.compiler}}-
+
+      - name: Build and Install GTest
+        run: |
+          git clone https://github.com/google/googletest.git
+          cd googletest
+          git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            .
+          cmake --build . --target install
+
+      - name: Configure CNL
+        run: |
+          cmake \
+            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            $GITHUB_WORKSPACE
+
+      - name: Build CNL
+        run: cmake --build $GITHUB_WORKSPACE --target test-all
+
+      - name: Test CNL
+        run: ctest --output-on-failure
+
+      - name: ccache report
+        run: ccache -s
+
   # Build and test many combinations on Linux/OS X using Conan
   posix-conan-test:
     strategy:
@@ -184,66 +244,6 @@ jobs:
       - name: Run benchmarks
         working-directory: ${{runner.workspace}}/build
         run: test\benchmark\Release\test-benchmark.exe
-
-  # Build and test latest on Linux using only CMake
-  linux-cmake-test:
-    strategy:
-      matrix:
-        compiler: [clang-13-libcpp, gcc-11]
-
-        include:
-          - compiler: clang-13-libcpp
-            cxx_extensions: "ON"
-            toolchain: clang.cmake
-            container: johnmcfarlane/cnl_ci:clang-13-libcpp
-          - compiler: gcc-11
-            cxx_extensions: "OFF"
-            toolchain: gcc.cmake
-            container: johnmcfarlane/cnl_ci:gcc-11
-
-    container: ${{matrix.container}}
-    runs-on: ubuntu-20.04
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Restore caches
-        uses: actions/cache@v2
-        with:
-          path: |
-            /github/home/.conan/data
-            /github/home/.ccache
-          key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
-          restore-keys: |
-            test-${{matrix.compiler}}-${{github.ref}}-
-            test-${{matrix.compiler}}-main-
-            test-${{matrix.compiler}}-
-
-      - name: Build and Install GTest
-        run: |
-          git clone https://github.com/google/googletest.git
-          cd googletest
-          git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
-          cmake \
-            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            .
-          cmake --build . --target install
-
-      - name: Configure CNL
-        run: |
-          cmake \
-            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
-            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            $GITHUB_WORKSPACE
-
-      - name: Build CNL
-        run: cmake --build $GITHUB_WORKSPACE --target test-all
-
-      - name: Test CNL
-        run: ctest --output-on-failure
-
-      - name: ccache report
-        run: ccache -s
 
   # Install on mature Linux distro using only CMake
   linux-cmake-install:
