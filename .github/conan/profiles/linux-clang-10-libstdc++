@@ -1,0 +1,8 @@
+include(linux-clang-libstdc++)
+[settings]
+compiler.version=10
+[options]
+iostreams=False
+sanitize=False
+[build_requires]
+[env]

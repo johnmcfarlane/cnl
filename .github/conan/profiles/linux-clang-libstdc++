@@ -1,6 +1,5 @@
 include(linux-clang)
 [settings]
-compiler.version=11
 compiler.libcxx=libstdc++11
 [options]
 [build_requires]
