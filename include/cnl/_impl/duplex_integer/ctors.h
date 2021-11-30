@@ -22,7 +22,7 @@ namespace cnl {
         requires(digits_v<Lower> >= digits_v<Integer>)
                 [[nodiscard]] constexpr auto calculate_lower(Integer const& input) -> Lower
         {
-            return Lower(input) & std::numeric_limits<Lower>::max();
+            return static_cast<Lower>(input) & std::numeric_limits<Lower>::max();
         }
 
         template<typename Lower, typename Integer>
@@ -72,8 +72,8 @@ namespace cnl {
         template<typename Upper, typename Lower>
         template<std::floating_point Number>
         constexpr duplex_integer<Upper, Lower>::duplex_integer(Number const& n)
-            : _upper(Upper(n / power_value<Number, lower_width, 2>()))
-            , _lower(Lower(std::fmod(n, power_value<Number, lower_width, 2>())))
+            : _upper(static_cast<Upper>(n / power_value<Number, lower_width, 2>()))
+            , _lower(static_cast<Lower>(std::fmod(n, power_value<Number, lower_width, 2>())))
         {
         }
     }

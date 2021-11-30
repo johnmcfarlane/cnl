@@ -39,7 +39,7 @@ namespace b {
     void f()
     {
         auto n = fixed_point<int, -8>{0.25F};
-        std::cout << float(n * 5);  // prints "1.25"
+        std::cout << float{n * 5};  // prints "1.25"
     }
 }
 

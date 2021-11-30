@@ -242,7 +242,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return x ? static_cast<T>(T{1} << (digits_v<T> - countl_zero(T(x - T(1))))) : T{0};
+        return x ? static_cast<T>(T{1} << (digits_v<T> - countl_zero(T(x - T{1})))) : T{0};
     }
 
     // floor2 - greatest power of 2 no greater than x

@@ -17,7 +17,7 @@ namespace cnl {
         [[nodiscard]] constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& n)
                 const -> _impl::rep_of_t<_impl::duplex_integer<Upper, Lower>>
         {
-            return _impl::to_rep(Upper(n));
+            return _impl::to_rep(Upper{n});
         }
     };
 }

@@ -910,11 +910,11 @@ namespace {
     namespace test_sensible_right_shift {
         static_assert(
                 identical(
-                        std::int32_t(-1),
+                        std::int32_t{-1},
                         cnl::_impl::sensible_right_shift<std::int32_t>(INT32_C(-1), 32)));
         static_assert(
                 identical(
-                        std::uint16_t(-1 >> 16),
+                        static_cast<std::uint16_t>(-1 >> 16),
                         cnl::_impl::sensible_right_shift<std::uint16_t>(
                                 cnl::_impl::duplex_integer<std::int16_t, std::uint16_t>{-1, 65535},
                                 16)));

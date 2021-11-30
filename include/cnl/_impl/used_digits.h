@@ -38,7 +38,7 @@ namespace cnl {
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else
                 // will less likely result in overflow.
-                return (value < 0) ? used_digits_signed<false>{}(Integer(-1) - value, radix)
+                return (value < 0) ? used_digits_signed<false>{}(Integer{-1} - value, radix)
                                    : used_digits_signed<false>{}(value, radix);
             }
         };

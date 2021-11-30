@@ -62,7 +62,7 @@ namespace cnl {
     private:
         [[nodiscard]] static constexpr auto floor_residual(Source x, Source x_whole)
         {
-            return static_cast<Destination>((x < Source(0)) && (x < x_whole));
+            return static_cast<Destination>((x < static_cast<Source>(0)) && (x < x_whole));
         }
         [[nodiscard]] static constexpr auto floor_int(Source x, Source x_whole)
         {
@@ -87,7 +87,7 @@ namespace cnl {
     private:
         [[nodiscard]] static constexpr auto floor_residual(Source x, Source x_whole)
         {
-            return static_cast<Destination>((x < Source(0)) && (x < x_whole));
+            return static_cast<Destination>((x < Source{0}) && (x < x_whole));
         }
         [[nodiscard]] static constexpr auto floor_int(Source x, Source x_whole)
         {

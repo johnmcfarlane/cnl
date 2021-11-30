@@ -33,7 +33,7 @@ namespace {
         TEST(duplex_integer, float_ctor)  // NOLINT
         {
             constexpr auto expected =
-                    cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>{std::uint64_t(1.23456e15)};
+                    cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>{static_cast<std::uint64_t>(1.23456e15)};
             auto const actual = cnl::_impl::duplex_integer<std::uint32_t, std::uint32_t>{1.23456e15};
             ASSERT_EQ(expected, actual);
         }
@@ -126,7 +126,7 @@ namespace {
                 identical(650U, cnl::_impl::duplex_integer<std::int8_t, unsigned>{650}.lower()));
         static_assert(
                 identical(
-                        unsigned(-650),
+                        static_cast<unsigned>(-650),
                         cnl::_impl::duplex_integer<std::int8_t, unsigned>{-650}.lower()));
         static_assert(
                 identical(
@@ -269,7 +269,7 @@ namespace {
 #endif
         static_assert(
                 identical(
-                        std::uint16_t(-1 >> 16),
+                        static_cast<std::uint16_t>(-1 >> 16),
                         static_cast<std::uint16_t>(
                                 cnl::_impl::duplex_integer<std::int16_t, std::uint16_t>{-1, 65535})));
         static_assert(

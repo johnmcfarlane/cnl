@@ -8,6 +8,7 @@
 #define CNL_IMPL_POWER_H
 
 #include "../constant.h"
+#include "narrow_cast.h"
 #include "num_traits/digits.h"
 #include "num_traits/from_value.h"
 
@@ -65,7 +66,7 @@ namespace cnl {
         struct power_value_fn<S, Exponent, Radix, PositiveExponent, OddExponent, true> {
             [[nodiscard]] constexpr auto operator()() const -> S
             {
-                return Exponent ? S(1.) / power_value_fn<S, -Exponent, Radix>{}() : S{1.};
+                return Exponent ? S{1.} / power_value_fn<S, -Exponent, Radix>{}() : S{1.};
             }
         };
 
@@ -91,7 +92,7 @@ namespace cnl {
 
             [[nodiscard]] constexpr auto operator()() const
             {
-                return S(Radix) * power_value_fn<S, (Exponent - 1), Radix>{}();
+                return narrow_cast<S>(Radix) * power_value_fn<S, (Exponent - 1), Radix>{}();
             }
         };
 

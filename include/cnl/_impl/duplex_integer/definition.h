@@ -35,7 +35,7 @@ namespace cnl {
                          ? !is_flushed(upper)
                                  ? unreachable<Result>("overflow in narrowing conversion")
                                  : Result{}
-                         : Result(sensible_left_shift<Result>(upper, digits_v<Lower>));
+                         : Result{sensible_left_shift<Result>(upper, digits_v<Lower>)};
         }
 
         // Class duplex_integer is bigendian because this is consistent with std::pair.

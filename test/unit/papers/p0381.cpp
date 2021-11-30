@@ -18,7 +18,7 @@ namespace sample1 {
     // range of a*b is UCHAR_MAX*UCHAR_MAX but range of return value is UCHAR_MAX
     auto multiply(uint8_t a, uint8_t b)
     {
-        return uint8_t(a * b);
+        return static_cast<uint8_t>(a * b);
     }
 
     // sample 1 tests

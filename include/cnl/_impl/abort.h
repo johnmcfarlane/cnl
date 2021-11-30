@@ -17,8 +17,8 @@ namespace cnl {
         template<class Result>
         [[noreturn]] constexpr auto abort(char const* message) noexcept -> Result
         {
-            std::fputs(message, stderr);
-            std::fputc('\n', stderr);
+            (void)std::fputs(message, stderr);
+            (void)std::fputc('\n', stderr);
             std::abort();
         }
     }

@@ -222,8 +222,7 @@ namespace cnl {
                 return (std::max(overflow_digits<Lhs, polarity::positive>::value, overflow_digits<Rhs, polarity::positive>::value)
                                 + 1
                         > traits::positive_digits)
-                    && lhs > Lhs{0} && rhs > Rhs{0} &&
-                       typename traits::result(lhs) > traits::max() - rhs;
+                    && lhs > Lhs{0} && rhs > Rhs{0} && static_cast<typename traits::result>(lhs) > traits::max() - rhs;
             }
         };
 
@@ -236,8 +235,7 @@ namespace cnl {
                 return (std::max(overflow_digits<Lhs, polarity::positive>::value, overflow_digits<Rhs, polarity::positive>::value)
                                 + 1
                         > traits::positive_digits)
-                    && lhs < Lhs{0} && rhs < Rhs{0} &&
-                       typename traits::result(lhs) < traits::lowest() - rhs;
+                    && lhs < Lhs{0} && rhs < Rhs{0} && static_cast<typename traits::result>(lhs) < traits::lowest() - rhs;
             }
         };
 
