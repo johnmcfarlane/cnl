@@ -53,25 +53,25 @@ namespace cnl {
             using uint_t = numbers::set_signedness_t<int_t, false>;
 
             if (d < FloatingPoint{}) {
-                return cnl::fraction<Numerator, Denominator>(-make_fraction<int_t>(-d));
+                return static_cast<cnl::fraction<Numerator, Denominator>>(-make_fraction<int_t>(-d));
             }
-            CNL_ASSERT(d <= FloatingPoint(std::numeric_limits<int_t>::max()));
-            auto left{fraction<int_t>(int_t(d), 1)};
-            auto right{fraction<int_t>{int_t(left.numerator + 1), 1}};
-            if (FloatingPoint(left) == d) {
+            CNL_ASSERT(d <= static_cast<FloatingPoint>(std::numeric_limits<int_t>::max()));
+            auto left{fraction<int_t>(static_cast<int_t>(d), 1)};
+            auto right{fraction<int_t>{static_cast<int_t>(left.numerator + 1), 1}};
+            if (static_cast<FloatingPoint>(left) == d) {
                 return left;
             }
-            if (FloatingPoint(right) == d) {
+            if (static_cast<FloatingPoint>(right) == d) {
                 return right;
             }
             auto lefts{0};
             auto rights{0};
             for (;;) {
                 auto const mid{fraction<uint_t>(
-                        uint_t(left.numerator + right.numerator),
-                        uint_t(left.denominator + right.denominator))};
-                CNL_ASSERT(int_t(mid.numerator) >= 0);
-                CNL_ASSERT(int_t(mid.denominator) >= 0);
+                        static_cast<uint_t>(left.numerator + right.numerator),
+                        static_cast<uint_t>(left.denominator + right.denominator))};
+                CNL_ASSERT(static_cast<int_t>(mid.numerator) >= 0);
+                CNL_ASSERT(static_cast<int_t>(mid.denominator) >= 0);
 
                 auto fn = [mid, d](int& fars, fraction<int_t>& f, int& nears, fraction<int_t>& n) {
                     nears = 0;
@@ -80,37 +80,31 @@ namespace cnl {
                         return false;
                     }
                     auto const dividend{
-                            d * FloatingPoint(f.denominator) - FloatingPoint(f.numerator)};
+                            d * static_cast<FloatingPoint>(f.denominator) - static_cast<FloatingPoint>(f.numerator)};
                     auto const divisor{
-                            FloatingPoint(n.numerator) - d * FloatingPoint(n.denominator)};
+                            static_cast<FloatingPoint>(n.numerator) - d * static_cast<FloatingPoint>(n.denominator)};
                     auto const n0{dividend / divisor};
-                    CNL_ASSERT(n0 <= FloatingPoint(std::numeric_limits<int_t>::max()));
+                    CNL_ASSERT(n0 <= static_cast<FloatingPoint>(std::numeric_limits<int_t>::max()));
 
                     auto const n1{
-                            ((FloatingPoint(f.denominator) + FloatingPoint(n.denominator) * n0)
-                             > FloatingPoint(std::numeric_limits<int_t>::max()))
-                                    ? int_t(FloatingPoint(
-                                                    std::numeric_limits<int_t>::max()
-                                                    - f.denominator)
-                                            / FloatingPoint(n.denominator))
-                                    : int_t(n0)};
+                            ((static_cast<FloatingPoint>(f.denominator) + static_cast<FloatingPoint>(n.denominator) * n0)
+                             > static_cast<FloatingPoint>(std::numeric_limits<int_t>::max()))
+                                    ? static_cast<int_t>(static_cast<FloatingPoint>(std::numeric_limits<int_t>::max() - f.denominator) / static_cast<FloatingPoint>(n.denominator))
+                                    : static_cast<int_t>(n0)};
                     auto const n2{
-                            ((FloatingPoint(f.numerator) + FloatingPoint(n.numerator * n1))
-                             > FloatingPoint(std::numeric_limits<int_t>::max()))
-                                    ? int_t(FloatingPoint(
-                                                    std::numeric_limits<int_t>::max() - f.numerator
-                                                    - n.numerator)
-                                            / FloatingPoint(n.numerator))
+                            ((static_cast<FloatingPoint>(f.numerator) + static_cast<FloatingPoint>(n.numerator * n1))
+                             > static_cast<FloatingPoint>(std::numeric_limits<int_t>::max()))
+                                    ? static_cast<int_t>(static_cast<FloatingPoint>(std::numeric_limits<int_t>::max() - f.numerator - n.numerator) / static_cast<FloatingPoint>(n.numerator))
                                     : n1};
                     if (!n2) {
                         return true;
                     }
-                    f.numerator = int_t(f.numerator + n2 * n.numerator);
-                    f.denominator = int_t(f.denominator + n2 * n.denominator);
-                    return FloatingPoint(f) == d;
+                    f.numerator = static_cast<int_t>(f.numerator + n2 * n.numerator);
+                    f.denominator = static_cast<int_t>(f.denominator + n2 * n.denominator);
+                    return static_cast<FloatingPoint>(f) == d;
                 };
 
-                auto mid_q{FloatingPoint(mid)};
+                auto mid_q{static_cast<FloatingPoint>(mid)};
                 if (mid_q < d) {
                     if (fn(lefts, left, rights, right)) {
                         return left;

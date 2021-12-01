@@ -11,12 +11,13 @@ namespace {
     using cnl::power;
     using cnl::scaled_integer;
     using cnl::_impl::identical;
+    using cnl::_impl::narrow_cast;
 
     namespace bare_metal {
         // sample 1 - bare-metal fixed-point arithmetic
-        constexpr auto a{int8_t(7.F * 8)};  // the value 7 stored in a byte with 3 fraction bits
+        constexpr auto a{narrow_cast<int8_t>(7.F * 8)};  // the value 7 stored in a byte with 3 fraction bits
         constexpr auto b{
-                int8_t(3.125F * 16)};  // the value 3.125 stored in a byte with 4 fraction bits
+                narrow_cast<int8_t>(3.125F * 16)};  // the value 3.125 stored in a byte with 4 fraction bits
         constexpr auto c = a * b;  // the value 21.875 stored in an `int` with 7 fraction bits
         constexpr auto d{float{c} / 128};  // 21.875f
         static_assert(identical(d, 21.875F), "position_paper test failed");
@@ -29,7 +30,7 @@ namespace {
         constexpr auto b = scaled_integer<int8_t, power<-4>>(
                 3.125F);  // the value 3.125 stored in a byte with 4 fraction bits
         constexpr auto c = a * b;  // the value 21.875 stored in an `int` with 7 fraction bits
-        constexpr auto d = float(c);  // 21.875f
+        constexpr auto d = narrow_cast<float>(c);  // 21.875f
         static_assert(identical(d, 21.875F), "position_paper test failed");
     }
 

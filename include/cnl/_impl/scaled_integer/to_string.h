@@ -8,6 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_TO_STRING_H
 
 #include "../../integer.h"
+#include "../narrow_cast.h"
 #include "../scaled/is_scaled_tag.h"
 #include "definition.h"
 #include "to_chars.h"
@@ -22,7 +23,7 @@ namespace cnl {
     auto to_string(cnl::scaled_integer<Rep, Scale> const& value)
     {
         auto const [chars, length] = to_chars_static(value);
-        return std::string{chars.data(), unsigned(length)};
+        return std::string{chars.data(), _impl::narrow_cast<unsigned>(length)};
     }
 }
 

@@ -17,13 +17,13 @@ using cnl::_impl::identical;
 namespace {
     namespace test_rotl {
         static_assert(
-                identical(cnl::rotl(std::uint8_t(0xff), 2783), std::uint8_t{0xff}),
+                identical(cnl::rotl(std::uint8_t{0xff}, 2783), std::uint8_t{0xff}),
                 "cnl::rotl<uint8_t>");
         static_assert(
                 identical(cnl::rotl(std::uint8_t{0x80}, 0xffa), std::uint8_t{0x2}),
                 "cnl::rotl<uint8_t>");
         static_assert(
-                identical(cnl::rotl(std::uint8_t{0x14}, unsigned(-5)), std::uint8_t{0xa0}),
+                identical(cnl::rotl(std::uint8_t{0x14}, static_cast<unsigned>(-5)), std::uint8_t{0xa0}),
                 "cnl::rotl<uint8_t>");
 
         static_assert(identical(cnl::rotl(6U, 6), 384U), "cnl::rotl<unsigned>");
@@ -49,7 +49,7 @@ namespace {
                 identical(cnl::rotr(std::uint8_t{0x80}, 0xffa), std::uint8_t{0x20}),
                 "cnl::rotr<uint8_t>");
         static_assert(
-                identical(cnl::rotr(std::uint8_t{0x14}, unsigned(-5)), std::uint8_t{0x82}),
+                identical(cnl::rotr(std::uint8_t{0x14}, static_cast<unsigned>(-5)), std::uint8_t{0x82}),
                 "cnl::rotr<uint8_t>");
 
         static_assert(identical(cnl::rotr(6U, 6), 402653184U), "cnl::rotr<unsigned>");
@@ -1029,10 +1029,10 @@ namespace {
         static_assert(identical(cnl::countl_rsb(std::int8_t{0x01}), 6), "cnl::countl_rsb<int8_t>");
         static_assert(identical(cnl::countl_rsb(std::int8_t{0x7E}), 0), "cnl::countl_rsb<int8_t>");
         static_assert(identical(cnl::countl_rsb(std::int8_t{0x7F}), 0), "cnl::countl_rsb<int8_t>");
-        static_assert(identical(cnl::countl_rsb(std::int8_t(-0x80)), 0), "cnl::countl_rsb<int8_t>");
-        static_assert(identical(cnl::countl_rsb(std::int8_t(-0x7F)), 0), "cnl::countl_rsb<int8_t>");
-        static_assert(identical(cnl::countl_rsb(std::int8_t(-0x02)), 6), "cnl::countl_rsb<int8_t>");
-        static_assert(identical(cnl::countl_rsb(std::int8_t(-0x01)), 7), "cnl::countl_rsb<int8_t>");
+        static_assert(identical(cnl::countl_rsb(std::int8_t{-0x80}), 0), "cnl::countl_rsb<int8_t>");
+        static_assert(identical(cnl::countl_rsb(std::int8_t{-0x7F}), 0), "cnl::countl_rsb<int8_t>");
+        static_assert(identical(cnl::countl_rsb(std::int8_t{-0x02}), 6), "cnl::countl_rsb<int8_t>");
+        static_assert(identical(cnl::countl_rsb(std::int8_t{-0x01}), 7), "cnl::countl_rsb<int8_t>");
 
         static_assert(
                 identical(cnl::countl_rsb(std::int16_t{0x0000}), 15), "cnl::countl_rsb<int16_t>");
@@ -1043,13 +1043,13 @@ namespace {
         static_assert(
                 identical(cnl::countl_rsb(std::int16_t{0x7FFF}), 0), "cnl::countl_rsb<int16_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int16_t(-0x8000)), 0), "cnl::countl_rsb<int16_t>");
+                identical(cnl::countl_rsb(std::int16_t{-0x8000}), 0), "cnl::countl_rsb<int16_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int16_t(-0x7FFF)), 0), "cnl::countl_rsb<int16_t>");
+                identical(cnl::countl_rsb(std::int16_t{-0x7FFF}), 0), "cnl::countl_rsb<int16_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int16_t(-0x0002)), 14), "cnl::countl_rsb<int16_t>");
+                identical(cnl::countl_rsb(std::int16_t{-0x0002}), 14), "cnl::countl_rsb<int16_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int16_t(-0x0001)), 15), "cnl::countl_rsb<int16_t>");
+                identical(cnl::countl_rsb(std::int16_t{-0x0001}), 15), "cnl::countl_rsb<int16_t>");
 
         static_assert(
                 identical(cnl::countl_rsb(std::int32_t{0x00000000}), 31), "cnl::countl_rsb<int32_t>");
@@ -1060,13 +1060,13 @@ namespace {
         static_assert(
                 identical(cnl::countl_rsb(std::int32_t{0x7FFFFFFF}), 0), "cnl::countl_rsb<int32_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int32_t(0x80000000)), 0), "cnl::countl_rsb<int32_t>");
+                identical(cnl::countl_rsb(static_cast<std::int32_t>(0x80000000U)), 0), "cnl::countl_rsb<int32_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int32_t(0x80000001)), 0), "cnl::countl_rsb<int32_t>");
+                identical(cnl::countl_rsb(static_cast<std::int32_t>(0x80000001U)), 0), "cnl::countl_rsb<int32_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int32_t(0xFFFFFFFE)), 30), "cnl::countl_rsb<int32_t>");
+                identical(cnl::countl_rsb(static_cast<std::int32_t>(0xFFFFFFFEU)), 30), "cnl::countl_rsb<int32_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int32_t(0xFFFFFFFF)), 31), "cnl::countl_rsb<int32_t>");
+                identical(cnl::countl_rsb(static_cast<std::int32_t>(0xFFFFFFFFU)), 31), "cnl::countl_rsb<int32_t>");
 
         static_assert(
                 identical(cnl::countl_rsb(std::int64_t{0x0000000000000000}), 63),
@@ -1081,16 +1081,16 @@ namespace {
                 identical(cnl::countl_rsb(std::int64_t{0x7FFFFFFFFFFFFFFF}), 0),
                 "cnl::countl_rsb<int64_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int64_t(0x8000000000000000)), 0),
+                identical(cnl::countl_rsb(static_cast<std::int64_t>(0x8000000000000000)), 0),
                 "cnl::countl_rsb<int64_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int64_t(0x8000000000000001)), 0),
+                identical(cnl::countl_rsb(static_cast<std::int64_t>(0x8000000000000001)), 0),
                 "cnl::countl_rsb<int64_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int64_t(0xFFFFFFFFFFFFFFFE)), 62),
+                identical(cnl::countl_rsb(static_cast<std::int64_t>(0xFFFFFFFFFFFFFFFE)), 62),
                 "cnl::countl_rsb<int64_t>");
         static_assert(
-                identical(cnl::countl_rsb(std::int64_t(0xFFFFFFFFFFFFFFFF)), 63),
+                identical(cnl::countl_rsb(static_cast<std::int64_t>(0xFFFFFFFFFFFFFFFF)), 63),
                 "cnl::countl_rsb<int64_t>");
 
 #if defined(CNL_INT128_ENABLED)
@@ -1221,21 +1221,21 @@ namespace {
         static_assert(identical(cnl::countl_rb(std::int8_t{0x01}), 6), "cnl::countl_rb<int8_t>");
         static_assert(identical(cnl::countl_rb(std::int8_t{0x7E}), 0), "cnl::countl_rb<int8_t>");
         static_assert(identical(cnl::countl_rb(std::int8_t{0x7F}), 0), "cnl::countl_rb<int8_t>");
-        static_assert(identical(cnl::countl_rb(std::int8_t(-0x80)), 0), "cnl::countl_rb<int8_t>");
-        static_assert(identical(cnl::countl_rb(std::int8_t(-0x7F)), 0), "cnl::countl_rb<int8_t>");
-        static_assert(identical(cnl::countl_rb(std::int8_t(-0x02)), 6), "cnl::countl_rb<int8_t>");
-        static_assert(identical(cnl::countl_rb(std::int8_t(-0x01)), 7), "cnl::countl_rb<int8_t>");
+        static_assert(identical(cnl::countl_rb(std::int8_t{-0x80}), 0), "cnl::countl_rb<int8_t>");
+        static_assert(identical(cnl::countl_rb(std::int8_t{-0x7F}), 0), "cnl::countl_rb<int8_t>");
+        static_assert(identical(cnl::countl_rb(std::int8_t{-0x02}), 6), "cnl::countl_rb<int8_t>");
+        static_assert(identical(cnl::countl_rb(std::int8_t{-0x01}), 7), "cnl::countl_rb<int8_t>");
 
         static_assert(identical(cnl::countl_rb(std::int16_t{0x0000}), 15), "cnl::countl_rb<int16_t>");
         static_assert(identical(cnl::countl_rb(std::int16_t{0x0001}), 14), "cnl::countl_rb<int16_t>");
         static_assert(identical(cnl::countl_rb(std::int16_t{0x7FFE}), 0), "cnl::countl_rb<int16_t>");
         static_assert(identical(cnl::countl_rb(std::int16_t{0x7FFF}), 0), "cnl::countl_rb<int16_t>");
-        static_assert(identical(cnl::countl_rb(std::int16_t(-0x8000)), 0), "cnl::countl_rb<int16_t>");
-        static_assert(identical(cnl::countl_rb(std::int16_t(-0x7FFF)), 0), "cnl::countl_rb<int16_t>");
+        static_assert(identical(cnl::countl_rb(std::int16_t{-0x8000}), 0), "cnl::countl_rb<int16_t>");
+        static_assert(identical(cnl::countl_rb(std::int16_t{-0x7FFF}), 0), "cnl::countl_rb<int16_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int16_t(-0x0002)), 14), "cnl::countl_rb<int16_t>");
+                identical(cnl::countl_rb(std::int16_t{-0x0002}), 14), "cnl::countl_rb<int16_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int16_t(-0x0001)), 15), "cnl::countl_rb<int16_t>");
+                identical(cnl::countl_rb(std::int16_t{-0x0001}), 15), "cnl::countl_rb<int16_t>");
 
         static_assert(
                 identical(cnl::countl_rb(std::int32_t{0x00000000}), 31), "cnl::countl_rb<int32_t>");
@@ -1246,13 +1246,13 @@ namespace {
         static_assert(
                 identical(cnl::countl_rb(std::int32_t{0x7FFFFFFF}), 0), "cnl::countl_rb<int32_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int32_t(0x80000000)), 0), "cnl::countl_rb<int32_t>");
+                identical(cnl::countl_rb(static_cast<std::int32_t>(0x80000000)), 0), "cnl::countl_rb<int32_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int32_t(0x80000001)), 0), "cnl::countl_rb<int32_t>");
+                identical(cnl::countl_rb(static_cast<std::int32_t>(0x80000001)), 0), "cnl::countl_rb<int32_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int32_t(0xFFFFFFFE)), 30), "cnl::countl_rb<int32_t>");
+                identical(cnl::countl_rb(static_cast<std::int32_t>(0xFFFFFFFE)), 30), "cnl::countl_rb<int32_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int32_t(0xFFFFFFFF)), 31), "cnl::countl_rb<int32_t>");
+                identical(cnl::countl_rb(static_cast<std::int32_t>(0xFFFFFFFF)), 31), "cnl::countl_rb<int32_t>");
 
         static_assert(
                 identical(cnl::countl_rb(std::int64_t{0x0000000000000000}), 63),
@@ -1267,16 +1267,16 @@ namespace {
                 identical(cnl::countl_rb(std::int64_t{0x7FFFFFFFFFFFFFFF}), 0),
                 "cnl::countl_rb<int64_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int64_t(0x8000000000000000)), 0),
+                identical(cnl::countl_rb(static_cast<std::int64_t>(0x8000000000000000)), 0),
                 "cnl::countl_rb<int64_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int64_t(0x8000000000000001)), 0),
+                identical(cnl::countl_rb(static_cast<std::int64_t>(0x8000000000000001)), 0),
                 "cnl::countl_rb<int64_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int64_t(0xFFFFFFFFFFFFFFFE)), 62),
+                identical(cnl::countl_rb(static_cast<std::int64_t>(0xFFFFFFFFFFFFFFFE)), 62),
                 "cnl::countl_rb<int64_t>");
         static_assert(
-                identical(cnl::countl_rb(std::int64_t(0xFFFFFFFFFFFFFFFF)), 63),
+                identical(cnl::countl_rb(static_cast<std::int64_t>(0xFFFFFFFFFFFFFFFF)), 63),
                 "cnl::countl_rb<int64_t>");
 
 #if defined(CNL_INT128_ENABLED)
@@ -1427,10 +1427,10 @@ namespace {
         static_assert(identical(cnl::countr_used(std::int8_t{0x01}), 1), "cnl::countr_used<int8_t>");
         static_assert(identical(cnl::countr_used(std::int8_t{0x7E}), 7), "cnl::countr_used<int8_t>");
         static_assert(identical(cnl::countr_used(std::int8_t{0x7F}), 7), "cnl::countr_used<int8_t>");
-        static_assert(identical(cnl::countr_used(std::int8_t(-0x80)), 7), "cnl::countr_used<int8_t>");
-        static_assert(identical(cnl::countr_used(std::int8_t(-0x7F)), 7), "cnl::countr_used<int8_t>");
-        static_assert(identical(cnl::countr_used(std::int8_t(-0x02)), 1), "cnl::countr_used<int8_t>");
-        static_assert(identical(cnl::countr_used(std::int8_t(-0x01)), 0), "cnl::countr_used<int8_t>");
+        static_assert(identical(cnl::countr_used(std::int8_t{-0x80}), 7), "cnl::countr_used<int8_t>");
+        static_assert(identical(cnl::countr_used(std::int8_t{-0x7F}), 7), "cnl::countr_used<int8_t>");
+        static_assert(identical(cnl::countr_used(std::int8_t{-0x02}), 1), "cnl::countr_used<int8_t>");
+        static_assert(identical(cnl::countr_used(std::int8_t{-0x01}), 0), "cnl::countr_used<int8_t>");
 
         static_assert(
                 identical(cnl::countr_used(std::int16_t{0x0000}), 0), "cnl::countr_used<int16_t>");
@@ -1441,13 +1441,13 @@ namespace {
         static_assert(
                 identical(cnl::countr_used(std::int16_t{0x7FFF}), 15), "cnl::countr_used<int16_t>");
         static_assert(
-                identical(cnl::countr_used(std::int16_t(-0x8000)), 15), "cnl::countr_used<int16_t>");
+                identical(cnl::countr_used(std::int16_t{-0x8000}), 15), "cnl::countr_used<int16_t>");
         static_assert(
-                identical(cnl::countr_used(std::int16_t(-0x7FFF)), 15), "cnl::countr_used<int16_t>");
+                identical(cnl::countr_used(std::int16_t{-0x7FFF}), 15), "cnl::countr_used<int16_t>");
         static_assert(
-                identical(cnl::countr_used(std::int16_t(-0x0002)), 1), "cnl::countr_used<int16_t>");
+                identical(cnl::countr_used(std::int16_t{-0x0002}), 1), "cnl::countr_used<int16_t>");
         static_assert(
-                identical(cnl::countr_used(std::int16_t(-0x0001)), 0), "cnl::countr_used<int16_t>");
+                identical(cnl::countr_used(std::int16_t{-0x0001}), 0), "cnl::countr_used<int16_t>");
 
         static_assert(
                 identical(cnl::countr_used(std::int32_t{0x00000000}), 0),
@@ -1462,16 +1462,16 @@ namespace {
                 identical(cnl::countr_used(std::int32_t{0x7FFFFFFF}), 31),
                 "cnl::countr_used<int32_t>");
         static_assert(
-                identical(cnl::countr_used(std::int32_t(0x80000000)), 31),
+                identical(cnl::countr_used(static_cast<std::int32_t>(0x80000000)), 31),
                 "cnl::countr_used<int32_t>");
         static_assert(
-                identical(cnl::countr_used(std::int32_t(0x80000001)), 31),
+                identical(cnl::countr_used(static_cast<std::int32_t>(0x80000001)), 31),
                 "cnl::countr_used<int32_t>");
         static_assert(
-                identical(cnl::countr_used(std::int32_t(0xFFFFFFFE)), 1),
+                identical(cnl::countr_used(static_cast<std::int32_t>(0xFFFFFFFE)), 1),
                 "cnl::countr_used<int32_t>");
         static_assert(
-                identical(cnl::countr_used(std::int32_t(0xFFFFFFFF)), 0),
+                identical(cnl::countr_used(static_cast<std::int32_t>(0xFFFFFFFF)), 0),
                 "cnl::countr_used<int32_t>");
 
         static_assert(
@@ -1487,16 +1487,16 @@ namespace {
                 identical(cnl::countr_used(std::int64_t{0x7FFFFFFFFFFFFFFF}), 63),
                 "cnl::countr_used<int64_t>");
         static_assert(
-                identical(cnl::countr_used(std::int64_t(0x8000000000000000)), 63),
+                identical(cnl::countr_used(static_cast<std::int64_t>(0x8000000000000000)), 63),
                 "cnl::countr_used<int64_t>");
         static_assert(
-                identical(cnl::countr_used(std::int64_t(0x8000000000000001)), 63),
+                identical(cnl::countr_used(static_cast<std::int64_t>(0x8000000000000001)), 63),
                 "cnl::countr_used<int64_t>");
         static_assert(
-                identical(cnl::countr_used(std::int64_t(0xFFFFFFFFFFFFFFFE)), 1),
+                identical(cnl::countr_used(static_cast<std::int64_t>(0xFFFFFFFFFFFFFFFE)), 1),
                 "cnl::countr_used<int64_t>");
         static_assert(
-                identical(cnl::countr_used(std::int64_t(0xFFFFFFFFFFFFFFFF)), 0),
+                identical(cnl::countr_used(static_cast<std::int64_t>(0xFFFFFFFFFFFFFFFF)), 0),
                 "cnl::countr_used<int64_t>");
 
 #if defined(CNL_INT128_ENABLED)

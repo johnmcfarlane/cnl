@@ -10,6 +10,7 @@
 #include "../../fraction.h"
 #include "../../integer.h"
 #include "../custom_operator/native_tag.h"
+#include "../narrow_cast.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../num_traits/scale.h"
 #include "../power_value.h"
@@ -29,7 +30,7 @@ namespace cnl {
             op_value<Dest, power<DestExponent, Radix>>> {
         [[nodiscard]] constexpr auto operator()(Src const& from) const
         {
-            return Dest(from) * _impl::power_value<Dest, SrcExponent - DestExponent, Radix>();
+            return static_cast<Dest>(from) * _impl::power_value<Dest, SrcExponent - DestExponent, Radix>();
         }
     };
 

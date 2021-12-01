@@ -120,7 +120,7 @@ namespace saturated_binary_arithmetic_operator {
     using cnl::_impl::multiply_op;
 
     static_assert(
-            identical(cnl::_impl::to_rep(saturated_integer<short>(1234)), short(1234)),
+            identical(cnl::_impl::to_rep(saturated_integer<short>(1234)), short{1234}),
             "to_rep(saturated_integer<>) test failed");
 
     static_assert(
@@ -231,7 +231,7 @@ static_assert(
         saturated_integer<int16_t>(77) / saturated_integer<int8_t>(-11) == -7,
         "cnl::saturated_integer test failed");
 static_assert(
-        int16_t(31) / saturated_integer<int8_t>(-2) == -15, "cnl::saturated_integer test failed");
+        int16_t{31} / saturated_integer<int8_t>(-2) == -15, "cnl::saturated_integer test failed");
 
 static_assert(
         is_same<decltype(declval<saturated_integer<>>() / declval<double>()), double>::value);

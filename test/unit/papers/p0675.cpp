@@ -55,8 +55,8 @@ namespace acme {
     [[nodiscard]] constexpr auto operator-(
             smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
     {
-        auto lhs_rep_signed = std::make_signed_t<LhsRep>(to_rep(lhs));
-        auto rhs_rep_signed = std::make_signed_t<RhsRep>(to_rep(rhs));
+        auto lhs_rep_signed = static_cast<std::make_signed_t<LhsRep>>(to_rep(lhs));
+        auto rhs_rep_signed = static_cast<std::make_signed_t<RhsRep>>(to_rep(rhs));
         auto difference = lhs_rep_signed - rhs_rep_signed;
         return smart_integer{difference};
     }
@@ -74,8 +74,8 @@ namespace acme {
             return smart_integer{product_rep};
         }
 
-        auto lhs_rep_signed = std::make_signed_t<LhsRep>(lhs_rep);
-        auto rhs_rep_signed = std::make_signed_t<RhsRep>(rhs_rep);
+        auto lhs_rep_signed = static_cast<std::make_signed_t<LhsRep>>(lhs_rep);
+        auto rhs_rep_signed = static_cast<std::make_signed_t<RhsRep>>(rhs_rep);
         auto product_rep = lhs_rep_signed * rhs_rep_signed;
         return smart_integer{product_rep};
     }

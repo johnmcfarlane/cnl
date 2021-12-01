@@ -98,7 +98,7 @@ struct number_test {
 
     // comparisons between zero and zero-initialized value
     static_assert(
-            is_equal_to(zero, value_type(0.)),
+            is_equal_to(zero, value_type{}),
             "zero-initialized value is not represented using zero");
 
     ////////////////////////////////////////////////////////////////////////////////

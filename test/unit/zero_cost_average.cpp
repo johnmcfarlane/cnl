@@ -7,8 +7,10 @@
 /// \file
 /// \brief Signed 15:16 Fixed-Point Average Function Using cnl::elastic_scaled_integer
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_scaled_integer.h>
+
+#include <cnl/_impl/narrow_cast.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 
@@ -26,7 +28,7 @@ constexpr auto average_integer(float input1, float input2)
     auto sum = int64_t{fixed1} + fixed2;
 
     // user must elide the two divisions (averaging and scaling) together
-    return float(sum) / (2 * 65536.F);
+    return cnl::_impl::narrow_cast<float>(sum) / (2 * 65536.F);
 }
 
 // the same function using cnl::elastic_integer -

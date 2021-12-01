@@ -39,8 +39,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::operate<cnl::_impl::add_op, cnl::native_overflow_tag>{}(
-                                std::uint32_t(0xFFFFFFFF), std::uint32_t(0x12345678)),
-                        std::uint32_t(0xFFFFFFFF) + std::uint32_t(0x12345678)));
+                                0xFFFFFFFFU, 0x12345678U),
+                        0xFFFFFFFFU + 0x12345678U));
 
         // subtract
         static_assert(

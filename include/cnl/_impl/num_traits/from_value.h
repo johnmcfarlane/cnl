@@ -8,6 +8,7 @@
 #define CNL_IMPL_NUM_TRAITS_FROM_VALUE_H
 
 #include "../../constant.h"
+#include "../narrow_cast.h"
 #include "../numbers/set_signedness.h"
 #include "../type_traits/remove_cvref.h"
 #include "../used_digits.h"
@@ -48,7 +49,7 @@ namespace cnl {
     public:
         [[nodiscard]] constexpr auto operator()(constant<Value> const& value) const
         {
-            return result_type(value);
+            return _impl::narrow_cast<result_type>(value);
         }
     };
 

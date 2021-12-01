@@ -15,7 +15,7 @@ jobs:
         include:
           # Clang HEAD (w. Clang-Tidy, sanitizers)
           - name: clang-head-analyse
-            linux-container: johnmcfarlane/cnl_ci:clang-head
+            linux-container: johnmcfarlane/cnl_ci:clang-head-libcpp
             os-version: ubuntu-20.04
             profile: linux-clang-head-analyse
 

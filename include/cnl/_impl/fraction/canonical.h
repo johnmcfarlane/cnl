@@ -23,7 +23,7 @@ namespace cnl {
         [[nodiscard]] constexpr auto canonical_from_reduce(
                 fraction<Numerator, Denominator> const& f)
         {
-            return (f.denominator < Denominator(0.)) ? negated(f) : f;
+            return (f.denominator < static_cast<Denominator>(0.)) ? negated(f) : f;
         }
 
         template<typename Numerator, typename Denominator>

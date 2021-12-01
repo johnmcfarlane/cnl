@@ -221,9 +221,9 @@ static_assert(static_cast<int>(-3.9) == -3, "incorrect assumption about default 
 #pragma warning(disable : 4310)
 #endif
 
-static_assert(cnl::_impl::scale<1>(int8(0)) == 0, "cnl::_impl::scale test failed");
-static_assert(cnl::_impl::scale<1, 10>(int8(0)) == 0, "cnl::_impl::scale test failed");
-static_assert(cnl::_impl::scale<1, 10>(int8(1)) == 10, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<1>(int8{0}) == 0, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<1, 10>(int8{0}) == 0, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<1, 10>(int8{1}) == 10, "cnl::_impl::scale test failed");
 
 #if defined(TEST_NATIVE_INTEGER)
 static_assert(cnl::_impl::scale<8>(uint16{0x1234}) == 0x123400, "cnl::_impl::scale test failed");
@@ -367,7 +367,7 @@ namespace ctor {
     static_assert(
             identical(
                     uint32{0x00003210U},
-                    uint32(scaled_integer<uint64, cnl::power<-16>>{0x76543210U})),
+                    uint32{scaled_integer<uint64, cnl::power<-16>>{0x76543210U}}),
             "scaled_integer<>::scaled_integer");
 #endif
 
@@ -1260,7 +1260,7 @@ namespace test_quotient {
             "cnl::quotient test failed");
     static_assert(
             identical(
-                    cnl::quotient(int32(-999), int32(3)),
+                    cnl::quotient(int32{-999}, int32{3}),
                     scaled_integer<quot_digits_t<>, cnl::power<-31>>{-333LL}),
             "cnl::scaled_integer test failed");
     static_assert(
@@ -1353,8 +1353,8 @@ template<class Rep, int Exponent, class Min, class Max, class Lowest>
             nl::round_error() == static_cast<Rep>(0),
             "numeric_limits<scaled_integer>::round_error");
     static_assert(nl::infinity() == rnl::infinity(), "numeric_limits<scaled_integer>::infinity");
-    static_assert(nl::quiet_NaN() == Rep(0), "numeric_limits<scaled_integer>::quiet_NaN");
-    static_assert(nl::signaling_NaN() == Rep(0), "numeric_limits<scaled_integer>::signaling_NaN");
+    static_assert(nl::quiet_NaN() == Rep{0}, "numeric_limits<scaled_integer>::quiet_NaN");
+    static_assert(nl::signaling_NaN() == Rep{0}, "numeric_limits<scaled_integer>::signaling_NaN");
 
     return nl::min() == min && nl::lowest() == lowest && nl::max() == max && nl::epsilon() == min
         && nl::denorm_min() == min;
@@ -1518,10 +1518,10 @@ struct scaled_integer_tester_outsize {
 
     // simply assignment to and from underlying representation
     using numeric_limits = std::numeric_limits<scaled_integer>;
-    static constexpr scaled_integer min = cnl::_impl::from_rep<scaled_integer>(rep(1));
+    static constexpr scaled_integer min = cnl::_impl::from_rep<scaled_integer>(rep{1});
 #if !defined(_MSC_VER)
     static_assert(
-            cnl::_impl::to_rep(min) == rep(1),
+            cnl::_impl::to_rep(min) == rep{1},
             "all Rep types should be able to store the number 1!");
 #endif
 
