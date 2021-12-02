@@ -42,13 +42,13 @@ namespace test_narrow_cast {
     TEST(narrow_cast, trapping)  // NOLINT
     {
 #if defined(CNL_DEBUG)
-        ASSERT_DEATH((void)cnl::_impl::narrow_cast<std::int16_t>(-32769), "");
-        ASSERT_DEATH((void)cnl::_impl::narrow_cast<std::int16_t>(32768), "");
+        ASSERT_DEATH((void)cnl::_impl::narrow_cast<std::int16_t>(-32769), "");  // NOLINT
+        ASSERT_DEATH((void)cnl::_impl::narrow_cast<std::int16_t>(32768), "");  // NOLINT
 
-        ASSERT_DEATH((void)cnl::_impl::narrow_cast<std::uint16_t>(-1), "");
-        ASSERT_DEATH((void)cnl::_impl::narrow_cast<std::uint16_t>(65536), "");
+        ASSERT_DEATH((void)cnl::_impl::narrow_cast<std::uint16_t>(-1), "");  // NOLINT
+        ASSERT_DEATH((void)cnl::_impl::narrow_cast<std::uint16_t>(65536), "");  // NOLINT
 
-        ASSERT_DEATH((void)cnl::_impl::narrow_cast<float>(0.1L), "");
+        ASSERT_DEATH((void)cnl::_impl::narrow_cast<float>(0.1L), "");  // NOLINT
 #endif
     }
 }

@@ -1,0 +1,7 @@
+include(linux-clang-libstdc++)
+[settings]
+compiler.version=13
+[options]
+int128=False
+[build_requires]
+[env]

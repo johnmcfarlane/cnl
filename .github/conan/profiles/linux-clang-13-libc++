@@ -1,7 +1,9 @@
-include(linux-clang)
+include(linux-clang-libc++)
 [settings]
 compiler.version=13
 [options]
 int128=False
+iostreams=False
+sanitize=False
 [build_requires]
 [env]

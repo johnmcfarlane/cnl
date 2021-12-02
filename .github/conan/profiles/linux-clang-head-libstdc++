@@ -1,0 +1,6 @@
+include(linux-clang-libstdc++)
+[settings]
+compiler.version=14
+[options]
+[build_requires]
+[env]

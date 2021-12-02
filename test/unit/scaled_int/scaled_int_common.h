@@ -182,7 +182,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), decrement)  // NOLINT
 
 TEST(TOKENPASTE2(TEST_LABEL, sqrt_exception), from_alternative_specialization)  // NOLINT
 {
-    ASSERT_DEATH((void)sqrt(scaled_integer<>(-1)), "x >= Integer{0}");
+    ASSERT_DEATH((void)sqrt(scaled_integer<>(-1)), "x >= Integer{0}");  // NOLINT
 }
 
 #endif

@@ -7,47 +7,126 @@ on:
       - '**'
 
 jobs:
+  # Build and test latest on Linux using only CMake
+  linux-cmake-test:
+    strategy:
+      matrix:
+        compiler: [clang, gcc]
+
+        include:
+          - compiler: clang
+            clang-tidy: "clang-tidy"
+            cxx_extensions: "ON"
+            toolchain: clang.cmake
+            container: johnmcfarlane/cnl_ci:clang-head-libcpp
+          - compiler: gcc
+            clang-tidy: ""
+            cxx_extensions: "OFF"
+            toolchain: gcc.cmake
+            container: johnmcfarlane/cnl_ci:gcc-head
+
+    container: ${{matrix.container}}
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Restore caches
+        uses: actions/cache@v2
+        with:
+          path: |
+            /github/home/.conan/data
+            /github/home/.ccache
+          key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            test-${{matrix.compiler}}-${{github.ref}}-
+            test-${{matrix.compiler}}-main-
+            test-${{matrix.compiler}}-
+
+      - name: Build and Install GTest
+        run: |
+          git clone https://github.com/google/googletest.git
+          cd googletest
+          git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            .
+          cmake --build . --target install
+
+      - name: Configure CNL
+        run: |
+          cmake \
+            -DCMAKE_CXX_CLANG_TIDY=${{matrix.clang-tidy}} \
+            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            $GITHUB_WORKSPACE
+
+      - name: Build CNL
+        run: cmake --build $GITHUB_WORKSPACE --target test-all
+
+      - name: Test CNL
+        run: ctest --output-on-failure
+
+      - name: ccache report
+        run: ccache -s
+
   # Build and test many combinations on Linux/OS X using Conan
   posix-conan-test:
     strategy:
       matrix:
-        name: [clang-head-analyse, gcc-head, clang-13, clang-12, clang-11, clang-10, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7]
+        name: [
+          clang-head-libc++, clang-head-libstdc++,
+          clang-13-libc++, clang-13-libstdc++,
+          clang-12-libstdc++,
+          clang-11-libstdc++,
+          clang-10-libstdc++,
+          gcc-head, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7
+        ]
+        build-type: ["Debug", "Release"]
         include:
-          # Clang HEAD (w. Clang-Tidy, sanitizers)
-          - name: clang-head-analyse
+          # Clang HEAD
+          - name: clang-head-libc++
             linux-container: johnmcfarlane/cnl_ci:clang-head-libcpp
             os-version: ubuntu-20.04
-            profile: linux-clang-head-analyse
+            profile: linux-clang-head-libc++
+          - name: clang-head-libstdc++
+            linux-container: johnmcfarlane/cnl_ci:clang-head-libstdcpp
+            os-version: ubuntu-20.04
+            profile: linux-clang-head-libstdc++
+
+          # Clang-13
+          - name: clang-13-libc++
+            linux-container: johnmcfarlane/cnl_ci:clang-13-libcpp
+            os-version: ubuntu-20.04
+            profile: linux-clang-13-libc++
+          - name: clang-13-libstdc++
+            linux-container: johnmcfarlane/cnl_ci:clang-13-libstdcpp
+            os-version: ubuntu-20.04
+            profile: linux-clang-13-libstdc++
+
+          # Clang-12 (Contrary)
+          - name: clang-12-libstdc++
+            linux-container: johnmcfarlane/cnl_ci:clang-12-libstdcpp
+            os-version: ubuntu-20.04
+            profile: linux-clang-12-libstdc++
+
+          # Clang-11
+          - name: clang-11-libstdc++
+            linux-container: johnmcfarlane/cnl_ci:clang-11-libstdcpp
+            os-version: ubuntu-20.04
+            profile: linux-clang-11-libstdc++
+
+          # Clang-10
+          - name: clang-10-libstdc++
+            linux-container: johnmcfarlane/cnl_ci:clang-10-libstdcpp
+            os-version: ubuntu-20.04
+            profile: linux-clang-10-libstdc++
 
           # GCC HEAD
           - name: gcc-head
             linux-container: johnmcfarlane/cnl_ci:gcc-head
             os-version: ubuntu-20.04
             profile: linux-gcc-head
-
-          # Clang-13
-          - name: clang-13
-            linux-container: johnmcfarlane/cnl_ci:clang-13-libstdcpp
-            os-version: ubuntu-20.04
-            profile: linux-clang-13
-
-          # Clang-12 (Contrary)
-          - name: clang-12
-            linux-container: johnmcfarlane/cnl_ci:clang-12-libstdcpp
-            os-version: ubuntu-20.04
-            profile: linux-clang-12
-
-          # Clang-11
-          - name: clang-11
-            linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
-            os-version: ubuntu-20.04
-            profile: linux-clang-11
-
-          # Clang-10
-          - name: clang-10
-            linux-container: johnmcfarlane/cnl_ci:clang-10-libstdcpp
-            os-version: ubuntu-20.04
-            profile: linux-clang-10
 
           # GCC-11
           - name: gcc-11
@@ -111,6 +190,7 @@ jobs:
             --build=missing \
             --options test=all \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
+            --settings build_type=${{matrix.build-type}} \
             $GITHUB_WORKSPACE
 
       - name: Build tests
@@ -184,66 +264,6 @@ jobs:
       - name: Run benchmarks
         working-directory: ${{runner.workspace}}/build
         run: test\benchmark\Release\test-benchmark.exe
-
-  # Build and test latest on Linux using only CMake
-  linux-cmake-test:
-    strategy:
-      matrix:
-        compiler: [clang-13-libcpp, gcc-11]
-
-        include:
-          - compiler: clang-13-libcpp
-            cxx_extensions: "ON"
-            toolchain: clang.cmake
-            container: johnmcfarlane/cnl_ci:clang-13-libcpp
-          - compiler: gcc-11
-            cxx_extensions: "OFF"
-            toolchain: gcc.cmake
-            container: johnmcfarlane/cnl_ci:gcc-11
-
-    container: ${{matrix.container}}
-    runs-on: ubuntu-20.04
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Restore caches
-        uses: actions/cache@v2
-        with:
-          path: |
-            /github/home/.conan/data
-            /github/home/.ccache
-          key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
-          restore-keys: |
-            test-${{matrix.compiler}}-${{github.ref}}-
-            test-${{matrix.compiler}}-main-
-            test-${{matrix.compiler}}-
-
-      - name: Build and Install GTest
-        run: |
-          git clone https://github.com/google/googletest.git
-          cd googletest
-          git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
-          cmake \
-            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            .
-          cmake --build . --target install
-
-      - name: Configure CNL
-        run: |
-          cmake \
-            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
-            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            $GITHUB_WORKSPACE
-
-      - name: Build CNL
-        run: cmake --build $GITHUB_WORKSPACE --target test-all
-
-      - name: Test CNL
-        run: ctest --output-on-failure
-
-      - name: ccache report
-        run: ccache -s
 
   # Install on mature Linux distro using only CMake
   linux-cmake-install:

@@ -74,12 +74,12 @@ namespace {
 #if defined(CNL_DEBUG)
     TEST(fraction_ctor, float_ctor_int64_double_inv22)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int64_t>(1e-22), "");
+        ASSERT_DEATH(cnl::fraction<std::int64_t>(1e-22), "");  // NOLINT
     }
 
     TEST(fraction_ctor, float_ctor_int64_double_inv30)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int64_t>(1e-30), "");
+        ASSERT_DEATH(cnl::fraction<std::int64_t>(1e-30), "");  // NOLINT
     }
 #endif
 
@@ -104,22 +104,22 @@ namespace {
 #if defined(CNL_DEBUG)
     TEST(fraction_ctor, float_ctor_int32_double_inv15)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int32_t>(1e-15), "");
+        ASSERT_DEATH(cnl::fraction<std::int32_t>(1e-15), "");  // NOLINT
     }
 
     TEST(fraction_ctor, float_ctor_int32_double_inv22)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int32_t>(1e-22), "");
+        ASSERT_DEATH(cnl::fraction<std::int32_t>(1e-22), "");  // NOLINT
     }
 
     TEST(fraction_ctor, float_ctor_int32_double_inv30)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int32_t>(1e-30), "");
+        ASSERT_DEATH(cnl::fraction<std::int32_t>(1e-30), "");  // NOLINT
     }
 
     TEST(fraction_ctor, float_ctor_int32_double_15)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int32_t>(1e15), "");
+        ASSERT_DEATH(cnl::fraction<std::int32_t>(1e15), "");  // NOLINT
     }
 #endif
 
@@ -142,32 +142,32 @@ namespace {
 #if defined(CNL_DEBUG)
     TEST(fraction_ctor, float_ctor_int16_double_inv9)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e-9), "");
+        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e-9), "");  // NOLINT
     }
 
     TEST(fraction_ctor, float_ctor_int16_double_inv15)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e-15), "");
+        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e-15), "");  // NOLINT
     }
 
     TEST(fraction_ctor, float_ctor_int16_double_inv22)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e-22), "");
+        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e-22), "");  // NOLINT
     }
 
     TEST(fraction_ctor, float_ctor_int16_double_inv30)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e-30), "");
+        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e-30), "");  // NOLINT
     }
 
     TEST(fraction_ctor, float_ctor_int16_double_9)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e9), "");
+        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e9), "");  // NOLINT
     }
 
     TEST(fraction_ctor, float_ctor_int16_double_15)  // NOLINT
     {
-        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e15), "");
+        ASSERT_DEATH(cnl::fraction<std::int16_t>(1e15), "");  // NOLINT
     }
 #endif
 }

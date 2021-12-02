@@ -1,10 +1,7 @@
 include(linux-clang)
 [settings]
-compiler.version=14
 compiler.libcxx=libc++
 [options]
-clang_tidy=True
-sanitize=True
 [build_requires]
 [env]
 CONAN_CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_DIR/clang-libc++.cmake

@@ -188,14 +188,14 @@ namespace {
     TEST(safe_integer, conversion_overflow)  // NOLINT
     {
         using si = cnl::safe_integer<5>;
-        ASSERT_DEATH(si{32}, "positive overflow");
+        ASSERT_DEATH(si{32}, "positive overflow");  // NOLINT
     }
 
     TEST(safe_integer, most_negative_number)  // NOLINT
     {
         static_assert(cnl::safe_integer<1>{1}, "in-range boundary test");
         static_assert(cnl::safe_integer<1>{-1}, "in-range boundary test");
-        ASSERT_DEATH(cnl::safe_integer<1>{-2}, "negative overflow");
+        ASSERT_DEATH(cnl::safe_integer<1>{-2}, "negative overflow");  // NOLINT
     }
 #endif
 
@@ -249,25 +249,25 @@ namespace {
     TEST(safe_integer, pre_increment_overflow)  // NOLINT
     {
         auto a = cnl::safe_integer<3>{7};
-        ASSERT_DEATH(++a, "positive overflow");
+        ASSERT_DEATH(++a, "positive overflow");  // NOLINT
     }
 
     TEST(safe_integer, pre_decrement_overflow)  // NOLINT
     {
         auto a = cnl::safe_integer<3>{-7};
-        ASSERT_DEATH(--a, "negative overflow");
+        ASSERT_DEATH(--a, "negative overflow");  // NOLINT
     }
 
     TEST(safe_integer, post_increment_overflow)  // NOLINT
     {
         auto a = cnl::safe_integer<3>{7};
-        ASSERT_DEATH(a++, "positive overflow");
+        ASSERT_DEATH(a++, "positive overflow");  // NOLINT
     }
 
     TEST(safe_integer, post_decrement_overflow)  // NOLINT
     {
         auto a = cnl::safe_integer<3>{-7};
-        ASSERT_DEATH(a--, "negative overflow");
+        ASSERT_DEATH(a--, "negative overflow");  // NOLINT
     }
 #endif
 }
