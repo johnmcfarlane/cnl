@@ -277,7 +277,7 @@ jobs:
       - name: Install CNL
         run: sudo cmake --build $GITHUB_WORKSPACE --target install
 
-  # Test shell scripts
+  # Test source formatting
   clang-format:
     runs-on: ubuntu-20.04
     container: johnmcfarlane/cnl_ci:clang-13
