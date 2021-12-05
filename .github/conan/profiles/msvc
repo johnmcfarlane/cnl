@@ -1,0 +1,18 @@
+include(base)
+[settings]
+os=Windows
+os_build=Windows
+arch_build=x86_64
+compiler=Visual Studio
+compiler.cppstd=20
+compiler.version=16
+build_type=Release
+[options]
+clang_tidy=False
+cppcheck=False
+int128=False
+iostreams=True
+sanitize=True
+[env]
+CONAN_CMAKE_GENERATOR=Visual Studio 16 2019
+CONAN_CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_DIR/msvc.cmake
