@@ -1,3 +1,7 @@
 TOOLCHAIN_DIR=$PROFILE_DIR/../../../test/toolchain
 [options]
+boost:header_only=True
+boost:without_fiber=True
+boost:without_locale=True
+boost:without_log=True
 test=all
