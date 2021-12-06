@@ -194,26 +194,6 @@ function(make_test source compile_flags)
 endfunction(make_test)
 
 ######################################################################
-# create tests to verify CNL
-
-foreach(source ${test_sources})
-    make_test("${source}" "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}")
-endforeach(source)
-
-if (CNL_SANITIZE)
-    make_test(ub.cpp "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}")
-endif(CNL_SANITIZE)
-
-######################################################################
-# create tests to show off CNL
-
-foreach(source ${sample_sources})
-    make_test("${source}" "${SAMPLE_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}")
-endforeach(source)
-
-make_test(scaled_int/math.cpp "${SAMPLE_CXX_FLAGS}")
-
-######################################################################
 # make test of Boost.Multiprecision integration
 
 if(Boost_FOUND)

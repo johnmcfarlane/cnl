@@ -44,30 +44,6 @@ namespace cnl {
         template<typename Sum>
         using scale_op_t = Sum (*)(Sum const&);
 
-        constexpr auto make_scale_op(int base) -> scale_op_t<std::int64_t>
-        {
-            switch (base) {
-            case 2:
-                return [](std::int64_t const& sum) {
-                    return std::int64_t{(sum << 1)};
-                };
-            case 8:
-                return [](std::int64_t const& sum) {
-                    return std::int64_t{(sum << 3)};
-                };
-            case 10:
-                return [](std::int64_t const& sum) {
-                    return std::int64_t{(sum * 10)};
-                };
-            case 16:
-                return [](std::int64_t const& sum) {
-                    return std::int64_t{(sum << 4)};
-                };
-            default:
-                return unreachable<scale_op_t<std::int64_t>>("unsupported number base");
-            }
-        }
-
         template<typename Sum>
         constexpr auto make_scale_op_chunk(int base) -> scale_op_t<Sum>
         {
@@ -256,9 +232,8 @@ namespace cnl {
         [[nodiscard]] constexpr auto parse_string(
                 char const* first, int num_digits, bool is_negative, int base, int stride)
         {
-            auto const parse_int64 = [&num_digits, &first,
-                                      char_to_digit = make_char_to_digit(is_negative, base),
-                                      scale_op = make_scale_op(base)](int n) {
+            auto const parse_int64 = [&num_digits, &first, base,
+                                      char_to_digit = make_char_to_digit(is_negative, base)](int n) {
                 std::int64_t init{};
                 num_digits -= n;
                 CNL_ASSERT(num_digits >= 0);
@@ -266,7 +241,7 @@ namespace cnl {
                     auto const digit{*first++};
                     CNL_ASSERT(digit);
                     if (digit != separator && digit != radix_char) {
-                        init = scale_op(init) + char_to_digit(digit);
+                        init = init * base + char_to_digit(digit);
                         n--;
                     }
                 }

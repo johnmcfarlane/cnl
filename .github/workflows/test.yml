@@ -73,6 +73,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   posix-conan-test:
     strategy:
+      fail-fast: false
       matrix:
         name: [
           clang-head-libc++, clang-head-libstdc++,
@@ -179,6 +180,12 @@ jobs:
       - name: Install Brew packages
         if: ( matrix.os-version == 'macos-10.15' )
         run: brew install ccache conan ninja
+
+      - name: Install apt packages
+        if: ( matrix.os-version == 'ubuntu-20.04' )
+        run: |
+          apt-get update --quiet
+          apt-get install --yes --quiet clang-tidy
 
       - name: Initialise Conan
         run: |
