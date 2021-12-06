@@ -138,7 +138,7 @@ set(sample_sources
 ######################################################################
 # pull in external dependencies
 
-find_package(Boost 1.55.0)
+find_package(Boost 1.71.0)
 
 ######################################################################
 # add_gtest_dependency

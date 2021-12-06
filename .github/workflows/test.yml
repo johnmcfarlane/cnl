@@ -188,7 +188,6 @@ jobs:
         run: |
           conan install \
             --build=missing \
-            --options test=all \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
             --settings build_type=${{matrix.build-type}} \
             $GITHUB_WORKSPACE
@@ -252,7 +251,6 @@ jobs:
           conan install `
             --build=missing `
             --env CONAN_CMAKE_GENERATOR="Visual Studio 16 2019" `
-            --options test=all `
             --settings build_type=Release `
             --profile $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} `
             $env:GITHUB_WORKSPACE

@@ -1,4 +1,4 @@
-TOOLCHAIN_DIR=$PROFILE_DIR/../../../test/toolchain
+include(base)
 [settings]
 os=Macos
 os_build=Macos

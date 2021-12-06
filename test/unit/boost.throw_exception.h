@@ -7,6 +7,12 @@
 #if !defined(CNL_TEST_BOOST_THROW_EXCEPTION_H)
 #define CNL_TEST_BOOST_THROW_EXCEPTION_H
 
+#include <boost/version.hpp>
+#if (BOOST_VERSION >= 107400)
+#include <boost/assert/source_location.hpp>
+#endif
+#include <boost/throw_exception.hpp>
+
 ////////////////////////////////////////////////////////////////////////////////
 // boost::throw_exception
 //
@@ -14,10 +20,17 @@
 
 namespace boost {
 #if defined(BOOST_NO_EXCEPTIONS)
-    inline void throw_exception(std::exception const&)
+    [[noreturn]] inline void throw_exception(std::exception const&)
     {
         std::abort();
     }
+
+#if (BOOST_VERSION >= 107400)
+    [[noreturn]] inline void throw_exception(std::exception const&, boost::source_location const&)
+    {
+        std::abort();
+    }
+#endif
 #endif
 }
 
