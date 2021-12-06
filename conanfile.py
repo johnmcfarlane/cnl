@@ -35,7 +35,7 @@ class CnlConan(ConanFile):
     no_copy_source = True
     requires = [
         "benchmark/[~1.6]",
-        "boost/[~1.71]",
+        "boost/1.77.0",
         "gtest/[~1.11]",
     ]
 
