@@ -8,7 +8,7 @@ on:
 
 jobs:
   # Build and test latest on Linux using only CMake
-  linux-cmake-test:
+  cmake:
     strategy:
       matrix:
         compiler: [clang, gcc]
@@ -70,7 +70,7 @@ jobs:
         run: ccache -s
 
   # Build and test many combinations on Linux/OS X using Conan
-  posix-conan-test:
+  conan:
     strategy:
       matrix:
         name: [
@@ -208,7 +208,7 @@ jobs:
         run: ccache -s
 
   # Build and test on Windows using Conan
-  windows-conan-test:
+  windows:
     runs-on: windows-2019
     strategy:
       matrix:
@@ -263,7 +263,7 @@ jobs:
         run: test\benchmark\Release\test-benchmark.exe
 
   # Install on mature Linux distro using only CMake
-  linux-cmake-install:
+  install:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
