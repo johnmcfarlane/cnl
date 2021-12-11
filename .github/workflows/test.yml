@@ -41,18 +41,18 @@ jobs:
     strategy:
       matrix:
         compiler: [clang, gcc]
-
         include:
           - compiler: clang
-            clang-tidy: "clang-tidy"
-            cxx_extensions: "ON"
-            toolchain: clang.cmake
+            stdlib-flag: "-stdlib=libc++"
+            toolchain: clang-libc++.cmake
             container: johnmcfarlane/cnl_ci:clang-head-libcpp
           - compiler: gcc
-            clang-tidy: ""
-            cxx_extensions: "OFF"
+            stdlib-flag: ""
             toolchain: gcc-head.cmake
             container: johnmcfarlane/cnl_ci:gcc-head
+        build_type: ["Debug", "Release"]
+        cxx-extensions: ["ON", "OFF"]
+        exceptions: ["ON", "OFF"]
 
     container: ${{matrix.container}}
     runs-on: ubuntu-20.04
@@ -72,6 +72,8 @@ jobs:
             test-${{matrix.compiler}}-
 
       - name: Build and Install GTest
+        env:
+          CXXFLAGS: ${{matrix.stdlib-flag}}
         run: |
           git clone https://github.com/google/googletest.git
           cd googletest
@@ -84,9 +86,11 @@ jobs:
       - name: Configure CNL
         run: |
           cmake \
-            -DCMAKE_CXX_CLANG_TIDY=${{matrix.clang-tidy}} \
-            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
+            -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx-extensions}} \
             -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            -DCNL_EXCEPTIONS=${{matrix.exceptions}} \
+            -DCNL_SANITIZE=ON \
             $GITHUB_WORKSPACE
 
       - name: Build CNL
@@ -110,7 +114,6 @@ jobs:
           clang-10-libstdc++,
           gcc-head, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7
         ]
-        build-type: ["Debug", "Release"]
         include:
           # Clang HEAD
           - name: clang-head-libc++
@@ -217,7 +220,6 @@ jobs:
           conan install \
             --build=missing \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
-            --settings build_type=${{matrix.build-type}} \
             $GITHUB_WORKSPACE
 
       - name: Build tests
