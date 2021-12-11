@@ -22,7 +22,7 @@ jobs:
           - compiler: gcc
             clang-tidy: ""
             cxx_extensions: "OFF"
-            toolchain: gcc.cmake
+            toolchain: gcc-head.cmake
             container: johnmcfarlane/cnl_ci:gcc-head
 
     container: ${{matrix.container}}
