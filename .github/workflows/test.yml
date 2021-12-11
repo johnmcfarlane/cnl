@@ -35,7 +35,6 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            /github/home/.conan/data
             /github/home/.ccache
           key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
           restore-keys: |
