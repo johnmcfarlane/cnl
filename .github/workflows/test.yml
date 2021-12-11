@@ -7,6 +7,35 @@ on:
       - '**'
 
 jobs:
+  # Build and test many combinations on Linux/OS X using Conan
+  clang-tidy:
+    container: johnmcfarlane/cnl_ci:clang-head-libcpp
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Initialise Conan
+        run: |
+          conan config install $GITHUB_WORKSPACE/.github/conan/settings.yml
+
+      - name: Install dependencies
+        run: |
+          conan install \
+            --build=missing \
+            --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-head-libc++ \
+            --settings build_type=Release \
+            --options clang_tidy=True \
+            --options int128=False \
+            --options sanitize=False \
+            --env CONAN_CMAKE_GENERATOR=Ninja \
+            $GITHUB_WORKSPACE
+
+      - name: Build tests
+        run: conan build --build --configure $GITHUB_WORKSPACE
+
+      - name: Test library
+        run: conan build --test $GITHUB_WORKSPACE
+
   # Build and test latest on Linux using only CMake
   cmake:
     strategy:
