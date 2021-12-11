@@ -94,8 +94,8 @@ Optional integration tests use Boost.Multiprecision and Boost.SIMD.
    ```shell
    cd build
    conan profile new --detect --force default
-   conan profile update settings.compiler.libcxx=libstdc++11 default  # GCC only
-   conan profile update settings.compiler.cppstd=20 default
+   conan profile update settings.compiler.libcxx=libstdc++11 default  # GCC/Clang only
+   conan profile update env.CONAN_CMAKE_TOOLCHAIN_FILE=../test/toolchain/gcc.cmake default # GCC only
    conan install --build=missing --options test=unit ..
    ```
 

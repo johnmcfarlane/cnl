@@ -10,3 +10,4 @@ sanitize=True
 [build_requires]
 [env]
 CONAN_CMAKE_GENERATOR=Ninja
+CONAN_CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_DIR/posix.cmake

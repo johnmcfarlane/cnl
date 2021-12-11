@@ -1,4 +1,4 @@
-include("${CMAKE_CURRENT_LIST_DIR}/base.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/posix.cmake")
 
 set(
     CNL_CXX_FLAGS

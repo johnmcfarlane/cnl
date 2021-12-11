@@ -1,3 +1,6 @@
+# POSIX here covers GCC-like compilers run on POSIX-like systems,
+# i.e. GCC and Clang running the test suite on Linux and OS X.
+
 # Note: CMAKE_CXX_FLAGS_INIT wont work here.
 # If CMAKE_CXX_FLAGS is passed in on command line,
 # CMAKE_CXX_FLAGS_INIT is ignored.
