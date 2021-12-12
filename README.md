@@ -29,7 +29,7 @@ Tested:
 * libstdc++ 10, 11
 * libc++ 13
 * [CMake](https://cmake.org/download/) 3.16
-* Conan
+* Conan 1.43
 
 ### OS X
 
@@ -37,7 +37,7 @@ Tested:
 
 * GCC 11 / Clang 13
 * [CMake](https://cmake.org/download/) 3.22
-* Conan
+* Conan 1.43
 
 ### Windows
 
@@ -45,7 +45,7 @@ Tested:
 
 * Visual Studio 2019 Version 16 (19.29.30137)
 * [CMake](https://cmake.org/download/) 3.22
-* Conan
+* Conan 1.43
 
 ## Instructions
 
