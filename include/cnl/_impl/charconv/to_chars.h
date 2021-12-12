@@ -60,7 +60,7 @@ namespace cnl {
             }
 
             // Note: linker may struggle with combination of clang, int128_t and sanitizer.
-            // (See base.cmake for details.)
+            // (See posix.cmake for details.)
             auto const remainder = value - (quotient * 10);
             *next_ptr = itoc(remainder);
 

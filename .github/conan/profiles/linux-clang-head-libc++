@@ -2,6 +2,7 @@ include(linux-clang-libc++)
 [settings]
 compiler.version=14
 [options]
+sanitize=False
 [build_requires]
 [env]
 CONAN_CMAKE_GENERATOR=Unix Makefiles

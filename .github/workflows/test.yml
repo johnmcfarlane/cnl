@@ -7,23 +7,52 @@ on:
       - '**'
 
 jobs:
+  # Build and test many combinations on Linux/OS X using Conan
+  clang-tidy:
+    container: johnmcfarlane/cnl_ci:clang-head-libcpp
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Initialise Conan
+        run: |
+          conan config install $GITHUB_WORKSPACE/.github/conan/settings.yml
+
+      - name: Install dependencies
+        run: |
+          conan install \
+            --build=missing \
+            --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-head-libc++ \
+            --settings build_type=Release \
+            --options clang_tidy=True \
+            --options int128=False \
+            --options sanitize=False \
+            --env CONAN_CMAKE_GENERATOR=Ninja \
+            $GITHUB_WORKSPACE
+
+      - name: Build tests
+        run: conan build --build --configure $GITHUB_WORKSPACE
+
+      - name: Test library
+        run: conan build --test $GITHUB_WORKSPACE
+
   # Build and test latest on Linux using only CMake
-  linux-cmake-test:
+  cmake:
     strategy:
       matrix:
         compiler: [clang, gcc]
-
         include:
           - compiler: clang
-            clang-tidy: "clang-tidy"
-            cxx_extensions: "ON"
-            toolchain: clang.cmake
+            stdlib-flag: "-stdlib=libc++"
+            toolchain: clang-libc++.cmake
             container: johnmcfarlane/cnl_ci:clang-head-libcpp
           - compiler: gcc
-            clang-tidy: ""
-            cxx_extensions: "OFF"
-            toolchain: gcc.cmake
+            stdlib-flag: ""
+            toolchain: gcc-head.cmake
             container: johnmcfarlane/cnl_ci:gcc-head
+        build_type: ["Debug", "Release"]
+        cxx-extensions: ["ON", "OFF"]
+        exceptions: ["ON", "OFF"]
 
     container: ${{matrix.container}}
     runs-on: ubuntu-20.04
@@ -35,7 +64,6 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            /github/home/.conan/data
             /github/home/.ccache
           key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
           restore-keys: |
@@ -44,6 +72,8 @@ jobs:
             test-${{matrix.compiler}}-
 
       - name: Build and Install GTest
+        env:
+          CXXFLAGS: ${{matrix.stdlib-flag}}
         run: |
           git clone https://github.com/google/googletest.git
           cd googletest
@@ -56,9 +86,11 @@ jobs:
       - name: Configure CNL
         run: |
           cmake \
-            -DCMAKE_CXX_CLANG_TIDY=${{matrix.clang-tidy}} \
-            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
+            -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx-extensions}} \
             -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            -DCNL_EXCEPTIONS=${{matrix.exceptions}} \
+            -DCNL_SANITIZE=ON \
             $GITHUB_WORKSPACE
 
       - name: Build CNL
@@ -71,7 +103,7 @@ jobs:
         run: ccache -s
 
   # Build and test many combinations on Linux/OS X using Conan
-  posix-conan-test:
+  conan:
     strategy:
       matrix:
         name: [
@@ -82,7 +114,6 @@ jobs:
           clang-10-libstdc++,
           gcc-head, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7
         ]
-        build-type: ["Debug", "Release"]
         include:
           # Clang HEAD
           - name: clang-head-libc++
@@ -189,7 +220,6 @@ jobs:
           conan install \
             --build=missing \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
-            --settings build_type=${{matrix.build-type}} \
             $GITHUB_WORKSPACE
 
       - name: Build tests
@@ -209,7 +239,7 @@ jobs:
         run: ccache -s
 
   # Build and test on Windows using Conan
-  windows-conan-test:
+  windows:
     runs-on: windows-2019
     strategy:
       matrix:
@@ -264,7 +294,7 @@ jobs:
         run: test\benchmark\Release\test-benchmark.exe
 
   # Install on mature Linux distro using only CMake
-  linux-cmake-install:
+  install:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
