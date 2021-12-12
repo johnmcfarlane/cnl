@@ -42,6 +42,8 @@ class CnlConan(ConanFile):
     }
 
     def build_requirements(self):
+        self.build_requires("cmake/[>=3.15]")
+
         if self.options.test in ("benchmark", "all"):
             self.test_requires("benchmark/[>=1.6]")
 
