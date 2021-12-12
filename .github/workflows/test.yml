@@ -360,12 +360,16 @@ jobs:
   # Test documentation generation
   doxygen:
     runs-on: ubuntu-18.04
-    container: johnmcfarlane/cnl_ci:gcc-10
+    container: johnmcfarlane/cnl_ci:base-21.10
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          submodules: true
+
+      - name: Test Doxyfile
+        shell: bash
+        run: |
+          doxygen -s -u doc/Doxyfile
+          rm doc/Doxyfile.bak
+          git diff --exit-code
 
       - name: Generate documentation
         shell: bash
