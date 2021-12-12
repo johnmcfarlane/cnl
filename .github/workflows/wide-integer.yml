@@ -1,0 +1,27 @@
+---
+name: wide-integer
+
+on:
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - main
+
+jobs:
+  # Check for updates to wide-integer library
+  update-check:
+    runs-on: ubuntu-18.04
+    container: johnmcfarlane/cnl_ci:base-21.10
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Extract wide-integer source
+        shell: bash
+        run: $GITHUB_WORKSPACE/.github/update-wide-integer
+
+      - name: Check for changes
+        shell: bash
+        run: git diff --exit-code
+...

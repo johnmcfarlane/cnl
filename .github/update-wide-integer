@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SOURCE_FILE_PATH=$(
+  cd "$(dirname "$0")"/..
+  pwd
+)/include/cnl/_impl/ckormanyos/uintwide_t.h
+
+git clone https://github.com/ckormanyos/wide-integer/
+
+echo "// NOLINTBEGIN(*)" > "${SOURCE_FILE_PATH}"
+echo "// copied from https://github.com/ckormanyos/wide-integer/" >> "${SOURCE_FILE_PATH}"
+echo "" >> "${SOURCE_FILE_PATH}"
+
+# copy uintwide_t.h from wide-integer to CNL while removing the UTF-8 BOM
+sed '1s/^\xEF\xBB\xBF//' < wide-integer/math/wide_integer/uintwide_t.h >> "${SOURCE_FILE_PATH}"
+
+echo "// NOLINTEND(*)" >> "${SOURCE_FILE_PATH}"
