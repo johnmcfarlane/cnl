@@ -33,6 +33,7 @@ set(test_sources
         _impl/ostream.cpp
         _impl/overflow/is_overflow.cpp
         _impl/rounding/convert_operator.cpp
+        _impl/wide-integer.cpp
 
         # components
         constant.cpp
@@ -55,12 +56,6 @@ set(test_sources
         overflow/overflow_int.cpp
         overflow/overflow_tag.cpp
         rounding/rounding_int.cpp
-        _impl/duplex_int/definition.cpp
-        _impl/duplex_int/digits.cpp
-        _impl/duplex_int/from_value.cpp
-        _impl/duplex_int/numeric_limits.cpp
-        _impl/duplex_int/operators.cpp
-        _impl/duplex_int/narrowest_int.cpp
         _impl/wide_int/digits.cpp
         _impl/wide_int/from_rep.cpp
         _impl/wide_int/from_value.cpp
