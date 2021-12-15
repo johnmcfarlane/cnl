@@ -1,4 +1,4 @@
-include(msvc)
+include(msvc-17)
 [settings]
 arch=x86
 [options]
