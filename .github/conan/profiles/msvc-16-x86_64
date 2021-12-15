@@ -1,0 +1,5 @@
+include(msvc-16)
+[settings]
+arch=x86_64
+[options]
+enable_exceptions=False

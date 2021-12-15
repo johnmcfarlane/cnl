@@ -1,0 +1,3 @@
+include(msvc-17)
+[settings]
+arch=x86_64

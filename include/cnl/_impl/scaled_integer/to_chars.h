@@ -139,7 +139,9 @@ namespace cnl {
                 descaled_info const& info,
                 fixed_solution const& solution)
         {
-            auto out{std::begin(info.output)};
+            auto* const output_begin{std::data(info.output)};
+            auto* const output_end{output_begin + std::ssize(info.output)};
+            auto out{output_begin};
 
             auto significand_digits_first = std::begin(info.significand_digits);
 
@@ -153,7 +155,7 @@ namespace cnl {
 
             if (solution.trailing_zeros) {
                 out = std::fill_n(out, solution.trailing_zeros, zero_char);
-            } else if (out < std::end(info.output)) {  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
+            } else if (out < output_end) {  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
                 if (solution.has_radix) {
                     *out++ = radix_char;
                 }
@@ -168,9 +170,9 @@ namespace cnl {
             }
 
             CNL_ASSERT(significand_digits_first <= std::end(info.significand_digits));
-            CNL_ASSERT(out == std::begin(info.output) + solution.num_chars);
-            CNL_ASSERT(out <= std::end(info.output));  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
-            return std::to_chars_result{&*out, std::errc{}};
+            CNL_ASSERT(out == output_begin + solution.num_chars);
+            CNL_ASSERT(out <= output_end);  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
+            return std::to_chars_result{out, std::errc{}};
         }
 
         struct scientific_solution {
@@ -195,13 +197,15 @@ namespace cnl {
                 descaled_info const& info,
                 scientific_solution const& solution)
         {
-            auto out{std::begin(info.output)};
+            auto* const output_begin{std::data(info.output)};
+            auto* const output_end{output_begin + std::ssize(info.output)};
+            auto out{output_begin};
 
             auto significand_digits_first = std::begin(info.significand_digits);
 
             // copy part of significand after the period
             while (!isdigit(*out++ = *significand_digits_first++)) {
-                CNL_ASSERT(out < std::end(info.output));  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
+                CNL_ASSERT(out < output_end);  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
 
             // add the radix point
@@ -222,9 +226,9 @@ namespace cnl {
                     std::next(std::begin(info.exponent_chars), _impl::ssize(info.exponent_chars)),
                     out);
 
-            CNL_ASSERT(out == std::begin(info.output) + solution.num_chars);
-            CNL_ASSERT(out <= std::end(info.output));  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
-            return std::to_chars_result{&*out, std::errc{}};
+            CNL_ASSERT(out == output_begin + solution.num_chars);
+            CNL_ASSERT(out <= output_end);  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
+            return std::to_chars_result{out, std::errc{}};
         }
 
         [[nodiscard]] inline constexpr auto to_chars_positive(

@@ -24,9 +24,9 @@ namespace cnl {
         }
 #else
         template<class Result = void>
-        constexpr Result unreachable(char const* message) noexcept
+        [[noreturn]] constexpr Result unreachable(char const* message) noexcept
         {
-            return abort<Result>(message);
+            abort<Result>(message);
         }
 #endif
     }

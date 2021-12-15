@@ -1,0 +1,3 @@
+include(msvc-16)
+[settings]
+arch=x86

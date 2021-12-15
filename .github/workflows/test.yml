@@ -240,17 +240,25 @@ jobs:
 
   # Build and test on Windows using Conan
   windows:
-    runs-on: windows-2019
     strategy:
       matrix:
-        arch: [x86_64, x86]
+        name: [2022-64, 2022-32, 2019-64, 2019-32]
         include:
-          - arch: x86_64
-            msbuild_property: x64
-            profile: msvc-x86_64
-          - arch: x86
-            msbuild_property: win32
-            profile: msvc-x86
+          - name: 2022-64
+            profile: msvc-17-x86_64
+            runs-on: "windows-2022"
+          - name: 2022-32
+            profile: msvc-17-x86
+            runs-on: "windows-2022"
+          - name: 2019-64
+            profile: msvc-16-x86_64
+            runs-on: "windows-2019"
+          - name: 2019-32
+            profile: msvc-16-x86
+            runs-on: "windows-2019"
+        build_type: ["Debug", "Release"]
+
+    runs-on: ${{matrix.runs-on}}
 
     steps:
       - uses: actions/checkout@v2
@@ -262,11 +270,11 @@ jobs:
             ~\AppData\Local\pip\Cache
             ~\.conan\data
             ~\.ccache
-          key: test-${{matrix.arch}}-${{github.ref}}-${{github.sha}}
+          key: test-${{matrix.name}}-${{github.ref}}-${{github.sha}}
           restore-keys: |
-            test-${{matrix.arch}}-${{github.ref}}-
-            test-${{matrix.arch}}-main-
-            test-${{matrix.arch}}-
+            test-${{matrix.name}}-${{github.ref}}-
+            test-${{matrix.name}}-main-
+            test-${{matrix.name}}-
 
       - name: Install Conan
         run: |
@@ -280,9 +288,8 @@ jobs:
         run: |
           conan install `
             --build=missing `
-            --env CONAN_CMAKE_GENERATOR="Visual Studio 16 2019" `
-            --settings build_type=Release `
-            --profile $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} `
+            --settings build_type="${{matrix.build_type}}" `
+            --profile $env:GITHUB_WORKSPACE/.github/conan/profiles/"${{matrix.profile}}" `
             $env:GITHUB_WORKSPACE
 
       - name: Build and run tests
@@ -291,7 +298,7 @@ jobs:
 
       - name: Run benchmarks
         working-directory: ${{runner.workspace}}/build
-        run: test\benchmark\Release\test-benchmark.exe
+        run: test\benchmark\${{matrix.build_type}}\test-benchmark.exe
 
   # Install on mature Linux distro using only CMake
   install:
