@@ -33,17 +33,19 @@ class CnlConan(ConanFile):
     }
     generators = "cmake_find_package"
     no_copy_source = True
-    requires = [
-        "benchmark/[~1.6]",
-        "boost/1.77.0",
-        "gtest/[~1.11]",
-    ]
-
     scm = {
         "revision": "auto",
         "type": "git",
         "url": "https://github.com/johnmcfarlane/cnl.git",
     }
+
+    def build_requirements(self):
+        if self.options.test in ("benchmark", "all"):
+            self.test_requires("benchmark/[~1.6]")
+
+        if self.options.test in ("unit", "all"):
+            self.test_requires("boost/1.77.0")
+            self.test_requires("gtest/[~1.11]")
 
     def build(self):
         cmake = CMake(self, set_cmake_flags=True)
