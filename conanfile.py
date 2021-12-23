@@ -4,6 +4,8 @@
 from conans import ConanFile, CMake
 from conans import tools
 
+required_conan_version = ">=1.43.0"
+
 class CnlConan(ConanFile):
     name = "cnl"
     license = "Boost Software License 1.0"
