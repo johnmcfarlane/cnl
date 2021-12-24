@@ -43,11 +43,11 @@ class CnlConan(ConanFile):
 
     def build_requirements(self):
         if self.options.test in ("benchmark", "all"):
-            self.test_requires("benchmark/[~1.6]")
+            self.test_requires("benchmark/[>=1.6]")
 
         if self.options.test in ("unit", "all"):
             self.test_requires("boost/1.77.0")
-            self.test_requires("gtest/[~1.11]")
+            self.test_requires("gtest/[>=1.11]")
 
     def build(self):
         cmake = CMake(self, set_cmake_flags=True)
