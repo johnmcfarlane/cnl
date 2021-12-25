@@ -18,7 +18,7 @@ CNL is particularly well-suited to:
 
 The latest version of CNL requires a C++20-compatible tool chain.
 ([Version 1.x](https://github.com/johnmcfarlane/cnl/tree/v1.x) supports C++11.)
-CNL is tested on the following systems:
+CNL is continually tested on the following systems:
 
 ### Linux
 
@@ -28,7 +28,7 @@ Tested:
 * Clang 10, 11, 12, 13
 * libstdc++ 10, 11
 * libc++ 13
-* [CMake](https://cmake.org/download/) 3.16
+* [CMake](https://cmake.org/download/) 3.22
 * Conan 1.43
 
 ### OS X
@@ -44,6 +44,7 @@ Tested:
 Tested:
 
 * Visual Studio 2019 Version 16 (19.29.30137)
+* Visual Studio 2022 Version 17 (19.30.30706)
 * [CMake](https://cmake.org/download/) 3.22
 * Conan 1.43
 

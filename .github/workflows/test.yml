@@ -23,7 +23,7 @@ jobs:
           conan install \
             --build=missing \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-head-libc++ \
-            --settings build_type=Release \
+            --settings:host build_type=Release \
             --options clang_tidy=True \
             --options int128=False \
             --options sanitize=False \
@@ -220,6 +220,7 @@ jobs:
           conan install \
             --build=missing \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
+            --settings:build cmake:compiler.cppstd=gnu11 \
             $GITHUB_WORKSPACE
 
       - name: Build tests
@@ -245,16 +246,20 @@ jobs:
         name: [2022-64, 2022-32, 2019-64, 2019-32]
         include:
           - name: 2022-64
-            profile: msvc-17-x86_64
+            build-profile: msvc-17-x86_64
+            host-profile: msvc-17-x86_64
             runs-on: "windows-2022"
           - name: 2022-32
-            profile: msvc-17-x86
+            build-profile: msvc-17-x86_64
+            host-profile: msvc-17-x86
             runs-on: "windows-2022"
           - name: 2019-64
-            profile: msvc-16-x86_64
+            build-profile: msvc-16-x86_64
+            host-profile: msvc-16-x86_64
             runs-on: "windows-2019"
           - name: 2019-32
-            profile: msvc-16-x86
+            build-profile: msvc-16-x86_64
+            host-profile: msvc-16-x86
             runs-on: "windows-2019"
         build_type: ["Debug", "Release"]
 
@@ -288,8 +293,11 @@ jobs:
         run: |
           conan install `
             --build=missing `
-            --settings build_type="${{matrix.build_type}}" `
-            --profile $env:GITHUB_WORKSPACE/.github/conan/profiles/"${{matrix.profile}}" `
+            --profile:build $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.build-profile}} `
+            --profile:host $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.host-profile}} `
+            --settings:build build_type=Release `
+            --settings:build cmake:compiler.cppstd=17 `
+            --settings:host build_type="${{matrix.build_type}}" `
             $env:GITHUB_WORKSPACE
 
       - name: Build and run tests
