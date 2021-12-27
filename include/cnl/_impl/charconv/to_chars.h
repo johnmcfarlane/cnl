@@ -132,6 +132,8 @@ namespace cnl {
     struct to_chars_static_result {
         std::array<char, NumChars + 1> chars;
         int length;
+
+        friend constexpr auto operator<=>(to_chars_static_result const&, to_chars_static_result const&) = default;
     };
 
     // variant of cnl::to_chars returning fixed-size array of chars
