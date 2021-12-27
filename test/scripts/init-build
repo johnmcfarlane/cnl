@@ -2,10 +2,10 @@
 
 # turn the (empty) working directory into a build environment;
 # called in an empty build directory;
-# called before test/scripts/test
+# called before `conan build`
 
 # e.g.
-# rm -rf ../build/* && ../test/scripts/init-build -s compiler=gcc -s compiler.version=12 -s compiler.libcxx=libstdc++11 && ../test/scripts/test
+# rm -rf ../build/* && ../test/scripts/init-build -s compiler=gcc -s compiler.version=12 -s compiler.libcxx=libstdc++11 && conan build ..
 
 set -euo pipefail
 
