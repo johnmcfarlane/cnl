@@ -8,6 +8,7 @@
 #define CNL_IMPL_TO_CHARS_H
 
 #include "../../integer.h"
+#include "../../number.h"
 #include "../cnl_assert.h"
 #include "../narrow_cast.h"
 #include "../num_traits/digits.h"
@@ -135,7 +136,7 @@ namespace cnl {
 
     // variant of cnl::to_chars returning fixed-size array of chars
     // large enough to store any possible result for given input type
-    template<typename Number>
+    template<number Number>
     [[nodiscard]] constexpr auto to_chars_static(Number const& value)
     {
         constexpr auto max_num_chars = _impl::max_to_chars_chars<Number>::value;
