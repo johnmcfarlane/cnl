@@ -496,6 +496,15 @@ namespace {
         static_assert(
                 identical(elastic_integer<8>{220}, cnl::scale<2, 2, elastic_integer<6>>{}(55)),
                 "scale<elastic_integer> test failed");
+
+        static_assert(
+                identical(
+                        cnl::elastic_integer<11>{1024},
+                        cnl::_impl::scale<10, 2>(cnl::elastic_integer<1>(1))));
+        static_assert(
+                identical(
+                        cnl::elastic_integer<3>{6},
+                        cnl::_impl::scale<1, 2>(cnl::elastic_integer<2>{3})));
     }
 
     namespace test_shift_right {
@@ -677,17 +686,6 @@ namespace {
         static_assert(
                 leading_bits(elastic_integer<12, std::uint16_t>{10}) == 8,
                 "leading_bits test failed");
-    }
-
-    namespace test_scale {
-        static_assert(
-                identical(
-                        cnl::elastic_integer<11>{1024},
-                        cnl::_impl::scale<10, 2>(cnl::elastic_integer<1>(1))));
-        static_assert(
-                identical(
-                        cnl::elastic_integer<3>{6},
-                        cnl::_impl::scale<1, 2>(cnl::elastic_integer<2>{3})));
     }
 
     namespace test_shift_left {
