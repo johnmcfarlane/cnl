@@ -44,6 +44,7 @@ namespace cnl {
             int num_significand_digits{};
             int exponent{};
             int max_chars{};
+            int base{};
             bool exponent_has_sign{};
         };
 
@@ -178,13 +179,15 @@ namespace cnl {
                 char* const first,
                 char* const last,
                 std::string_view const& significand_digits,
-                int exponent)
+                int exponent,
+                int base)
         {
             _impl::descaled_info info;
             info.significand_digits = significand_digits;
             info.output = std::span<char>{first, last};
             info.num_significand_digits = _impl::ssize(info.significand_digits);
             info.exponent = exponent;
+            info.base = base;
             info.max_chars = _impl::ssize(info.output);
 
             auto const exponent_chars_static{to_chars_static<10>(exponent + info.num_significand_digits - 1)};
@@ -215,22 +218,23 @@ namespace cnl {
             return std::to_chars_result{last, std::errc::value_too_large};
         }
 
-        template<integer Significand, int Radix>
+        template<integer Significand>
         [[nodiscard]] constexpr auto to_chars_non_zero(
                 char* const first,
                 char* const last,
-                descaled<Significand, Radix> const& descaled)
+                descaled<Significand> const& descaled,
+                int base)
         {
             CNL_ASSERT(descaled.significand);
 
-            auto const significand_chars_static{to_chars_static<10>(descaled.significand)};
+            auto const significand_chars_static{to_chars_static<2>(descaled.significand, base)};
             auto const significand_chars_cstr{significand_chars_static.chars.data()};
             if (*significand_chars_cstr == minus_char) {
                 *first = minus_char;
-                return to_chars_positive(first + 1, last, std::string_view(significand_chars_cstr + 1, significand_chars_static.length - 1), descaled.exponent);
+                return to_chars_positive(first + 1, last, std::string_view(significand_chars_cstr + 1, significand_chars_static.length - 1), descaled.exponent, base);
             }
 
-            return to_chars_positive(first, last, std::string_view(significand_chars_cstr, significand_chars_static.length), descaled.exponent);
+            return to_chars_positive(first, last, std::string_view(significand_chars_cstr, significand_chars_static.length), descaled.exponent, base);
         }
     }
 
@@ -241,11 +245,8 @@ namespace cnl {
             char* const first,
             char* const last,
             cnl::scaled_integer<Rep, power<Exponent, Radix>> const& value,
-            int radix = 10)
+            int base = 10)
     {
-        // Only radix 10 is supported for scaled_integer currently.
-        CNL_ASSERT(radix == 10);
-
         if (first == last) {
             // buffer too small to contain "0"
             return std::to_chars_result{last, std::errc::value_too_large};
@@ -258,10 +259,10 @@ namespace cnl {
         }
 
         using significand_type = std::conditional_t<(digits_v<Rep> > digits_v<std::int64_t>), Rep, std::int64_t>;
-        auto const descaled{_impl::descale<significand_type, 10>(
-                _impl::to_rep(value), power<Exponent, Radix>{})};
+        auto const descaled{_impl::descale<significand_type>(
+                _impl::to_rep(value), power<Exponent, Radix>{}, base)};
 
-        return _impl::to_chars_non_zero(first, last, descaled);
+        return _impl::to_chars_non_zero(first, last, descaled, base);
     }
 }
 

@@ -8,6 +8,7 @@
 #define CNL_IMPL_CHARCONV_DESCALE_H
 
 #include "../../integer.h"
+#include "../cnl_assert.h"
 #include "../cstdint/types.h"
 #include "../numbers/signedness.h"
 #include "../scaled/declaration.h"
@@ -17,21 +18,24 @@
 
 /// compositional numeric library
 namespace cnl::_impl {
-    template<integer Rep, int Radix>
+    template<integer Rep>
     struct descaled {
         Rep significand;
         int exponent;
-        static constexpr int radix = Radix;
+        int radix;
     };
 
     template<
-            integer Significand = std::int64_t, int OutRadix = 10,
+            integer Significand = std::int64_t,
             bool Precise = false,
             int InExponent = 0, int InRadix = 2,
             integer Rep = int>
-    [[nodiscard]] constexpr auto descale(Rep const& input, power<InExponent, InRadix>)
+    [[nodiscard]] constexpr auto descale(Rep const& input, power<InExponent, InRadix>, int out_radix = 10)
     {
-        descaled<Significand, OutRadix> output{static_cast<Significand>(input), 0};
+        CNL_ASSERT(out_radix >= 2);
+        CNL_ASSERT(out_radix <= 36);
+
+        descaled<Significand> output{static_cast<Significand>(input), 0, out_radix};
 
         if (!input) {
             return output;
@@ -39,27 +43,29 @@ namespace cnl::_impl {
 
         auto const oob{
                 (input < Rep{0})
-                ? []([[maybe_unused]] Significand const& n) -> bool {
+                ? []([[maybe_unused]] Significand const& n, int radix) -> bool {
                       if constexpr (numbers::signedness_v<Significand>) {
-                          return n < -std::numeric_limits<Significand>::max() / OutRadix;
+                          CNL_ASSERT(radix >= 0);
+                          return n < -std::numeric_limits<Significand>::max() / radix;
                       } else {
                           return unreachable<bool>("negative unsigned integer");
                       }
                   }
-                : [](Significand const& n) {
-                      return n > Significand{std::numeric_limits<Significand>::max() / OutRadix};
+                : [](Significand const& n, int radix) {
+                      CNL_ASSERT(radix >= 0);
+                      return n > std::numeric_limits<Significand>::max() / radix;
                   }};
 
         if constexpr (InExponent < 0) {
             for (int in_exponent = InExponent;
-                 in_exponent != 0 || (Precise && !(output.significand % OutRadix));) {
+                 in_exponent != 0 || (Precise && !(output.significand % out_radix));) {
                 if (output.significand % InRadix) {
-                    if (oob(output.significand)) {
+                    if (oob(output.significand, out_radix)) {
                         if (Precise) {
-                            unreachable<descaled<Significand, OutRadix>>("number cannot be represented in this form");
+                            unreachable<descaled<Significand>>("number cannot be represented in this form");
                         }
                     } else {
-                        output.significand *= OutRadix;
+                        output.significand = static_cast<Significand>(output.significand * out_radix);
                         output.exponent--;
                         continue;
                     }
@@ -70,14 +76,14 @@ namespace cnl::_impl {
             }
         } else {
             for (int in_exponent = InExponent;
-                 in_exponent != 0 || !(output.significand % OutRadix);) {
-                if (!(output.significand % OutRadix)) {
-                    output.significand /= OutRadix;
+                 in_exponent != 0 || !(output.significand % out_radix);) {
+                if (!(output.significand % out_radix)) {
+                    output.significand /= out_radix;
                     output.exponent++;
                     continue;
                 }
 
-                if (!oob(output.significand)) {
+                if (!oob(output.significand, out_radix)) {
                     output.significand *= InRadix;
                     in_exponent--;
                 }

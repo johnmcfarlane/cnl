@@ -142,7 +142,7 @@ namespace cnl {
     // variant of cnl::to_chars returning fixed-size array of chars
     // large enough to store any possible result for given input type
     template<int Base = 10>
-    [[nodiscard]] constexpr auto to_chars_static(number auto const& value)
+    [[nodiscard]] constexpr auto to_chars_static(number auto const& value, int base = Base)
     {
         using number = std::remove_cvref_t<decltype(value)>;
         constexpr auto max_num_chars = _impl::to_chars_capacity<number>{}(Base);
@@ -153,7 +153,7 @@ namespace cnl {
         auto* const chars_begin{result.chars.data()};
         auto* const chars_end{chars_begin + max_num_chars};
 
-        auto dynamic_result = to_chars(chars_begin, chars_end, value, Base);
+        auto dynamic_result = to_chars(chars_begin, chars_end, value, base);
         CNL_ASSERT(dynamic_result.ptr > chars_begin);
         CNL_ASSERT(dynamic_result.ptr <= chars_end);
         CNL_ASSERT(dynamic_result.ec == std::errc{});

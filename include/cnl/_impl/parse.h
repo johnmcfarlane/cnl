@@ -324,7 +324,7 @@ namespace cnl {
                     std::max(digits_v<Narrowest>, std::min(params.num_bits, max_digits<Narrowest>))};
             using result_type = set_digits_t<Narrowest, result_digits>;
 
-            return descaled<result_type, params.base>{
+            return descaled<result_type>{
                     parse_string<
                             result_type,
                             params.num_digits,
@@ -333,7 +333,8 @@ namespace cnl {
                             params.stride,
                             params.first_numeral,
                             Chars...>(),
-                    -params.num_fractional_digits};
+                    -params.num_fractional_digits,
+                    params.base};
         }
 
         template<typename Narrowest, char... Chars>

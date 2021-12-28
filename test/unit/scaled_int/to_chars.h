@@ -243,109 +243,109 @@ namespace test_to_chars {
 namespace test_descale {
     TEST(descale, 31_positive_negexp)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int32, 10>{125, -2}};
+        auto const ex{cnl::_impl::descaled<int32>{125, -2, 10}};
         auto const ac{cnl::_impl::descale<int32>(20, cnl::power<-4>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 31_positive_tinyexp)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int32, 10>{491127127, -19}};
+        auto const ex{cnl::_impl::descaled<int32>{491127127, -19, 10}};
         auto const ac{cnl::_impl::descale<int32>(54, cnl::power<-40>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 31_positive_posexp)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int32, 10>{48, 1}};
+        auto const ex{cnl::_impl::descaled<int32>{48, 1, 10}};
         auto const ac{cnl::_impl::descale<int32>(30, cnl::power<4>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 31_negative_negexp)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int32, 10>{-125, -2}};
+        auto const ex{cnl::_impl::descaled<int32>{-125, -2, 10}};
         auto const ac{cnl::_impl::descale<int32>(-20, cnl::power<-4>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 31_negative_posexp)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int32, 10>{-48, 1}};
+        auto const ex{cnl::_impl::descaled<int32>{-48, 1, 10}};
         auto const ac{cnl::_impl::descale<int32>(-30, cnl::power<4>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 7_negative_tinyexp)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int8, 10>{-1, -1}};
+        auto const ex{cnl::_impl::descaled<int8>{-1, -1, 10}};
         auto const ac{cnl::_impl::descale<int8>(int8{-127}, cnl::power<-10>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(int{ex.significand}, int{ac.significand});
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 8_positive_tinyexp)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int64, 10>{2490234375, -10}};
+        auto const ex{cnl::_impl::descaled<int64>{2490234375, -10, 10}};
         auto const input{uint8{255}};
         auto const ac{cnl::_impl::descale<int64>(input, cnl::power<-10>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 31_positive_2525)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int32, 10>{2525, -2}};
+        auto const ex{cnl::_impl::descaled<int32>{2525, -2, 10}};
         auto const ac{cnl::_impl::descale<int32>(26476544, cnl::power<-20>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 31_positive_5016)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int32, 10>{-501650907, -5}};
+        auto const ex{cnl::_impl::descaled<int32>{-501650907, -5, 10}};
         auto const ac{cnl::_impl::descale<int32>(-328761943, cnl::power<-16>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 31_positive_5016b)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int64, 10>{-501650914001464843LL, -14}};
+        auto const ex{cnl::_impl::descaled<int64>{-501650914001464843LL, -14, 10}};
         auto const ac{cnl::_impl::descale<int64>(-328761943, cnl::power<-16>{})};
-        cnl::_impl::assert_same(ex, ac);
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 31_positive_8o)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int32, 8>{1, 1}};
-        auto const ac{cnl::_impl::descale<int32, 8>(8, cnl::power<0, 8>{})};
-        cnl::_impl::assert_same(ex, ac);
+        auto const ex{cnl::_impl::descaled<int32>{1, 1, 8}};
+        auto const ac{cnl::_impl::descale<int32>(8, cnl::power<0, 8>{}, 8)};
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
 
     TEST(descale, 63_positive)  // NOLINT
     {
-        auto const ex{cnl::_impl::descaled<int64, 10>{124434319436550140, -16}};
-        auto const ac{cnl::_impl::descale<int64, 10>(13361033312, cnl::power<-30, 2>{})};
-        cnl::_impl::assert_same(ex, ac);
+        auto const ex{cnl::_impl::descaled<int64>{124434319436550140, -16, 10}};
+        auto const ac{cnl::_impl::descale<int64>(13361033312, cnl::power<-30, 2>{})};
+        assert_same(ex, ac);
         ASSERT_EQ(ex.significand, ac.significand);
         ASSERT_EQ(ex.exponent, ac.exponent);
     }
