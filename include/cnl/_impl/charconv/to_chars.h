@@ -38,22 +38,20 @@ namespace cnl {
         };
 
         // cnl::_impl::itoc
-        [[nodiscard]] constexpr auto itoc(auto value)
+        [[nodiscard]] constexpr auto itoc(int value)
         {
-            using scalar = std::remove_cvref_t<decltype(value)>;
-            static_assert(
-                    std::is_same<typename rounding<scalar>::type, native_rounding_tag>::value,
-                    "wrong rounding type");
-            auto c = zero_char + static_cast<int>(value);
+            auto const c = (value < 10)
+                                 ? zero_char + value
+                                 : 'a' + value - 10;
             return static_cast<char>(c);
         }
 
         // cnl::_impl::to_chars_natural
-        [[nodiscard]] constexpr auto to_chars_natural(char* ptr, char* last, auto const& value) -> char*
+        [[nodiscard]] constexpr auto to_chars_natural(char* ptr, char* last, auto const& value, int base = 10) -> char*
         {
-            auto const quotient = value / 10;
+            auto const quotient = value / base;
 
-            auto const next_ptr = quotient ? to_chars_natural(ptr, last, quotient) : ptr;
+            auto const next_ptr = quotient ? to_chars_natural(ptr, last, quotient, base) : ptr;
 
             if (next_ptr == last || next_ptr == nullptr) {
                 return nullptr;
@@ -61,22 +59,22 @@ namespace cnl {
 
             // Note: linker may struggle with combination of clang, int128_t and sanitizer.
             // (See posix.cmake for details.)
-            auto const remainder = value - (quotient * 10);
-            *next_ptr = itoc(remainder);
+            auto const remainder = value - (quotient * base);
+            *next_ptr = itoc(static_cast<int>(remainder));
 
             return next_ptr + 1;
         }
 
         [[nodiscard]] constexpr auto
-        to_chars_positive(char* const first, char* const last, integer auto const& value)
+        to_chars_positive(char* const first, char* const last, integer auto const& value, int base)
         {
-            auto const natural_last = to_chars_natural(first, last, value);
+            auto const natural_last = to_chars_natural(first, last, value, base);
             return std::to_chars_result{
                     natural_last, natural_last ? std::errc{} : std::errc::value_too_large};
         }
 
         [[nodiscard]] constexpr auto
-        to_chars_non_zero(char* const first, char* const last, number auto const& value)
+        to_chars_non_zero(char* const first, char* const last, number auto const& value, int base)
         {
             using number = std::remove_cvref_t<decltype(value)>;
             if constexpr (numbers::signedness_v<number>) {
@@ -92,11 +90,11 @@ namespace cnl {
                     // implementation does not support the most negative number
                     CNL_ASSERT(-std::numeric_limits<decltype(-value)>::max() <= value);
 
-                    return to_chars_positive(first + 1, last, -value);
+                    return to_chars_positive(first + 1, last, -value, base);
                 }
             }
 
-            return to_chars_positive(first, last, value);
+            return to_chars_positive(first, last, value, base);
         }
     }
 
@@ -104,8 +102,12 @@ namespace cnl {
     [[nodiscard]] constexpr auto to_chars(
             char* const first,
             char* const last,  // NOLINT(readability-non-const-parameter)
-            integer auto const& value)
+            integer auto const& value,
+            int base = 10)
     {
+        CNL_ASSERT(base >= 2);
+        CNL_ASSERT(base <= 36);
+
         if (!value) {
             if (first == last) {
                 // buffer too small to contain "0"
@@ -121,7 +123,7 @@ namespace cnl {
         auto const& native_rounding_value = static_cast<native_rounding_type>(value);
 
         return _impl::to_chars_non_zero<native_rounding_type>(
-                first, last, native_rounding_value);
+                first, last, native_rounding_value, base);
     }
 
     template<int NumChars>
@@ -135,10 +137,11 @@ namespace cnl {
 
     // variant of cnl::to_chars returning fixed-size array of chars
     // large enough to store any possible result for given input type
+    template<int Base = 10>
     [[nodiscard]] constexpr auto to_chars_static(number auto const& value)
     {
         using number = std::remove_cvref_t<decltype(value)>;
-        constexpr auto max_num_chars = _impl::max_to_chars_chars<number>::value;
+        constexpr auto max_num_chars = _impl::max_to_chars_chars<number, Base>::value;
 
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         to_chars_static_result<max_num_chars> result;
@@ -146,7 +149,7 @@ namespace cnl {
         auto* const chars_begin{result.chars.data()};
         auto* const chars_end{chars_begin + max_num_chars};
 
-        auto dynamic_result = to_chars(chars_begin, chars_end, value);
+        auto dynamic_result = to_chars(chars_begin, chars_end, value, Base);
         CNL_ASSERT(dynamic_result.ptr > chars_begin);
         CNL_ASSERT(dynamic_result.ptr <= chars_end);
         CNL_ASSERT(dynamic_result.ec == std::errc{});

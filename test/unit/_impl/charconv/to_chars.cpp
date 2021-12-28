@@ -34,7 +34,7 @@ TEST(charconv_to_chars, int32_min)  // NOLINT
 {
     auto const expected{cnl::to_chars_static_result<11>{
             {'-', '2', '1', '4', '7', '4', '8', '3', '6', '4', '7'}, 11}};
-    auto const actual{cnl::to_chars_static<std::int32_t>(std::numeric_limits<std::int32_t>::min() + 1)};
+    auto const actual{cnl::to_chars_static(std::numeric_limits<std::int32_t>::min() + 1)};
     ASSERT_EQ(expected, actual);
 }
 
