@@ -20,7 +20,6 @@
 #include <array>
 #include <charconv>
 #include <limits>
-#include <string_view>
 #include <system_error>
 
 /// compositional numeric library
@@ -143,13 +142,20 @@ namespace cnl {
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         to_chars_static_result<max_num_chars> result;
 
-        auto dynamic_result = to_chars(result.chars.data(), result.chars.data() + max_num_chars, value);
-        CNL_ASSERT(dynamic_result.ptr > result.chars.data());
-        CNL_ASSERT(dynamic_result.ptr <= result.chars.data() + max_num_chars);
+        auto* const chars_begin{result.chars.data()};
+        auto* const chars_end{chars_begin + max_num_chars};
+
+        auto dynamic_result = to_chars(chars_begin, chars_end, value);
+        CNL_ASSERT(dynamic_result.ptr > chars_begin);
+        CNL_ASSERT(dynamic_result.ptr <= chars_end);
         CNL_ASSERT(dynamic_result.ec == std::errc{});
 
-        *dynamic_result.ptr = '\0';
-        result.length = _impl::narrow_cast<int>(dynamic_result.ptr - result.chars.data());
+        auto* const bytes_end{chars_begin + result.chars.size()};
+        std::fill(dynamic_result.ptr, bytes_end, '\0');
+
+        result.length = _impl::narrow_cast<int>(std::distance(chars_begin, dynamic_result.ptr));
+        CNL_ASSERT(result.length >= 0);
+        CNL_ASSERT(result.length <= max_num_chars);
 
         return result;
     }
