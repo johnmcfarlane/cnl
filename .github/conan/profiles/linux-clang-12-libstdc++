@@ -4,5 +4,3 @@ compiler.version=12
 [options]
 sanitize=False
 [build_requires]
-[env]
-CONAN_CMAKE_GENERATOR=Unix Makefiles

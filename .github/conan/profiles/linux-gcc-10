@@ -6,4 +6,3 @@ compiler.version=10
 [env]
 CC=gcc-10
 CXX=g++-10
-CONAN_CMAKE_GENERATOR=Unix Makefiles
