@@ -23,7 +23,6 @@ jobs:
           conan install \
             --build=missing \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-head-libc++ \
-            --settings:host build_type=Release \
             --options clang_tidy=True \
             --options int128=False \
             --options sanitize=False \
@@ -301,7 +300,6 @@ jobs:
             --build=missing `
             --profile:build $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.build-profile}} `
             --profile:host $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.host-profile}} `
-            --settings:build build_type=Release `
             --settings:host build_type="${{matrix.build_type}}" `
             $env:GITHUB_WORKSPACE
 
