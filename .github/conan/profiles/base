@@ -1,4 +1,6 @@
 TOOLCHAIN_DIR=$PROFILE_DIR/../../../test/toolchain
+[settings]
+cmake:compiler.cppstd=14
 [options]
 boost:header_only=True
 boost:without_fiber=True

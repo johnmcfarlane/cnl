@@ -227,7 +227,6 @@ jobs:
             --env:build CONAN_CMAKE_GENERATOR="${CONAN_CMAKE_GENERATOR:-Ninja}" \
             --env:host CONAN_CMAKE_GENERATOR="${CONAN_CMAKE_GENERATOR:-Ninja}" \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
-            --settings:build cmake:compiler.cppstd=gnu11 \
             $GITHUB_WORKSPACE
 
       - name: Build tests
@@ -303,7 +302,6 @@ jobs:
             --profile:build $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.build-profile}} `
             --profile:host $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.host-profile}} `
             --settings:build build_type=Release `
-            --settings:build cmake:compiler.cppstd=17 `
             --settings:host build_type="${{matrix.build_type}}" `
             $env:GITHUB_WORKSPACE
 
