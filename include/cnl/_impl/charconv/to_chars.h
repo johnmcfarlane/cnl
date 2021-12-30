@@ -20,6 +20,7 @@
 #include <array>
 #include <charconv>
 #include <limits>
+#include <numbers>
 #include <system_error>
 
 /// compositional numeric library
@@ -30,7 +31,7 @@ namespace cnl {
         struct max_to_chars_chars {
         private:
             static constexpr auto _sign_chars = static_cast<int>(cnl::numbers::signedness_v<Scalar>);
-            static constexpr auto _integer_chars = ((digits_v<Scalar> + 2) / 3);
+            static constexpr auto _integer_chars = static_cast<int>(std::numeric_limits<Scalar>::digits * std::numbers::ln2 / std::numbers::ln10) + 1;
 
         public:
             static constexpr auto value = _sign_chars + _integer_chars;
