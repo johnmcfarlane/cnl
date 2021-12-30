@@ -4,7 +4,6 @@ os=Linux
 os_build=Linux
 arch=x86_64
 arch_build=x86_64
-build_type=Release
 [options]
 sanitize=True
 [build_requires]

@@ -23,7 +23,6 @@ jobs:
           conan install \
             --build=missing \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-head-libc++ \
-            --settings:host build_type=Release \
             --options clang_tidy=True \
             --options int128=False \
             --options sanitize=False \
@@ -227,7 +226,6 @@ jobs:
             --env:build CONAN_CMAKE_GENERATOR="${CONAN_CMAKE_GENERATOR:-Ninja}" \
             --env:host CONAN_CMAKE_GENERATOR="${CONAN_CMAKE_GENERATOR:-Ninja}" \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
-            --settings:build cmake:compiler.cppstd=gnu11 \
             $GITHUB_WORKSPACE
 
       - name: Build tests
@@ -302,8 +300,6 @@ jobs:
             --build=missing `
             --profile:build $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.build-profile}} `
             --profile:host $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.host-profile}} `
-            --settings:build build_type=Release `
-            --settings:build cmake:compiler.cppstd=17 `
             --settings:host build_type="${{matrix.build_type}}" `
             $env:GITHUB_WORKSPACE
 
