@@ -9,6 +9,7 @@
 
 #include <cnl/elastic_integer.h>
 
+#include <cnl/_impl/charconv/to_chars.h>
 #include <cnl/_impl/narrow_cast.h>
 #include <cnl/_impl/rounding.h>
 #include <cnl/_impl/type_traits/identical.h>
@@ -757,6 +758,32 @@ namespace {
                         cnl::elastic_integer<11>{1024},
                         cnl::_impl::power_value<cnl::elastic_integer<1>, 10, 2>()),
                 "power_value test failed");
+    }
+
+    namespace test_to_chars {
+#if !defined(_MSC_VER)
+        static_assert(identical(
+                cnl::to_chars_static_result<2>{{'1'}, 1},
+                cnl::to_chars_static(cnl::make_elastic_integer(1_c))));
+
+        static_assert(identical(
+                cnl::to_chars_static_result<6>{{'-', '9', '9', '9', '9'}, 5},
+                cnl::to_chars_static(cnl::elastic_integer<14>(-9999))));
+#endif
+
+        TEST(elastic_integer, to_chars_1)  // NOLINT
+        {
+            constexpr auto expected{cnl::to_chars_static_result<2>{{'1'}, 1}};
+            auto const actual{cnl::to_chars_static(cnl::make_elastic_integer(1_c))};
+            ASSERT_EQ(expected, actual);
+        }
+
+        TEST(elastic_integer, to_chars_n9999)  // NOLINT
+        {
+            constexpr auto expected{cnl::to_chars_static_result<6>{{'-', '9', '9', '9', '9'}, 5}};
+            auto const actual{cnl::to_chars_static(cnl::elastic_integer<14>(-9999))};
+            ASSERT_EQ(expected, actual);
+        }
     }
 
     TEST(elastic_integer, to_rep_ref)  // NOLINT

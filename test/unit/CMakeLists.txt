@@ -22,6 +22,7 @@ set(test_sources
         overflow/overflow.cpp
         overflow/rounding/int.cpp
         rounding/rounding.cpp
+        _impl/charconv/to_chars.cpp
         _impl/cmath/abs.cpp
         _impl/cmath/sqrt.cpp
         _impl/elastic_int/sqrt.cpp
