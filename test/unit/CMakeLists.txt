@@ -176,7 +176,7 @@ function(make_test source compile_flags)
     # create a target and make it a test
     add_executable("${target}" "${source}")
     target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
-    set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${compile_flags}")
+    target_compile_options("${target}" PRIVATE "${compile_flags}")
     target_link_libraries("${target}" Cnl)
     add_test("${target}" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${target}")
 
