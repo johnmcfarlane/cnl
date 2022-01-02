@@ -36,11 +36,14 @@ jobs:
         with:
           path: |
             /github/home/.ccache
-          key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
+          key: test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-${{github.sha}}
           restore-keys: |
-            test-${{matrix.compiler}}-${{github.ref}}-
-            test-${{matrix.compiler}}-main-
-            test-${{matrix.compiler}}-
+            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-
+            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-main-
+            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-
+
+      - name: ccache report
+        run: ccache -s
 
       - name: Build and Install GTest
         env:
@@ -252,11 +255,11 @@ jobs:
             ~\AppData\Local\pip\Cache
             ~\.conan\data
             ~\.ccache
-          key: test-${{matrix.name}}-${{github.ref}}-${{github.sha}}
+          key: test-${{matrix.name}}-${{matrix.build_type}}-${{github.ref}}-${{github.sha}}
           restore-keys: |
-            test-${{matrix.name}}-${{github.ref}}-
-            test-${{matrix.name}}-main-
-            test-${{matrix.name}}-
+            test-${{matrix.name}}-${{matrix.build_type}}-${{github.ref}}-
+            test-${{matrix.name}}-${{matrix.build_type}}-main-
+            test-${{matrix.name}}-${{matrix.build_type}}-
 
       - name: Install Conan
         run: |
