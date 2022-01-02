@@ -7,77 +7,6 @@ on:
       - '**'
 
 jobs:
-  # Build and test latest on Linux using only CMake
-  cmake:
-    strategy:
-      matrix:
-        compiler: [clang, gcc]
-        include:
-          - compiler: clang
-            stdlib-flag: "-stdlib=libc++"
-            toolchain: clang-libc++.cmake
-            container: johnmcfarlane/cnl_ci:clang-head-libcpp
-          - compiler: gcc
-            stdlib-flag: ""
-            toolchain: gcc-head.cmake
-            container: johnmcfarlane/cnl_ci:gcc-head
-        build_type: ["Debug", "Release"]
-        cxx-extensions: ["ON", "OFF"]
-        exceptions: ["ON", "OFF"]
-
-    container: ${{matrix.container}}
-    env:
-      CMAKE_CXX_COMPILER_LAUNCHER: ccache
-    runs-on: ubuntu-20.04
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Restore caches
-        uses: actions/cache@v2
-        with:
-          path: |
-            /github/home/.ccache
-          key: test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-${{github.sha}}
-          restore-keys: |
-            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-
-            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-main-
-            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-
-
-      - name: ccache report
-        run: ccache -s
-
-      - name: Build and Install GTest
-        env:
-          CXXFLAGS: ${{matrix.stdlib-flag}}
-        run: |
-          git clone https://github.com/google/googletest.git
-          cd googletest
-          git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
-          cmake \
-            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            .
-          cmake --build . --target install
-
-      - name: Configure CNL
-        run: |
-          cmake \
-            -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx-extensions}} \
-            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            -DCNL_EXCEPTIONS=${{matrix.exceptions}} \
-            -DCNL_SANITIZE=ON \
-            $GITHUB_WORKSPACE
-
-      - name: Build CNL
-        run: cmake --build $GITHUB_WORKSPACE --target test-all
-
-      - name: Test CNL
-        run: ctest --output-on-failure
-
-      - name: ccache report
-        run: ccache -s
-
   # Build and test many combinations on Linux/OS X using Conan
   conan:
     strategy:
@@ -287,4 +216,75 @@ jobs:
       - name: Run benchmarks
         working-directory: ${{runner.workspace}}/build
         run: test\benchmark\${{matrix.build_type}}\test-benchmark.exe
+
+  # Build and test latest on Linux using only CMake
+  cmake:
+    strategy:
+      matrix:
+        compiler: [clang, gcc]
+        include:
+          - compiler: clang
+            stdlib-flag: "-stdlib=libc++"
+            toolchain: clang-libc++.cmake
+            container: johnmcfarlane/cnl_ci:clang-head-libcpp
+          - compiler: gcc
+            stdlib-flag: ""
+            toolchain: gcc-head.cmake
+            container: johnmcfarlane/cnl_ci:gcc-head
+        build_type: ["Debug", "Release"]
+        cxx-extensions: ["ON", "OFF"]
+        exceptions: ["ON", "OFF"]
+
+    container: ${{matrix.container}}
+    env:
+      CMAKE_CXX_COMPILER_LAUNCHER: ccache
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Restore caches
+        uses: actions/cache@v2
+        with:
+          path: |
+            /github/home/.ccache
+          key: test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-
+            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-main-
+            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-
+
+      - name: ccache report
+        run: ccache -s
+
+      - name: Build and Install GTest
+        env:
+          CXXFLAGS: ${{matrix.stdlib-flag}}
+        run: |
+          git clone https://github.com/google/googletest.git
+          cd googletest
+          git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            .
+          cmake --build . --target install
+
+      - name: Configure CNL
+        run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx-extensions}} \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            -DCNL_EXCEPTIONS=${{matrix.exceptions}} \
+            -DCNL_SANITIZE=ON \
+            $GITHUB_WORKSPACE
+
+      - name: Build CNL
+        run: cmake --build $GITHUB_WORKSPACE --target test-all
+
+      - name: Test CNL
+        run: ctest --output-on-failure
+
+      - name: ccache report
+        run: ccache -s
 ...
