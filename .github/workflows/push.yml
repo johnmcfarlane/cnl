@@ -1,7 +1,7 @@
 ---
 name: push
 
-on: 
+on:
   push:
     branches:
       - '**'
