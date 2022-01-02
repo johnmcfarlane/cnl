@@ -26,6 +26,8 @@ jobs:
         exceptions: ["ON", "OFF"]
 
     container: ${{matrix.container}}
+    env:
+      CMAKE_CXX_COMPILER_LAUNCHER: ccache
     runs-on: ubuntu-20.04
 
     steps:
