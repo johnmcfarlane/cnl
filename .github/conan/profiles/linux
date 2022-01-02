@@ -8,5 +8,6 @@ arch_build=x86_64
 sanitize=True
 [build_requires]
 [env]
+CMAKE_CXX_COMPILER_LAUNCHER=ccache
 CONAN_CMAKE_GENERATOR=Ninja
 CONAN_CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_DIR/posix.cmake

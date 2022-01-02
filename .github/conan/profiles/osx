@@ -7,4 +7,5 @@ arch_build=x86_64
 [options]
 [build_requires]
 [env]
+CMAKE_CXX_COMPILER_LAUNCHER=ccache
 CONAN_CMAKE_GENERATOR=Ninja
