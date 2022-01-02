@@ -7,15 +7,14 @@
 #include <cnl/fraction.h>
 
 #include <cnl/_impl/config.h>
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 
 #include <string>
+#include <type_traits>
 
 namespace {
-    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
 
     template<typename Numerator, typename Denominator>
@@ -27,12 +26,8 @@ namespace {
     }
 
     namespace test_parameters {
-        static_assert(
-                assert_same<cnl::fraction<int, int>, cnl::fraction<>>::value,
-                "cnl::fraction first parameter should default to int");
-        static_assert(
-                assert_same<cnl::fraction<short, short>, cnl::fraction<short>>::value,
-                "cnl::fraction second parameter should default to first");
+        static_assert(std::is_same_v<cnl::fraction<int, int>, cnl::fraction<>>);
+        static_assert(std::is_same_v<cnl::fraction<short, short>, cnl::fraction<short>>);
     }
 
     namespace test_make_fraction {

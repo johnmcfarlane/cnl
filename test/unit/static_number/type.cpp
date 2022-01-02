@@ -4,21 +4,20 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/static_number.h>
 
+#include <type_traits>
+
 namespace {
-    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
 
     namespace default_parameters {
         using cnl::_impl::rep_of_t;
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::wide_integer<>,
-                        rep_of_t<rep_of_t<rep_of_t<rep_of_t<cnl::static_number<1>>>>>>::value,
-                "cnl::rounding_integer parameter default test failed");
+                        rep_of_t<rep_of_t<rep_of_t<rep_of_t<cnl::static_number<1>>>>>>);
     }
 
     namespace test_ctor {

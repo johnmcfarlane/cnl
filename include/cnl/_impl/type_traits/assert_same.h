@@ -12,19 +12,10 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        // cnl::_impl::assert_same - instead of being false_type like std::is_same,
-        // actually emits error which generally helps report the type of Actual
-
-        template<typename Expected, typename Actual>
-        struct assert_same {
-        };
-
-        template<typename T>
-        struct assert_same<T, T> : std::true_type {
-        };
-
-        template<typename Expected, typename Actual>
-        inline constexpr auto assert_same_v = assert_same<Expected, Actual>::value;
+        void assert_same(auto&& expected, auto&& actual)
+        {
+            static_assert(std::is_same_v<decltype(expected), decltype(actual)>);
+        }
     }
 }
 

@@ -12,6 +12,7 @@
 #include <gtest/gtest.h>
 
 #include <limits>
+#include <type_traits>
 
 namespace cnl {
     // safe elastic integer

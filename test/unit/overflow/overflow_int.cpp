@@ -21,6 +21,7 @@
 
 #include <limits>
 #include <sstream>
+#include <type_traits>
 
 using cnl::overflow_integer;
 using cnl::_impl::identical;

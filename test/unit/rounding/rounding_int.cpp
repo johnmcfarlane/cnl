@@ -4,7 +4,6 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/rounding_integer.h>
 
@@ -13,10 +12,10 @@
 #include <gtest/gtest.h>
 
 #include <limits>
+#include <type_traits>
 
 namespace {
     using cnl::rounding_integer;
-    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
     using std::is_same;
 
@@ -43,34 +42,29 @@ namespace {
 
     namespace test_rounding_t {
         static_assert(
-                assert_same<cnl::native_rounding_tag, cnl::rounding_t<int>>::value,
-                "cnl::rounding_t<int> test failed");
+                std::is_same_v<cnl::native_rounding_tag, cnl::rounding_t<int>>);
         static_assert(
-                assert_same<cnl::native_rounding_tag, cnl::rounding_t<std::uint16_t>>::value,
-                "cnl::rounding_t<int> test failed");
+                std::is_same_v<cnl::native_rounding_tag, cnl::rounding_t<std::uint16_t>>);
 
         static_assert(
-                assert_same<
-                        cnl::nearest_rounding_tag, cnl::rounding_t<cnl::rounding_integer<>>>::value,
-                "cnl::rounding_t<cnl::rounding_integer<>> test failed");
+                std::is_same_v<
+                        cnl::nearest_rounding_tag, cnl::rounding_t<cnl::rounding_integer<>>>);
     }
 
     namespace test_set_rounding_t {
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::rounding_integer<int, cnl::nearest_rounding_tag>,
                         cnl::set_rounding_t<
                                 cnl::rounding_integer<int, cnl::native_rounding_tag>,
-                                cnl::nearest_rounding_tag>>::value,
-                "cnl::rounding_t<cnl::rounding_integer<>> test failed");
+                                cnl::nearest_rounding_tag>>);
 
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::rounding_integer<int, cnl::nearest_rounding_tag>,
                         cnl::set_rounding_t<
                                 cnl::rounding_integer<int, cnl::native_rounding_tag>,
-                                cnl::nearest_rounding_tag>>::value,
-                "cnl::rounding_t<cnl::rounding_integer<>> test failed");
+                                cnl::nearest_rounding_tag>>);
     }
 
     namespace test_is_integer {

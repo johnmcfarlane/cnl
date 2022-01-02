@@ -9,16 +9,13 @@
 
 #include <cnl/_impl/wrapper/set_rep.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
-
-using cnl::_impl::assert_same;
+#include <type_traits>
 
 namespace {
     static_assert(
-            assert_same<
+            std::is_same_v<
                     cnl::_impl::wrapper<long long>,
-                    cnl::_impl::set_rep_t<cnl::_impl::wrapper<>, long long>>::value);
+                    cnl::_impl::set_rep_t<cnl::_impl::wrapper<>, long long>>);
     static_assert(
-            assert_same<cnl::_impl::wrapper<>, cnl::_impl::set_rep_t<cnl::_impl::wrapper<>, int>>::
-                    value);
+            std::is_same_v<cnl::_impl::wrapper<>, cnl::_impl::set_rep_t<cnl::_impl::wrapper<>, int>>);
 }

@@ -5,14 +5,14 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/_impl/num_traits/fixed_width_scale.h>
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/static_integer.h>
 
 #include <gtest/gtest.h>
 
+#include <type_traits>
+
 namespace {
-    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
     using cnl::_impl::rep_of_t;
     using cnl::_impl::tag_of_t;
@@ -24,39 +24,33 @@ namespace {
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                std::is_same<
+                std::is_same_v<
                         cnl::undefined_overflow_tag,
-                        cnl::_impl::tag_of_t<cnl::static_integer<1>>>::value,
-                "cnl::static_integer parameter default test failed");
+                        cnl::_impl::tag_of_t<cnl::static_integer<1>>>);
         static_assert(
-                std::is_same<
+                std::is_same_v<
                         cnl::_impl::tag_of_t<cnl::overflow_integer<>>,
-                        cnl::_impl::tag_of_t<cnl::static_integer<1>>>::value,
-                "cnl::static_integer parameter default test failed");
+                        cnl::_impl::tag_of_t<cnl::static_integer<1>>>);
 
         static_assert(
-                std::is_same<
+                std::is_same_v<
                         cnl::nearest_rounding_tag,
-                        tag_of_t<rep_of_t<rep_of_t<cnl::static_integer<1>>>>>::value,
-                "cnl::static_integer parameter default test failed");
+                        tag_of_t<rep_of_t<rep_of_t<cnl::static_integer<1>>>>>);
         static_assert(
-                !std::is_same<cnl::native_rounding_tag, cnl::native_overflow_tag>::value,
-                "cnl::static_integer parameter default test failed");
+                !std::is_same_v<cnl::native_rounding_tag, cnl::native_overflow_tag>);
 
         static_assert(
-                assert_same<cnl::wide_integer<>, rep_of_t<rep_of_t<rep_of_t<cnl::static_integer<>>>>>::value,
-                "cnl::static_integer parameter default test failed");
+                std::is_same_v<cnl::wide_integer<>, rep_of_t<rep_of_t<rep_of_t<cnl::static_integer<>>>>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         rep_of_t<cnl::elastic_integer<31, cnl::wide_integer<>>>,
-                        rep_of_t<rep_of_t<rep_of_t<cnl::static_integer<>>>>>::value,
-                "cnl::static_integer parameter default test failed");
+                        rep_of_t<rep_of_t<rep_of_t<cnl::static_integer<>>>>>);
     }
 
     namespace test_rounding_t {
         static_assert(
-                assert_same<
-                        cnl::nearest_rounding_tag, cnl::rounding_t<cnl::static_integer<>>>::value,
+                std::is_same_v<
+                        cnl::nearest_rounding_tag, cnl::rounding_t<cnl::static_integer<>>>,
                 "cnl::rounding_t<cnl::static_integer<>> test failed");
     }
 

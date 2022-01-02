@@ -8,6 +8,8 @@
 
 #include <gtest/gtest.h>
 
+#include <type_traits>
+
 #if defined(CNL_BOOST_ENABLED)
 #include <boost/integer.hpp>
 #endif

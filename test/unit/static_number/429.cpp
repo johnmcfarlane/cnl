@@ -7,8 +7,6 @@
 #include <cnl/static_integer.h>
 #include <cnl/static_number.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
-
 #include <gtest/gtest.h>
 
 template<int Digits, int Exponent>

@@ -7,12 +7,12 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding_integer.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 
-using cnl::_impl::assert_same;
+#include <type_traits>
+
 using cnl::_impl::identical;
 
 namespace cnl {
@@ -61,9 +61,9 @@ namespace {
                                 cnl::elastic_integer<16>(0))),
                 "from_rep<rounding_elastic_integer>");
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<7, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<7, int>, int>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<7, int>, int>>);
         static_assert(
                 identical(
                         cnl::elastic_integer<7, int>{42},

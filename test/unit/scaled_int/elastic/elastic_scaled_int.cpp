@@ -15,6 +15,7 @@
 #include <gtest/gtest.h>
 
 #include <limits>
+#include <type_traits>
 
 using std::is_same;
 

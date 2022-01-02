@@ -10,7 +10,6 @@
 #include <cnl/_impl/wrapper/declaration.h>
 
 #include <cnl/_impl/numbers/set_signedness.h>
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wrapper/integer.h>
 #include <cnl/_impl/wrapper/is_composite.h>
@@ -20,7 +19,8 @@
 #include <cnl/fixed_point.h>
 #include <cnl/number.h>
 
-using cnl::_impl::assert_same;
+#include <type_traits>
+
 using cnl::_impl::identical;
 
 namespace {
@@ -38,9 +38,7 @@ namespace {
     }
 
     namespace test_parameters {
-        static_assert(
-                assert_same<cnl::_impl::wrapper<int>, cnl::_impl::wrapper<>>::value,
-                "default parameters of cnl::number");
+        static_assert(std::is_same_v<cnl::_impl::wrapper<int>, cnl::_impl::wrapper<>>);
     }
 
     namespace test_is_composite {
@@ -51,9 +49,9 @@ namespace {
 
     namespace test_set_signedness {
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::_impl::wrapper<unsigned short>,
-                        cnl::numbers::set_signedness_t<cnl::_impl::wrapper<signed short>, false>>::value);
+                        cnl::numbers::set_signedness_t<cnl::_impl::wrapper<signed short>, false>>);
     }
 
     namespace test_default_ctor {

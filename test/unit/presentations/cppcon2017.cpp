@@ -13,6 +13,8 @@
 #include <unordered_map>
 
 #include <filesystem>
+#include <type_traits>
+
 namespace filesystem = std::filesystem;
 
 template<typename Rep = int, int Exponent = 0, int Radix = 2>

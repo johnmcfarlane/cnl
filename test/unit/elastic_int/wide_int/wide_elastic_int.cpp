@@ -7,13 +7,13 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/wide_integer.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 
+#include <type_traits>
+
 namespace {
-    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
 
     template<int Digits = cnl::digits_v<int>, typename Narrowest = int>
@@ -22,13 +22,10 @@ namespace {
 
     namespace default_parameters {
         using cnl::_impl::rep_of_t;
+        static_assert(std::is_same_v<int, rep_of_t<rep_of_t<wide_elastic_integer<>>>>);
         static_assert(
-                assert_same<int, rep_of_t<rep_of_t<wide_elastic_integer<>>>>::value,
-                "wide_elastic_integer parameter default test failed");
-        static_assert(
-                assert_same<
-                        rep_of_t<cnl::elastic_integer<>>, rep_of_t<rep_of_t<wide_elastic_integer<>>>>::value,
-                "wide_elastic_integer parameter default test failed");
+                std::is_same_v<
+                        rep_of_t<cnl::elastic_integer<>>, rep_of_t<rep_of_t<wide_elastic_integer<>>>>);
     }
 
     namespace test_conversion {
@@ -84,9 +81,7 @@ namespace {
     {
         auto a = wide_elastic_integer<3>{6};
         auto& b = ++a;
-        static_assert(
-                assert_same<decltype(b), wide_elastic_integer<3>&>::value,
-                "wide_elastic_integer pre-increment return value");
+        static_assert(std::is_same_v<decltype(b), wide_elastic_integer<3>&>);
         ASSERT_EQ(&b, &a) << "wide_elastic_integer pre-increment return address";
         ASSERT_EQ(7, b) << "wide_elastic_integer pre-increment";
     }
@@ -95,9 +90,7 @@ namespace {
     {
         auto a = wide_elastic_integer<3>{-6};
         auto& b = --a;
-        static_assert(
-                assert_same<decltype(b), wide_elastic_integer<3>&>::value,
-                "wide_elastic_integer pre-increment return value");
+        static_assert(std::is_same_v<decltype(b), wide_elastic_integer<3>&>);
         ASSERT_EQ(&b, &a) << "wide_elastic_integer pre-increment return address";
         ASSERT_EQ(-7, b) << "wide_elastic_integer pre-increment";
     }
@@ -106,9 +99,7 @@ namespace {
     {
         auto a = wide_elastic_integer<3>{6};
         auto const& b = a++;
-        static_assert(
-                assert_same<decltype(b), wide_elastic_integer<3> const&>::value,
-                "wide_elastic_integer pre-increment return value");
+        static_assert(std::is_same_v<decltype(b), wide_elastic_integer<3> const&>);
         ASSERT_NE(&b, &a) << "wide_elastic_integer pre-increment return address";
         ASSERT_EQ(7, a) << "wide_elastic_integer pre-increment";
         ASSERT_EQ(6, b) << "wide_elastic_integer pre-increment";
@@ -118,9 +109,7 @@ namespace {
     {
         auto a = wide_elastic_integer<3>{-6};
         auto const& b = a--;
-        static_assert(
-                assert_same<decltype(b), wide_elastic_integer<3> const&>::value,
-                "wide_elastic_integer pre-increment return value");
+        static_assert(std::is_same_v<decltype(b), wide_elastic_integer<3> const&>);
         ASSERT_NE(&b, &a) << "wide_elastic_integer pre-increment return address";
         ASSERT_EQ(-7, a) << "wide_elastic_integer pre-increment";
         ASSERT_EQ(-6, b) << "wide_elastic_integer pre-increment";

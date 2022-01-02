@@ -9,6 +9,8 @@
 
 #include <gtest/gtest.h>
 
+#include <type_traits>
+
 using cnl::_impl::identical;
 
 namespace {

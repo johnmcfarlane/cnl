@@ -7,10 +7,10 @@
 #include <cnl/rounding.h>
 #include <cnl/scaled_integer.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
-using cnl::_impl::assert_same;
+#include <type_traits>
+
 using cnl::_impl::identical;
 
 namespace {
@@ -19,9 +19,7 @@ namespace {
         using number = cnl::scaled_integer<int, cnl::power<-1>>;
         using rounding_tag = cnl::native_rounding_tag;
         using actual = typename cnl::set_rounding<number, rounding_tag>::type;
-        static_assert(
-                assert_same<expected, actual>::value,
-                "set_rounding<scaled_integer, native_rounding_tag>");
+        static_assert(std::is_same_v<expected, actual>);
     }
 
     namespace test_nearest_round_down {

@@ -6,7 +6,6 @@
 
 #include <cnl/auxiliary/boost.multiprecision.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
 
@@ -15,12 +14,13 @@
 
 #include "boost.throw_exception.h"
 
+#include <type_traits>
+
 using cnl::multiprecision;
 using cnl::scaled_integer;
 using cnl::set_digits_t;
 using cnl::signed_multiprecision;
 using cnl::unsigned_multiprecision;
-using cnl::_impl::assert_same;
 using cnl::_impl::identical;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,11 +78,10 @@ static_assert(cnl::digits_v<unsigned_multiprecision<128>> >= cnl::digits_v<set_d
 
 namespace test_to_rep {
     static_assert(
-            assert_same<
+            std::is_same_v<
                     decltype(std::declval<unsigned_multiprecision<12>>()),
                     decltype(cnl::to_rep<scaled_integer<unsigned_multiprecision<12>>>{}(
-                            std::declval<unsigned_multiprecision<12>>()))>::value,
-            "cnl::_impl::depth<scaled_integer<boost::multiprecision>>");
+                            std::declval<unsigned_multiprecision<12>>()))>);
 }
 
 TEST(multiprecision, to_rep)  // NOLINT
@@ -95,10 +94,9 @@ TEST(multiprecision, to_rep)  // NOLINT
 
 namespace test_impl_to_rep {
     static_assert(
-            assert_same<
+            std::is_same_v<
                     unsigned_multiprecision<987654321>,
-                    cnl::_impl::rep_of_t<scaled_integer<unsigned_multiprecision<987654321>>>>::value,
-            "cnl::_impl::rep_of_t<scaled_integer<boost::multiprecision>>");
+                    cnl::_impl::rep_of_t<scaled_integer<unsigned_multiprecision<987654321>>>>);
 }
 
 TEST(multiprecision, from_value)  // NOLINT
