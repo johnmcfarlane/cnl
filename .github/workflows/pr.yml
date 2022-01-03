@@ -10,10 +10,29 @@ on:
       - main
 
 jobs:
-  # Build and test many combinations on Linux/OS X using Conan
-  clang-tidy:
-    container: johnmcfarlane/cnl_ci:clang-head-libcpp
+  # Build and test latest on Linux using only CMake
+  cmake:
+    strategy:
+      matrix:
+        compiler: [clang, gcc]
+        include:
+          - compiler: clang
+            stdlib-flag: "-stdlib=libc++"
+            toolchain: clang-libc++.cmake
+            container: johnmcfarlane/cnl_ci:clang-head-libcpp
+          - compiler: gcc
+            stdlib-flag: ""
+            toolchain: gcc-head.cmake
+            container: johnmcfarlane/cnl_ci:gcc-head
+        build_type: ["Debug", "Release"]
+        cxx-extensions: ["ON", "OFF"]
+        exceptions: ["ON", "OFF"]
+
+    container: ${{matrix.container}}
+    env:
+      CMAKE_CXX_COMPILER_LAUNCHER: ccache
     runs-on: ubuntu-20.04
+
     steps:
       - uses: actions/checkout@v2
 
@@ -21,35 +40,46 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            /github/home/.conan/data
             /github/home/.ccache
-            /Users/runner/Library/Caches/ccache
-          key: clang-tidy-${{github.ref}}-${{github.sha}}
+          key: test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-${{github.sha}}
           restore-keys: |
-            clang-tidy-${{github.ref}}-
-            clang-tidy-main-
-            clang-tidy-
+            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-
+            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-main-
+            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-
 
-      - name: Initialise Conan
-        run: |
-          conan config install $GITHUB_WORKSPACE/.github/conan/settings.yml
+      - name: ccache report
+        run: ccache -s
 
-      - name: Install dependencies
+      - name: Build and Install GTest
+        env:
+          CXXFLAGS: ${{matrix.stdlib-flag}}
         run: |
-          conan install \
-            --build=missing \
-            --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-head-libc++ \
-            --options clang_tidy=True \
-            --options int128=False \
-            --options sanitize=False \
-            --env CONAN_CMAKE_GENERATOR=Ninja \
+          git clone https://github.com/google/googletest.git
+          cd googletest
+          git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            .
+          cmake --build . --target install
+
+      - name: Configure CNL
+        run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx-extensions}} \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            -DCNL_EXCEPTIONS=${{matrix.exceptions}} \
+            -DCNL_SANITIZE=ON \
             $GITHUB_WORKSPACE
 
-      - name: Build tests
-        run: conan build --build --configure $GITHUB_WORKSPACE
+      - name: Build CNL
+        run: cmake --build $GITHUB_WORKSPACE --target test-all
 
-      - name: Test library
-        run: conan build --test $GITHUB_WORKSPACE
+      - name: Test CNL
+        run: ctest --output-on-failure
+
+      - name: ccache report
+        run: ccache -s
 
   # Install on mature Linux distro using only CMake
   install:
@@ -62,23 +92,6 @@ jobs:
 
       - name: Install CNL
         run: sudo cmake --build $GITHUB_WORKSPACE --target install
-
-  # Test source formatting
-  clang-format:
-    runs-on: ubuntu-20.04
-    container: johnmcfarlane/cnl_ci:clang-13
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Format code
-        shell: bash
-        run: $GITHUB_WORKSPACE/test/scripts/clang-format
-
-      - name: Show/test for changes
-        shell: bash
-        run: |
-          git diff
-          if [[ `git status --porcelain` ]]; then exit 1; fi
 
   # Test shell scripts
   shellcheck:
@@ -114,28 +127,4 @@ jobs:
         run: |
           sudo apt install yamllint
           $GITHUB_WORKSPACE/test/scripts/yamllint
-
-  # Test documentation generation
-  doxygen:
-    runs-on: ubuntu-18.04
-    container: johnmcfarlane/cnl_ci:base-21.10
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Test Doxyfile
-        shell: bash
-        run: |
-          doxygen -s -u doc/Doxyfile
-          rm doc/Doxyfile.bak
-          git diff --exit-code
-
-      - name: Generate documentation
-        shell: bash
-        run: $GITHUB_WORKSPACE/doc/generate
-
-      - name: Upload documentation
-        uses: actions/upload-artifact@v2
-        with:
-          name: documentation
-          path: ${{github.workspace}}/htdocs
 ...
