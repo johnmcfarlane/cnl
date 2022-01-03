@@ -17,6 +17,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Restore caches
+        uses: actions/cache@v2
+        with:
+          path: |
+            /github/home/.conan/data
+            /github/home/.ccache
+            /Users/runner/Library/Caches/ccache
+          key: clang-tidy-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            clang-tidy-${{github.ref}}-
+            clang-tidy-main-
+            clang-tidy-
+
       - name: Initialise Conan
         run: |
           conan config install $GITHUB_WORKSPACE/.github/conan/settings.yml
