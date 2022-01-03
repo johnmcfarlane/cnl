@@ -16,16 +16,22 @@ jobs:
 
       - name: Restore caches
         uses: actions/cache@v2
+        env:
+          CACHE_SLUG: 3-clang-tidy
         with:
           path: |
-            /github/home/.conan/data
+            /github/home/.cache/ccache
             /github/home/.ccache
-            /Users/runner/Library/Caches/ccache
-          key: clang-tidy-${{github.ref}}-${{github.sha}}
+            /github/home/.conan/data
+            /github/home/.config/ccache/ccache.conf
+          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
           restore-keys: |
-            clang-tidy-${{github.ref}}-
-            clang-tidy-main-
-            clang-tidy-
+            ${{ env.CACHE_SLUG }}-
+
+      - name: Cache Report
+        run: |
+          ccache -s
+          conan search
 
       - name: Initialise Conan
         run: |
@@ -47,6 +53,11 @@ jobs:
 
       - name: Test library
         run: conan build --test $GITHUB_WORKSPACE
+
+      - name: Cache Report
+        run: |
+          ccache -s
+          conan search
 
   # Build and test many combinations on Linux/OS X using Conan
   conan:
@@ -145,20 +156,26 @@ jobs:
 
       - name: Restore caches
         uses: actions/cache@v2
+        env:
+          CACHE_SLUG: 3-conan-${{matrix.name}}
         with:
           path: |
-            /github/home/.conan/data
+            /github/home/.cache/ccache
             /github/home/.ccache
-            /Users/runner/Library/Caches/ccache
-          key: test-${{matrix.name}}-${{github.ref}}-${{github.sha}}
+            /github/home/.conan/data
+            /github/home/.config/ccache/ccache.conf
+          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
           restore-keys: |
-            test-${{matrix.name}}-${{github.ref}}-
-            test-${{matrix.name}}-main-
-            test-${{matrix.name}}-
+            ${{ env.CACHE_SLUG }}-
 
       - name: Install Brew packages
         if: ( matrix.os-version == 'macos-10.15' )
         run: brew install ccache conan ninja
+
+      - name: Cache Report
+        run: |
+          ccache -s
+          conan search
 
       - name: Initialise Conan
         run: |
@@ -188,8 +205,10 @@ jobs:
           ./test/benchmark/test-benchmark --benchmark_format=csv | tee result.csv \
           "${GITHUB_WORKSPACE}"/test/benchmark/report.py result.csv
 
-      - name: ccache report
-        run: ccache -s
+      - name: Cache Report
+        run: |
+          ccache -s
+          conan search
 
   # Build and test on Windows using Conan
   windows:
@@ -222,20 +241,23 @@ jobs:
 
       - name: Restore caches
         uses: actions/cache@v2
+        env:
+          CACHE_SLUG: 3-windows-${{matrix.name}}-${{matrix.build_type}}
         with:
           path: |
             ~\AppData\Local\pip\Cache
             ~\.conan\data
-            ~\.ccache
-          key: test-${{matrix.name}}-${{matrix.build_type}}-${{github.ref}}-${{github.sha}}
+          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
           restore-keys: |
-            test-${{matrix.name}}-${{matrix.build_type}}-${{github.ref}}-
-            test-${{matrix.name}}-${{matrix.build_type}}-main-
-            test-${{matrix.name}}-${{matrix.build_type}}-
+            ${{ env.CACHE_SLUG }}-
 
       - name: Install Conan
         run: |
           pip.exe install conan;
+
+      - name: Cache Report
+        run: |
+          conan search
 
       - name: Create build directory
         run: mkdir ${{runner.workspace}}\build
@@ -257,6 +279,10 @@ jobs:
       - name: Run benchmarks
         working-directory: ${{runner.workspace}}/build
         run: test\benchmark\${{matrix.build_type}}\test-benchmark.exe
+
+      - name: Cache Report
+        run: |
+          conan search
 
   # Test source formatting
   clang-format:

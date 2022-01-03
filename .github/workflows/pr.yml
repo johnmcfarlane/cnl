@@ -30,6 +30,7 @@ jobs:
 
     container: ${{matrix.container}}
     env:
+      CACHE_SLUG: 3-cmake-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}
       CMAKE_CXX_COMPILER_LAUNCHER: ccache
     runs-on: ubuntu-20.04
 
@@ -40,15 +41,17 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
+            /github/home/.cache/ccache
             /github/home/.ccache
-          key: test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-${{github.sha}}
+            /github/home/.config/ccache/ccache.conf
+          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('test/toolchain/**') }}
           restore-keys: |
-            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-${{github.ref}}-
-            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-main-
-            test-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}-
+            ${{ env.CACHE_SLUG }}-
 
-      - name: ccache report
-        run: ccache -s
+      - name: Cache Report
+        run: |
+          ccache -s
+          conan search
 
       - name: Build and Install GTest
         env:
@@ -78,8 +81,10 @@ jobs:
       - name: Test CNL
         run: ctest --output-on-failure
 
-      - name: ccache report
-        run: ccache -s
+      - name: Cache Report
+        run: |
+          ccache -s
+          conan search
 
   # Install on mature Linux distro using only CMake
   install:
