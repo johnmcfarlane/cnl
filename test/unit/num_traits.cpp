@@ -10,6 +10,7 @@
 
 #include <limits>
 #include <string>
+#include <type_traits>
 
 namespace {
     using cnl::_impl::identical;

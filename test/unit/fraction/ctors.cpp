@@ -11,12 +11,12 @@
 
 #include <cnl/fraction.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
 
+#include <type_traits>
+
 namespace {
-    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
 
     namespace test_copy_ctor {
@@ -43,8 +43,8 @@ namespace {
     void test_floating_ctor(FloatingPoint initializer, NumDenom numerator, NumDenom denominator)
     {
         auto actual = cnl::fraction<NumDenom>(initializer);
-        static_assert(assert_same<NumDenom, decltype(actual.numerator)>::value);
-        static_assert(assert_same<NumDenom, decltype(actual.denominator)>::value);
+        static_assert(std::is_same_v<NumDenom, decltype(actual.numerator)>);
+        static_assert(std::is_same_v<NumDenom, decltype(actual.denominator)>);
         ASSERT_EQ(numerator, actual.numerator);
         ASSERT_EQ(denominator, actual.denominator);
     }

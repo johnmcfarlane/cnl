@@ -9,21 +9,19 @@
 
 #include <cnl/_impl/wrapper/set_digits.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
-
-using cnl::_impl::assert_same;
+#include <type_traits>
 
 namespace {
     static_assert(
-            assert_same<
+            std::is_same_v<
                     cnl::_impl::wrapper<int8_t>,
-                    typename cnl::set_digits<cnl::_impl::wrapper<>, 7>::type>::value);
+                    typename cnl::set_digits<cnl::_impl::wrapper<>, 7>::type>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     cnl::_impl::wrapper<int16_t>,
-                    typename cnl::set_digits<cnl::_impl::wrapper<>, 8>::type>::value);
+                    typename cnl::set_digits<cnl::_impl::wrapper<>, 8>::type>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     cnl::_impl::wrapper<int16_t>,
-                    typename cnl::set_digits<cnl::_impl::wrapper<>, 8>::type>::value);
+                    typename cnl::set_digits<cnl::_impl::wrapper<>, 8>::type>);
 }

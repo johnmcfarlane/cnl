@@ -11,7 +11,6 @@
 
 #include <cnl/_impl/narrow_cast.h>
 #include <cnl/_impl/rounding.h>
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
 #include <cnl/numeric.h>
@@ -19,10 +18,10 @@
 #include <gtest/gtest.h>
 
 #include <limits>
+#include <type_traits>
 
 namespace {
     using cnl::elastic_integer;
-    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
     using namespace cnl::literals;
 
@@ -90,7 +89,7 @@ namespace {
         static_assert(
                 cnl::_impl::is_same_tag_family<cnl::elastic_tag<1>, cnl::elastic_tag<31>>::value);
         static_assert(
-                assert_same<cnl::elastic_tag<31>, cnl::_impl::tag_of_t<cnl::elastic_integer<>>>::value);
+                std::is_same_v<cnl::elastic_tag<31>, cnl::_impl::tag_of_t<cnl::elastic_integer<>>>);
         static_assert(
                 identical(
                         elastic_integer<1, int>{0},
@@ -178,7 +177,7 @@ namespace {
     }
 
     namespace test_from_value {
-        static_assert(std::is_same<cnl::_impl::rep_of_t<elastic_integer<7, int>>, int>::value);
+        static_assert(std::is_same_v<cnl::_impl::rep_of_t<elastic_integer<7, int>>, int>);
         static_assert(
                 identical(
                         elastic_integer<std::numeric_limits<int>::digits>{1},
@@ -208,80 +207,77 @@ namespace {
                                 cnl::constant<6>{})),
                 "from_value<elastic_integer, constant>");
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<63>,
-                        cnl::from_value_t<cnl::elastic_integer<1>, std::int64_t>>::value,
-                "from_value<elastic_integer, std::int64_t>");
+                        cnl::from_value_t<cnl::elastic_integer<1>, std::int64_t>>);
     }
 
     namespace test_from_rep {
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<50, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, int>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, int>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<50, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, long>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, long>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<50, unsigned>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, unsigned>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, unsigned>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<50, unsigned>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, unsigned long>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, unsigned long>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<50, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, int>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, int>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<50, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, long>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, long>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<50, unsigned>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, unsigned>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, unsigned>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<50, unsigned>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, unsigned long>>::
-                        value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, unsigned long>>);
 
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<25, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, int>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, int>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<25, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, long>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, long>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<25, unsigned>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, unsigned>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, unsigned>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<25, unsigned>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, unsigned long>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, unsigned long>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<25, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, int>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, int>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<25, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, long>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, long>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<25, unsigned>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, unsigned>>::value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, unsigned>>);
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<25, unsigned>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, unsigned long>>::
-                        value);
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, unsigned long>>);
     }
 
     namespace test_set_signedness {
@@ -291,18 +287,18 @@ namespace {
                 cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<cnl::elastic_integer<1, unsigned>, true>>);
 
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<39, unsigned int>,
                         cnl::numbers::set_signedness_t<
-                                cnl::elastic_integer<39, unsigned int>, false>>::value);
+                                cnl::elastic_integer<39, unsigned int>, false>>);
     }
 
     namespace test_set_signedness_t {
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::elastic_integer<39, unsigned int>,
                         cnl::numbers::set_signedness_t<
-                                cnl::elastic_integer<39, unsigned int>, false>>::value);
+                                cnl::elastic_integer<39, unsigned int>, false>>);
     }
 
     namespace test_ctor {
@@ -796,7 +792,7 @@ namespace {
         ASSERT_EQ(a, i + 1);
         ASSERT_EQ(b, i + 1);
         ASSERT_EQ(&a, &b);
-        static_assert(std::is_same<cnl::elastic_integer<10>&, decltype(b)>::value);
+        static_assert(std::is_same_v<cnl::elastic_integer<10>&, decltype(b)>);
     }
 
     TEST(elastic_integer, pre_decrement)  // NOLINT
@@ -807,7 +803,7 @@ namespace {
         ASSERT_EQ(a, i - 1);
         ASSERT_EQ(b, i - 1);
         ASSERT_EQ(&a, &b);
-        static_assert(std::is_same<cnl::elastic_integer<10>&, decltype(b)>::value);
+        static_assert(std::is_same_v<cnl::elastic_integer<10>&, decltype(b)>);
     }
 
     TEST(elastic_integer, post_increment)  // NOLINT
@@ -818,7 +814,7 @@ namespace {
         ASSERT_EQ(a, i + 1);
         ASSERT_EQ(b, i);
         ASSERT_NE(&a, &b);
-        static_assert(std::is_same<cnl::elastic_integer<10>, decltype(b)>::value);
+        static_assert(std::is_same_v<cnl::elastic_integer<10>, decltype(b)>);
     }
 
     TEST(elastic_integer, post_decrement)  // NOLINT
@@ -829,6 +825,6 @@ namespace {
         ASSERT_EQ(a, i - 1);
         ASSERT_EQ(b, i);
         ASSERT_NE(&a, &b);
-        static_assert(std::is_same<cnl::elastic_integer<10>, decltype(b)>::value);
+        static_assert(std::is_same_v<cnl::elastic_integer<10>, decltype(b)>);
     }
 }

@@ -7,13 +7,12 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wrapper/from_rep.h>
 
 #include <gtest/gtest.h>
 
-using cnl::_impl::assert_same;
+#include <type_traits>
 
 namespace {
     namespace test_shift_right_nearest {
@@ -34,9 +33,9 @@ namespace {
 
     namespace test_rounding {
         static_assert(
-                assert_same<
+                std::is_same_v<
                         cnl::native_rounding_tag,
-                        typename cnl::rounding<cnl::elastic_integer<>>::type>::value);
+                        typename cnl::rounding<cnl::elastic_integer<>>::type>);
     }
 
     namespace test_multiply {

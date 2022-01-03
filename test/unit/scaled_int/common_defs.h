@@ -14,6 +14,8 @@
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
+#include <type_traits>
+
 ////////////////////////////////////////////////////////////////////////////////
 // test name generation
 

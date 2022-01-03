@@ -23,6 +23,7 @@
 #include "to_string.h"
 
 #include <limits>
+#include <type_traits>
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
@@ -139,7 +140,7 @@ TEST(TOKENPASTE2(TEST_LABEL, pre), increment)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto& a = ++b;
-    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>&, decltype(a)>::value);
+    static_assert(std::is_same_v<scaled_integer<int16, cnl::power<-8>>&, decltype(a)>);
     ASSERT_EQ(&b, &a);
     ASSERT_EQ(23.75, a);
     ASSERT_EQ(23.75, b);
@@ -149,7 +150,7 @@ TEST(TOKENPASTE2(TEST_LABEL, pre), decrement)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto& a = --b;
-    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>&, decltype(a)>::value);
+    static_assert(std::is_same_v<scaled_integer<int16, cnl::power<-8>>&, decltype(a)>);
     ASSERT_EQ(&b, &a);
     ASSERT_EQ(21.75, a);
     ASSERT_EQ(21.75, b);
@@ -159,7 +160,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), increment)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto a = b++;
-    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>, decltype(a)>::value);
+    static_assert(std::is_same_v<scaled_integer<int16, cnl::power<-8>>, decltype(a)>);
     ASSERT_NE(&b, &a);
     ASSERT_EQ(22.75, a);
     ASSERT_EQ(23.75, b);
@@ -169,7 +170,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), decrement)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto a = b--;
-    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>, decltype(a)>::value);
+    static_assert(std::is_same_v<scaled_integer<int16, cnl::power<-8>>, decltype(a)>);
     ASSERT_NE(&b, &a);
     ASSERT_EQ(22.75, a);
     ASSERT_EQ(21.75, b);
@@ -465,88 +466,74 @@ namespace test_set_digits_t {
                     scaled_integer<uint8, cnl::power<-8>>{0}),
             "cnl::set_digits_t test failed");
     static_assert(
-            is_same<set_digits_t<scaled_integer<int8, cnl::power<8>>, 15>,
-                    scaled_integer<int16, cnl::power<8>>>::value,
-            "cnl::set_digits_t test failed");
+            std::is_same_v<
+                    set_digits_t<scaled_integer<int8, cnl::power<8>>, 15>,
+                    scaled_integer<int16, cnl::power<8>>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<uint16, 24>, cnl::power<-16>>,
-                    set_digits_t<scaled_integer<uint16, cnl::power<-16>>, 24>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<uint16, cnl::power<-16>>, 24>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<int16, 31>, cnl::power<16>>,
-                    set_digits_t<scaled_integer<int16, cnl::power<16>>, 31>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<int16, cnl::power<16>>, 31>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<uint32, 40>, cnl::power<-45>>,
-                    set_digits_t<scaled_integer<uint32, cnl::power<-45>>, 40>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<uint32, cnl::power<-45>>, 40>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<int32, 47>, cnl::power<-8>>,
-                    set_digits_t<scaled_integer<int32, cnl::power<-8>>, 47>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<int32, cnl::power<-8>>, 47>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<uint64, 56>, cnl::power<8>>,
-                    set_digits_t<scaled_integer<uint64, cnl::power<8>>, 56>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<uint64, cnl::power<8>>, 56>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<int64, 63>, cnl::power<-16>>,
-                    set_digits_t<scaled_integer<int64, cnl::power<-16>>, 63>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<int64, cnl::power<-16>>, 63>>);
 #if defined(CNL_INT128_ENABLED) || defined(TEST_WIDE_INTEGER)
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<uint8, 72>, cnl::power<16>>,
-                    set_digits_t<scaled_integer<uint8, cnl::power<16>>, 72>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<uint8, cnl::power<16>>, 72>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<int8, 79>, cnl::power<-45>>,
-                    set_digits_t<scaled_integer<int8, cnl::power<-45>>, 79>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<int8, cnl::power<-45>>, 79>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<uint16, 88>, cnl::power<-8>>,
-                    set_digits_t<scaled_integer<uint16, cnl::power<-8>>, 88>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<uint16, cnl::power<-8>>, 88>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<int16, 95>, cnl::power<8>>,
-                    set_digits_t<scaled_integer<int16, cnl::power<8>>, 95>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<int16, cnl::power<8>>, 95>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<uint32, 104>, cnl::power<-16>>,
-                    set_digits_t<scaled_integer<uint32, cnl::power<-16>>, 104>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<uint32, cnl::power<-16>>, 104>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<int32, 111>, cnl::power<16>>,
-                    set_digits_t<scaled_integer<int32, cnl::power<16>>, 111>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<int32, cnl::power<16>>, 111>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<uint64, 120>, cnl::power<-45>>,
-                    set_digits_t<scaled_integer<uint64, cnl::power<-45>>, 120>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<uint64, cnl::power<-45>>, 120>>);
     static_assert(
-            assert_same<
+            std::is_same_v<
                     scaled_integer<set_digits_t<int64, 127>, cnl::power<-8>>,
-                    set_digits_t<scaled_integer<int64, cnl::power<-8>>, 127>>::value,
-            "cnl::set_digits_t test failed");
+                    set_digits_t<scaled_integer<int64, cnl::power<-8>>, 127>>);
 #endif  // defined(CNL_INT128_ENABLED) || defined(TEST_WIDE_INTEGER)
 
 #if defined(CNL_INT128_ENABLED)
     static_assert(
-            assert_same<
+            std::is_same_v<
                     cnl::scaled_integer<set_digits_t<long unsigned int, 96U>, cnl::power<-96>>,
                     cnl::set_digits_t<
-                            cnl::scaled_integer<long unsigned int, cnl::power<-96>>, 96U>>::value);
+                            cnl::scaled_integer<long unsigned int, cnl::power<-96>>, 96U>>);
 #endif  // defined(CNL_INT128_ENABLED)
 }
 

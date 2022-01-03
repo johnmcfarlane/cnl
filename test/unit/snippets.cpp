@@ -11,6 +11,7 @@
 #include <gtest/gtest.h>
 
 #include <sstream>
+#include <type_traits>
 
 using namespace cnl;
 

@@ -9,7 +9,6 @@
 
 #include <cnl/_impl/wrapper/operators.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wrapper.h>
 

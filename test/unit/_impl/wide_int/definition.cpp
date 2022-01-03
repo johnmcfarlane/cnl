@@ -9,21 +9,20 @@
 
 #include <cnl/_impl/wide_integer/definition.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
 #include <cnl/wide_integer.h>
 
 #include <gtest/gtest.h>
 
-using cnl::_impl::assert_same;
+#include <type_traits>
+
 using cnl::_impl::identical;
 
 namespace {
     namespace test_parameters {
         static_assert(
-                assert_same<cnl::wide_integer<31>, cnl::wide_integer<>>::value,
-                "default parameters of cnl::wide_integer");
+                std::is_same_v<cnl::wide_integer<31>, cnl::wide_integer<>>);
     }
 
     namespace test_ctor {
@@ -36,9 +35,7 @@ namespace {
     {
         auto a = cnl::wide_integer<3>{-6};
         auto const& b = a--;
-        static_assert(
-                assert_same<decltype(b), cnl::wide_integer<3> const&>::value,
-                "cnl::wide_integer pre-increment return value");
+        static_assert(std::is_same_v<decltype(b), cnl::wide_integer<3> const&>);
         ASSERT_NE(&b, &a) << "cnl::wide_integer pre-increment return address";
         ASSERT_EQ(-7, a) << "cnl::wide_integer pre-increment";
         ASSERT_EQ(-6, b) << "cnl::wide_integer pre-increment";

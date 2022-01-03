@@ -11,6 +11,7 @@
 #include <cnl/rounding_integer.h>
 
 #include <limits>
+#include <type_traits>
 
 namespace cnl {
     // rounding safe integer
