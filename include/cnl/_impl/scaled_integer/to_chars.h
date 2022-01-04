@@ -244,7 +244,7 @@ namespace cnl {
             info.exponent = exponent;
             info.max_chars = _impl::ssize(info.output);
 
-            auto const exponent_chars_static{to_chars_static(exponent + info.num_significand_digits - 1)};
+            auto const exponent_chars_static{to_chars_static<10>(exponent + info.num_significand_digits - 1)};
             info.exponent_chars = std::string_view(
                     exponent_chars_static.chars.data(),
                     exponent_chars_static.length);
@@ -280,7 +280,7 @@ namespace cnl {
         {
             CNL_ASSERT(descaled.significand);
 
-            auto const significand_chars_static{to_chars_static(descaled.significand)};
+            auto const significand_chars_static{to_chars_static<10>(descaled.significand)};
             auto const significand_chars_cstr{significand_chars_static.chars.data()};
             if (*significand_chars_cstr == minus_char) {
                 *first = minus_char;
@@ -297,8 +297,12 @@ namespace cnl {
     [[nodiscard]] inline constexpr auto to_chars(
             char* const first,
             char* const last,
-            cnl::scaled_integer<Rep, power<Exponent, Radix>> const& value)
+            cnl::scaled_integer<Rep, power<Exponent, Radix>> const& value,
+            int radix = 10)
     {
+        // Only radix 10 is supported for scaled_integer currently.
+        CNL_ASSERT(radix == 10);
+
         if (first == last) {
             // buffer too small to contain "0"
             return std::to_chars_result{last, std::errc::value_too_large};

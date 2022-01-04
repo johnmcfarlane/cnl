@@ -769,6 +769,16 @@ namespace {
         static_assert(identical(
                 cnl::to_chars_static_result<6>{{'-', '9', '9', '9', '9'}, 5},
                 cnl::to_chars_static(cnl::elastic_integer<14>(-9999))));
+
+        static_assert(
+                identical(
+                        cnl::to_chars_static_result<4>{{'2', '0', '2', 0}, 3},
+                        cnl::to_chars_static<7>(cnl::make_elastic_integer(100_c))));
+
+        static_assert(
+                identical(
+                        cnl::to_chars_static_result<5>{{'3', 'e', '8', 0}, 3},
+                        cnl::to_chars_static<16>(cnl::make_elastic_integer(1000_c))));
 #endif
 
         TEST(elastic_integer, to_chars_1)  // NOLINT
