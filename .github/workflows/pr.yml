@@ -30,7 +30,6 @@ jobs:
 
     container: ${{matrix.container}}
     env:
-      CACHE_SLUG: 3-cmake-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}
       CMAKE_CXX_COMPILER_LAUNCHER: ccache
     runs-on: ubuntu-20.04
 
@@ -39,6 +38,8 @@ jobs:
 
       - name: Restore caches
         uses: actions/cache@v2
+        env:
+          CACHE_SLUG: 3-cmake-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}
         with:
           path: |
             /github/home/.cache/ccache
