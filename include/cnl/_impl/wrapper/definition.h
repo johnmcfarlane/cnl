@@ -28,7 +28,7 @@ namespace cnl {
         public:
             wrapper() = default;
 
-        protected:
+        private:
             /// constructor taking the rep type
             constexpr wrapper(Rep r, int)
                 : _rep(std::move(std::move(r)))
