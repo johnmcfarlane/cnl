@@ -18,6 +18,7 @@ set(test_sources
         narrow_cast.cpp
         num_traits.cpp
         numeric.cpp
+        number.cpp
         number_test.cpp
         overflow/overflow.cpp
         overflow/rounding/int.cpp
