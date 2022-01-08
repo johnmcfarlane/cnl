@@ -14,8 +14,6 @@
 #include <cnl/scaled_integer.h>
 #include <cnl/wide_integer.h>
 
-#include <utility>
-
 static_assert(cnl::fixed_point<int>);
 static_assert(cnl::fixed_point<unsigned char>);
 static_assert(cnl::fixed_point<bool>);
