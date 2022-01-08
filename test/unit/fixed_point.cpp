@@ -15,16 +15,23 @@
 #include <cnl/wide_integer.h>
 
 static_assert(cnl::fixed_point<int>);
+static_assert(cnl::fixed_point<int const>);
+static_assert(cnl::fixed_point<char>);
 static_assert(cnl::fixed_point<unsigned char>);
 static_assert(cnl::fixed_point<bool>);
 static_assert(cnl::fixed_point<cnl::scaled_integer<>>);
 static_assert(cnl::fixed_point<cnl::wide_integer<>>);
 static_assert(!cnl::fixed_point<cnl::fraction<>>);
 static_assert(!cnl::fixed_point<float>);
+static_assert(!cnl::fixed_point<long double>);
+
 static_assert(!cnl::fixed_point<void>);
+static_assert(!cnl::fixed_point<int*>);
 static_assert(!cnl::fixed_point<std::pair<int, int>>);
 
 #if defined(CNL_INT128_ENABLED)
+static_assert(cnl::fixed_point<__int128>);
+static_assert(cnl::fixed_point<unsigned __int128>);
 static_assert(cnl::fixed_point<cnl::int128_t>);
 static_assert(cnl::fixed_point<cnl::uint128_t>);
 #endif
