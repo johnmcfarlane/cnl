@@ -78,7 +78,7 @@ namespace cnl {
         {
             using number = std::remove_cvref_t<decltype(value)>;
             if constexpr (numbers::signedness_v<number>) {
-                if (value < number{}) {
+                if (value < number{0}) {
                     auto const destination_length = std::distance(first, last);
                     if (destination_length < 2) {
                         return std::to_chars_result{last, std::errc::value_too_large};
