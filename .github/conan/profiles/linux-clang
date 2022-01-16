@@ -3,6 +3,3 @@ include(linux)
 compiler=clang
 [options]
 [build_requires]
-[env]
-CC=clang
-CXX=clang++
