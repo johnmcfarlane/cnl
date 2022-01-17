@@ -37,7 +37,7 @@ jobs:
       - name: Restore caches
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: 3-cmake-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}
+          CACHE_SLUG: 4-cmake-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}
         with:
           path: |
             /github/home/.cache/ccache
