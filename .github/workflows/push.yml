@@ -17,7 +17,7 @@ jobs:
       - name: Restore caches
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: 3-clang-tidy
+          CACHE_SLUG: 4-clang-tidy
         with:
           path: |
             /github/home/.cache/ccache
@@ -157,7 +157,7 @@ jobs:
       - name: Restore caches
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: 3-conan-${{matrix.name}}
+          CACHE_SLUG: 4-conan-${{matrix.name}}
         with:
           path: |
             /github/home/.cache/ccache
@@ -246,7 +246,7 @@ jobs:
       - name: Restore caches
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: 3-windows-${{matrix.name}}-${{matrix.build_type}}
+          CACHE_SLUG: 4-windows-${{matrix.name}}-${{matrix.build_type}}
         with:
           path: |
             ~\AppData\Local\pip\Cache
