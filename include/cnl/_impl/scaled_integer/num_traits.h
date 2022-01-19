@@ -71,7 +71,7 @@ namespace cnl {
 
     namespace _impl {
         template<typename Rep, int Exponent, int Radix>
-        inline constexpr auto fractional_digits<scaled_integer<Rep, power<Exponent, Radix>>> = -Exponent;
+        inline constexpr auto fractional_digits_v<scaled_integer<Rep, power<Exponent, Radix>>> = -Exponent;
     }
 }
 

@@ -218,11 +218,11 @@ struct make_elastic_test {
             Value || cnl::_impl::integer_digits<type> == 0,
             "elastic_scaled_integer type capacity is too small");
 
-    static constexpr int lsz = 1 << (-cnl::_impl::fractional_digits<type>);
-    static_assert(Value == ((Value / lsz) * lsz), "fractional_digits is too low");
+    static constexpr int lsz = 1 << (-cnl::_impl::fractional_digits_v<type>);
+    static_assert(Value == ((Value / lsz) * lsz), "fractional_digits_v is too low");
 
     static constexpr int lsz1 = lsz * 2;
-    static_assert(Value == 0 || Value != ((Value / lsz1) * lsz1), "fractional_digits is too high");
+    static_assert(Value == 0 || Value != ((Value / lsz1) * lsz1), "fractional_digits_v is too high");
 
     static_assert(std::numeric_limits<type>::is_signed, "signage doesn't match value");
     //    static_assert(elastic_value==elastic_scaled_integer<63, 0>{Value}, "make_elasticd value

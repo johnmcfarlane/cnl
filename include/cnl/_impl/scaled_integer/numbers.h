@@ -86,7 +86,7 @@ namespace cnl {
 
             auto const required_integer_digits = used_digits(static_cast<int>(constant));
 
-            constexpr auto fixed_fractional_digits = fractional_digits<fp>;
+            constexpr auto fixed_fractional_digits = fractional_digits_v<fp>;
             // expect: integer_digits<fp> >= required_integer_digits
 
             constexpr auto float_digits = std::numeric_limits<Float>::digits;

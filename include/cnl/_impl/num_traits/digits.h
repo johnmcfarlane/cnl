@@ -39,13 +39,13 @@ namespace cnl {
     inline constexpr int digits_v<Integer> = _impl::fundamental_digits<Integer>;
 
     namespace _impl {
-        // cnl::_impl::fractional_digits
+        // cnl::_impl::fractional_digits_v
         template<class T>
-        inline constexpr int fractional_digits = 0;
+        inline constexpr int fractional_digits_v = 0;
 
         // cnl::_impl::integer_digits
         template<class T>
-        inline constexpr auto integer_digits = digits_v<T> - fractional_digits<T>;
+        inline constexpr auto integer_digits = digits_v<T> - fractional_digits_v<T>;
     }
 }
 
