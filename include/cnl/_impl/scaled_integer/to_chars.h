@@ -77,7 +77,7 @@ namespace cnl {
 
             // This number is a little pessemistic in the case that Radix != 2.
             static constexpr auto _fractional_digits =
-                    std::max(cnl::_impl::fractional_digits<scalar>, 0);
+                    std::max(cnl::_impl::fractional_digits_v<scalar>, 0);
 
             static constexpr auto _sign_chars = static_cast<int>(cnl::numbers::signedness_v<scalar>);
             static constexpr auto _num_significant_integer_bits{cnl::digits_v<scalar> - _fractional_digits};

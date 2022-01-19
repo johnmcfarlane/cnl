@@ -29,7 +29,7 @@ TEST(math, FPTESTFORMAT)  // NOLINT
     // Test negative integer powers (which are representable in the format)
 #if (FPTESTEXP < 0)
     for (int i = std::max(
-                 -cnl::_impl::fractional_digits<fp>,
+                 -cnl::_impl::fractional_digits_v<fp>,
                  -(cnl::_impl::scale<cnl::_impl::integer_digits<fp>, 2, int32_t>(1)) + 1);
          i < std::min(0, cnl::_impl::integer_digits<fp> - 1); i++) {
         fp lhs{exp2(fp{static_cast<double>(i)})};
@@ -51,7 +51,7 @@ TEST(math, FPTESTFORMAT)  // NOLINT
                                 std::numeric_limits<fp>::max()))  // As close to one as possible
     }};
 
-    for (int i = -cnl::_impl::fractional_digits<fp>;
+    for (int i = -cnl::_impl::fractional_digits_v<fp>;
          i < cnl::_impl::integer_digits<fp>; i++) {
         for (double frac : fracts) {
 
@@ -83,7 +83,7 @@ TEST(math, FPTESTFORMAT)  // NOLINT
     // The next-to-smallest exponent whose result doesn't overflow
     //(The very smallest was already tested with the integer exponents)
     auto minimum = cnl::_impl::from_rep<fp>(
-            cnl::_impl::to_rep(fp{static_cast<double>(-cnl::_impl::fractional_digits<fp>)})
+            cnl::_impl::to_rep(fp{static_cast<double>(-cnl::_impl::fractional_digits_v<fp>)})
             + 1);
 
     double doublerep{maximum};
