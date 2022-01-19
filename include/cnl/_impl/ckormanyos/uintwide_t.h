@@ -1,6 +1,3 @@
-// NOLINTBEGIN(*)
-// copied from https://github.com/ckormanyos/wide-integer/
-
 ///////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 1999 - 2022.                 //
 //  Distributed under the Boost Software License,                //
@@ -5621,4 +5618,3 @@
   WIDE_INTEGER_NAMESPACE_END
 
 #endif // UINTWIDE_T_2018_10_02_H
-// NOLINTEND(*)
