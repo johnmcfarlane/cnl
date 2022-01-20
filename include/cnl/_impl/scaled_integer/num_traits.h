@@ -15,6 +15,7 @@
 #include "named.h"
 
 #include <algorithm>
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
@@ -71,7 +72,8 @@ namespace cnl {
 
     namespace _impl {
         template<typename Rep, int Exponent, int Radix>
-        inline constexpr auto fractional_digits_v<scaled_integer<Rep, power<Exponent, Radix>>> = -Exponent;
+        struct fractional_digits<scaled_integer<Rep, power<Exponent, Radix>>> : std::integral_constant<int, -Exponent> {
+        };
     }
 }
 

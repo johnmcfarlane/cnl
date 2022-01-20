@@ -10,6 +10,7 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_DIGITS_H)
 #define CNL_IMPL_NUM_TRAITS_DIGITS_H
 
+#include "../../integer.h"
 #include "../numbers/signedness.h"
 #include "../used_digits.h"
 #include "is_composite.h"
@@ -39,9 +40,19 @@ namespace cnl {
     inline constexpr int digits_v<Integer> = _impl::fundamental_digits<Integer>;
 
     namespace _impl {
+        // cnl::_impl::fractional_digits
+        template<typename T>
+        struct fractional_digits;
+
+        template<typename T>
+        requires integer<T>
+        struct fractional_digits<T>
+            : std::integral_constant<int, 0> {
+        };
+
         // cnl::_impl::fractional_digits_v
         template<class T>
-        inline constexpr int fractional_digits_v = 0;
+        inline constexpr auto fractional_digits_v = fractional_digits<T>::value;
 
         // cnl::_impl::integer_digits
         template<class T>
