@@ -20,9 +20,9 @@ namespace {
 
     TEST(scaled_integer_rounding_elastic_integer, to_chars)  // NOLINT
     {
-        auto expected = std::string{"25.25"};
-        auto actual = std::string{
-                cnl::to_chars_static(scaled_integer_rounding_elastic_integer<24, -20>{25.25}).chars.data()};
+        using namespace std::literals;
+        auto expected = "25.25"sv;
+        auto actual = cnl::to_chars_static(scaled_integer_rounding_elastic_integer<24, -20>{25.25});
         ASSERT_EQ(expected, actual);
     }
 

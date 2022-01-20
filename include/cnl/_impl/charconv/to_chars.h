@@ -21,6 +21,7 @@
 #include <charconv>
 #include <limits>
 #include <numbers>
+#include <string_view>
 #include <system_error>
 
 /// compositional numeric library
@@ -129,10 +130,24 @@ namespace cnl {
     template<int NumChars>
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
     struct to_chars_static_result {
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
         std::array<char, NumChars + 1> chars;
+
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
         int length;
 
         friend constexpr auto operator<=>(to_chars_static_result const&, to_chars_static_result const&) = default;
+
+        // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
+        [[nodiscard]] constexpr operator std::string_view() const&
+        {
+            return std::string_view{
+                    chars.data(),
+                    _impl::narrow_cast<std::string_view::size_type>(length)};
+        }
+
+        // Taking a reference to a to_chars_static_result by rvalue is unsafe.
+        [[nodiscard]] constexpr operator std::string_view() const&& = delete;
     };
 
     // variant of cnl::to_chars returning fixed-size array of chars
