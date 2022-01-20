@@ -45,7 +45,7 @@ namespace cnl {
 
         // cnl::_impl::integer_digits
         template<class T>
-        inline constexpr auto integer_digits = digits_v<T> - fractional_digits_v<T>;
+        inline constexpr auto integer_digits_v = digits_v<T> - fractional_digits_v<T>;
     }
 }
 

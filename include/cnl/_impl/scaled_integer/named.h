@@ -43,8 +43,8 @@ namespace cnl {
     {
         using natural_result = _impl::op_result<_impl::divide_op, Dividend, Divisor>;
 
-        constexpr int integer_digits = _impl::integer_digits<Dividend> + _impl::fractional_digits_v<Divisor>;
-        constexpr int fractional_digits = _impl::fractional_digits_v<Dividend> + _impl::integer_digits<Divisor>;
+        constexpr int integer_digits = _impl::integer_digits_v<Dividend> + _impl::fractional_digits_v<Divisor>;
+        constexpr int fractional_digits = _impl::fractional_digits_v<Dividend> + _impl::integer_digits_v<Divisor>;
 
         constexpr auto necessary_digits = integer_digits + fractional_digits;
         constexpr auto natural_digits = digits_v<natural_result>;
