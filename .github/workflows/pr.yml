@@ -9,9 +9,6 @@ on:
     branches:
       - main
 
-env:
-  CACHE_VERSION: 5
-
 jobs:
   # Build and test latest on Linux using only CMake
   cmake:
@@ -37,25 +34,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Restore caches
-        uses: actions/cache@v2
+      - name: Restore Compiler Cache
+        uses: hendrikmuhs/ccache-action@v1
         env:
-          CACHE_SLUG: ${{ env.CACHE_VERSION }}-cmake-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}
+          CACHE_SLUG: cmake-${{ matrix.compiler }}-${{ matrix.build_type }}-${{ matrix.cxx-extensions }}-${{ matrix.exceptions }}
         with:
-          path: |
-            /github/home/.cache/ccache
-            /github/home/.ccache
-            /github/home/.config/ccache/ccache.conf
-          key: ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-${{ hashFiles('test/toolchain/**') }}
-          restore-keys: |
-            ${{ env.CACHE_SLUG }}-main-
-            ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-
-            ${{ env.CACHE_SLUG }}-
+          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('test/toolchain/**') }}
 
       - name: Cache Report
         run: |
           ccache -s
-          conan search
 
       - name: Build and Install GTest
         env:
@@ -86,11 +74,6 @@ jobs:
 
       - name: Test CNL
         run: ctest --output-on-failure
-
-      - name: Cache Report
-        run: |
-          ccache -s
-          conan search
 
   # Install on mature Linux distro using only CMake
   install:
