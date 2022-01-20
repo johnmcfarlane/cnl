@@ -199,23 +199,23 @@ struct make_elastic_test {
     using type = typename std::remove_const<decltype(elastic_value)>::type;
 
     static_assert(
-            Value <= 0 || (Value / (1LL << cnl::_impl::integer_digits<type>)) == 0,
+            Value <= 0 || (Value / (1LL << cnl::_impl::integer_digits_v<type>)) == 0,
             "elastic_scaled_integer type capacity is too big");
     static_assert(
-            Value >= 0 || cnl::_impl::integer_digits<type> >= 60
-                    || (Value / (1LL << (cnl::_impl::integer_digits<type> + 1))) == 0,
+            Value >= 0 || cnl::_impl::integer_digits_v<type> >= 60
+                    || (Value / (1LL << (cnl::_impl::integer_digits_v<type> + 1))) == 0,
             "elastic_scaled_integer type capacity is too big");
     static_assert(
             Value <= 0
                     || (Value
-                        >> std::max<int>(0, cnl::_impl::integer_digits<type> - 1))
+                        >> std::max<int>(0, cnl::_impl::integer_digits_v<type> - 1))
                                != 0,
             "elastic_scaled_integer type capacity is too small");
     static_assert(
-            Value >= 0 || (Value >> (cnl::_impl::integer_digits<type>)) != 0,
+            Value >= 0 || (Value >> (cnl::_impl::integer_digits_v<type>)) != 0,
             "elastic_scaled_integer type capacity is too small");
     static_assert(
-            Value || cnl::_impl::integer_digits<type> == 0,
+            Value || cnl::_impl::integer_digits_v<type> == 0,
             "elastic_scaled_integer type capacity is too small");
 
     static constexpr int lsz = 1 << (-cnl::_impl::fractional_digits_v<type>);
