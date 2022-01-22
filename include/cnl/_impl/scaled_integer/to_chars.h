@@ -8,9 +8,9 @@
 #define CNL_IMPL_SCALED_INTEGER_TO_CHARS_H
 
 #include "../../integer.h"
-#include "../../rounding_integer.h"
 #include "../charconv/constants.h"
 #include "../charconv/descale.h"
+#include "../charconv/to_chars.h"
 #include "../cnl_assert.h"
 #include "../cstdint/types.h"
 #include "../num_traits/fixed_width_scale.h"

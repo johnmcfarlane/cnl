@@ -11,10 +11,11 @@
 
 #include <cnl/_impl/scaled_integer/math.h>
 
+#include <cnl/scaled_integer.h>
+
 #include <algorithm>
 #include <array>
 #include <cstdint>
-
 #include <limits>
 
 TEST(math, FPTESTFORMAT)  // NOLINT

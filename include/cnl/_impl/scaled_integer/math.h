@@ -10,6 +10,8 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_MATH_H)
 #define CNL_IMPL_SCALED_INTEGER_MATH_H
 
+#include "../num_traits/from_rep.h"
+#include "../num_traits/to_rep.h"
 #include "definition.h"
 #include "rep_of.h"
 #include "tag_of.h"

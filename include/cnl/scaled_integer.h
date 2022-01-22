@@ -11,6 +11,7 @@
 #define CNL_SCALED_INTEGER_H
 
 #include "_impl/scaled_integer/convert_operator.h"
+#include "_impl/scaled_integer/declaration.h"
 #include "_impl/scaled_integer/definition.h"
 #include "_impl/scaled_integer/extras.h"
 #include "_impl/scaled_integer/fixed_point.h"

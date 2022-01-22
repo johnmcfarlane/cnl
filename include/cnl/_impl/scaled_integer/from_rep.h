@@ -8,6 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_FROM_REP_H
 
 #include "../num_traits/from_rep.h"
+#include "../num_traits/set_rep.h"
 #include "../wrapper/declaration.h"
 #include "definition.h"
 

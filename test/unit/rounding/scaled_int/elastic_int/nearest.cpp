@@ -7,6 +7,7 @@
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_scaled_integer.h>
 #include <cnl/rounding.h>
+#include <cnl/rounding_integer.h>
 
 #include <limits>
 

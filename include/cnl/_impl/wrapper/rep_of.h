@@ -8,6 +8,7 @@
 #define CNL_IMPL_WRAPPER_REP_OF_H
 
 #include "../custom_operator/tag.h"
+#include "../num_traits/rep_of.h"
 #include "declaration.h"
 
 #include <type_traits>

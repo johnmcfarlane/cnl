@@ -8,6 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H
 
 #include "../../integer.h"
+#include "../num_traits/to_rep.h"
 #include "../overflow/overflow_operator.h"
 #include "../power_value.h"
 #include "../rounding/native_rounding_tag.h"
