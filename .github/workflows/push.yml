@@ -27,8 +27,10 @@ jobs:
             /github/home/.ccache
             /github/home/.conan/data
             /github/home/.config/ccache/ccache.conf
-          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
+          key: ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
           restore-keys: |
+            ${{ env.CACHE_SLUG }}-main-
+            ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-
             ${{ env.CACHE_SLUG }}-
 
       - name: Cache Report
@@ -171,8 +173,10 @@ jobs:
             /Users/runner/.ccache
             /Users/runner/.conan/data
             /Users/runner/.config/ccache/ccache.conf
-          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
+          key: ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
           restore-keys: |
+            ${{ env.CACHE_SLUG }}-main-
+            ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-
             ${{ env.CACHE_SLUG }}-
 
       - name: Install Brew packages
@@ -254,8 +258,10 @@ jobs:
           path: |
             ~\AppData\Local\pip\Cache
             ~\.conan\data
-          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
+          key: ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
           restore-keys: |
+            ${{ env.CACHE_SLUG }}-main-
+            ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-
             ${{ env.CACHE_SLUG }}-
 
       - name: Install Conan
