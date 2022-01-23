@@ -6,6 +6,9 @@ on:
     branches:
       - '**'
 
+env:
+  CACHE_VERSION: 5
+
 jobs:
   # Build and test many combinations on Linux/OS X using Conan
   clang-tidy:
@@ -17,7 +20,7 @@ jobs:
       - name: Restore caches
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: 4-clang-tidy
+          CACHE_SLUG: ${{ env.CACHE_VERSION }}-clang-tidy
         with:
           path: |
             /github/home/.cache/ccache
@@ -157,7 +160,7 @@ jobs:
       - name: Restore caches
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: 4-conan-${{matrix.name}}
+          CACHE_SLUG: ${{ env.CACHE_VERSION }}-conan-${{matrix.name}}
         with:
           path: |
             /github/home/.cache/ccache
@@ -246,7 +249,7 @@ jobs:
       - name: Restore caches
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: 4-windows-${{matrix.name}}-${{matrix.build_type}}
+          CACHE_SLUG: ${{ env.CACHE_VERSION }}-windows-${{matrix.name}}-${{matrix.build_type}}
         with:
           path: |
             ~\AppData\Local\pip\Cache

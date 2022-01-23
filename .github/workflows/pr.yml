@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+env:
+  CACHE_VERSION: 5
+
 jobs:
   # Build and test latest on Linux using only CMake
   cmake:
@@ -37,7 +40,7 @@ jobs:
       - name: Restore caches
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: 4-cmake-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}
+          CACHE_SLUG: ${{ env.CACHE_VERSION }}-cmake-${{matrix.compiler}}-${{matrix.build_type}}-${{matrix.cxx-extensions}}-${{matrix.exceptions}}
         with:
           path: |
             /github/home/.cache/ccache
