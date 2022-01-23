@@ -651,6 +651,16 @@ TEST(elastic_scaled_integer, to_string_thousandth)  // NOLINT
     ASSERT_EQ(expected, actual);
 }
 
+TEST(elastic_scaled_integer, to_string_123_456)  // NOLINT
+{
+    auto const n{123.456_cnl};
+    static_assert(10 == cnl::_impl::max_to_chars_chars<std::remove_cvref_t<decltype(n)>>::value);
+
+    auto const expected{"123.456"};
+    auto const actual{cnl::to_string(n)};
+    ASSERT_EQ(expected, actual);
+}
+
 TEST(elastic_scaled_integer, to_string_quite_wide)  // NOLINT
 {
     auto const n{-12345.67890_cnl};
