@@ -21,8 +21,10 @@ jobs:
         with:
           path: |
             /github/home/.conan/data
-          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
+          key: ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
           restore-keys: |
+            ${{ env.CACHE_SLUG }}-main-
+            ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-
             ${{ env.CACHE_SLUG }}-
 
       - name: Restore Compiler Cache
@@ -164,8 +166,10 @@ jobs:
           path: |
             /github/home/.conan/data
             /Users/runner/.conan/data
-          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
+          key: ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
           restore-keys: |
+            ${{ env.CACHE_SLUG }}-main-
+            ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-
             ${{ env.CACHE_SLUG }}-
 
       - name: Install Brew packages
@@ -253,8 +257,10 @@ jobs:
           path: |
             ~\AppData\Local\pip\Cache
             ~\.conan\data
-          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
+          key: ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
           restore-keys: |
+            ${{ env.CACHE_SLUG }}-main-
+            ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-
             ${{ env.CACHE_SLUG }}-
 
       - name: Install Conan
