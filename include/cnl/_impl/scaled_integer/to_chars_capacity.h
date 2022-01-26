@@ -58,8 +58,7 @@ namespace cnl::_impl {
             constexpr auto radix{Scale::radix};
 
             // This number is a little pessemistic in the case that radix != 2.
-            auto const fractional_digits =
-                    std::max(cnl::_impl::fractional_digits_v<type>, 0);
+            auto const fractional_digits = std::max(-exponent, 0);
 
             auto const sign_chars = static_cast<int>(cnl::numbers::signedness_v<type>);
             auto const num_significant_integer_bits{cnl::digits_v<type> - fractional_digits};

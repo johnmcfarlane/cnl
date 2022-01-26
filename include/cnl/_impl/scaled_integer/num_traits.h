@@ -71,8 +71,8 @@ namespace cnl {
     // scaled_integer specializations of scaled_integer-specific templates
 
     namespace _impl {
-        template<typename Rep, int Exponent, int Radix>
-        struct fractional_digits<scaled_integer<Rep, power<Exponent, Radix>>> : std::integral_constant<int, -Exponent> {
+        template<typename Rep, int Exponent>
+        struct fractional_digits<scaled_integer<Rep, power<Exponent, 2>>> : std::integral_constant<int, -Exponent> {
         };
     }
 }
