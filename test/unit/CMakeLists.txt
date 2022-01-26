@@ -100,6 +100,7 @@ set(test_sources
         overflow/wide/wide_overflow_int.cpp
         scaled_int/elastic/make_elastic_scaled_int.cpp
         scaled_int/elastic/elastic_scaled_int.cpp
+        scaled_int/elastic/to_chars_capacity.cpp
         scaled_int/rounding/elastic/rounding_elastic_scaled_int.cpp
         scaled_int/overflow/elastic/int.cpp
         static_int/shift_left.cpp

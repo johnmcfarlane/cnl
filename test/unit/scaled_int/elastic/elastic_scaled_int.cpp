@@ -634,7 +634,7 @@ TEST(elastic_scaled_integer, issue_88)  // NOLINT
 TEST(elastic_scaled_integer, to_string_thousand)  // NOLINT
 {
     auto const n{1000_cnl};
-    static_assert(5 == cnl::_impl::max_to_chars_chars<std::remove_cvref_t<decltype(n)>>::value);
+    static_assert(5 == cnl::_impl::to_chars_capacity<std::remove_cvref_t<decltype(n)>>{}());
 
     auto const expected{"1000"};
     auto const actual{cnl::to_string(1000_cnl)};
@@ -644,7 +644,7 @@ TEST(elastic_scaled_integer, to_string_thousand)  // NOLINT
 TEST(elastic_scaled_integer, to_string_thousandth)  // NOLINT
 {
     auto const n{.001_cnl};
-    static_assert(5 == cnl::_impl::max_to_chars_chars<std::remove_cvref_t<decltype(n)>>::value);
+    static_assert(5 == cnl::_impl::to_chars_capacity<std::remove_cvref_t<decltype(n)>>{}());
 
     auto const expected{".001"};
     auto const actual{cnl::to_string(n)};
@@ -654,7 +654,7 @@ TEST(elastic_scaled_integer, to_string_thousandth)  // NOLINT
 TEST(elastic_scaled_integer, to_string_123_456)  // NOLINT
 {
     auto const n{123.456_cnl};
-    static_assert(10 == cnl::_impl::max_to_chars_chars<std::remove_cvref_t<decltype(n)>>::value);
+    static_assert(10 == cnl::_impl::to_chars_capacity<std::remove_cvref_t<decltype(n)>>{}());
 
     auto const expected{"123.456"};
     auto const actual{cnl::to_string(n)};
@@ -664,7 +664,7 @@ TEST(elastic_scaled_integer, to_string_123_456)  // NOLINT
 TEST(elastic_scaled_integer, to_string_quite_wide)  // NOLINT
 {
     auto const n{-12345.67890_cnl};
-    static_assert(13 == cnl::_impl::max_to_chars_chars<std::remove_cvref_t<decltype(n)>>::value);
+    static_assert(13 == cnl::_impl::to_chars_capacity<std::remove_cvref_t<decltype(n)>>{}());
 
     auto const expected{"-12345.6789"};
     auto const actual{cnl::to_string(n)};

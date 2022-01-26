@@ -18,28 +18,6 @@
 #include <limits>
 #include <string>
 
-namespace test_max_to_chars_chars {
-    static_assert(
-            4 == cnl::_impl::max_to_chars_chars<scaled_integer<uint8, cnl::power<2>>>::value,
-            "cnl::_impl::max_to_chars_chars");  // 1020
-    static_assert(
-            7 == cnl::_impl::max_to_chars_chars<scaled_integer<int8, cnl::power<-3>>>::value,
-            "cnl::_impl::max_to_chars_chars");  // -15.875
-    static_assert(
-            5 == cnl::_impl::max_to_chars_chars<scaled_integer<uint16, cnl::power<>>>::value,
-            "cnl::_impl::max_to_chars_chars");  // 65536
-    static_assert(
-            41
-                    == cnl::_impl::max_to_chars_chars<cnl::scaled_integer<
-                            cnl::elastic_integer<41>, cnl::power<-38>>>::value,
-            "cnl::_impl::max_to_chars_chars");
-    static_assert(
-            44
-                    == cnl::_impl::max_to_chars_chars<
-                            cnl::scaled_integer<int64, cnl::power<-32>>>::value,
-            "cnl::_impl::max_to_chars_chars");  // −2147483647.99999999976716935634613037109375
-}
-
 namespace test_to_chars_natural {
     template<int BufferSize, typename Integer>
     void test(Integer const& value)

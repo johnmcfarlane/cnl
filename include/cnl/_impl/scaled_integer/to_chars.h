@@ -21,6 +21,7 @@
 #include "definition.h"
 #include "num_traits.h"
 #include "numbers.h"
+#include "to_chars_capacity.h"
 
 #include <algorithm>
 #include <array>
@@ -36,64 +37,6 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        constexpr auto num_digits_from_binary(int num_digits, int radix)
-        {
-            switch (radix) {
-            case 2:
-                return num_digits;
-            case 8:
-                return (num_digits + 2) / 3;
-            case 10:
-                return (num_digits * 1000 + 3322) / 3321;
-            case 16:
-                return (num_digits + 3) / 4;
-            default: {
-                auto const binary_digits_per_digit{used_digits(radix - 1)};
-                return (num_digits + binary_digits_per_digit - 1) / binary_digits_per_digit;
-            }
-            }
-        }
-
-        constexpr auto num_digits_to_binary(int num_digits, int radix)
-        {
-            switch (radix) {
-            case 2:
-                return num_digits;
-            case 8:
-                return num_digits * 3;
-            case 10:
-                return (num_digits * 3322 + 678) / 1000;
-            case 16:
-                return num_digits * 4;
-            default:
-                return num_digits * used_digits(radix - 1);
-            }
-        }
-
-        template<typename Rep, int Exponent, int Radix>
-        struct max_to_chars_chars<scaled_integer<Rep, power<Exponent, Radix>>> {
-        private:
-            using scalar = cnl::scaled_integer<Rep, power<Exponent, Radix>>;
-
-            // This number is a little pessemistic in the case that Radix != 2.
-            static constexpr auto _fractional_digits =
-                    std::max(cnl::_impl::fractional_digits_v<scalar>, 0);
-
-            static constexpr auto _sign_chars = static_cast<int>(cnl::numbers::signedness_v<scalar>);
-            static constexpr auto _num_significant_integer_bits{cnl::digits_v<scalar> - _fractional_digits};
-            static constexpr auto _num_trailing_integer_bits{
-                    num_digits_to_binary(std::max(0, Exponent), Radix)};
-            static constexpr auto _num_integer_bits{
-                    _num_significant_integer_bits + _num_trailing_integer_bits};
-            static constexpr auto _integer_chars = num_digits_from_binary(_num_integer_bits, 10);
-            static constexpr auto _radix_chars = static_cast<int>(_fractional_digits > 0);
-            static constexpr auto _fractional_chars = std::max(0, _fractional_digits);
-
-        public:
-            static constexpr auto value =
-                    _sign_chars + _integer_chars + _radix_chars + _fractional_chars;
-        };
-
         struct descaled_info {
             std::string_view significand_digits;
             std::string_view exponent_chars;

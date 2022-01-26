@@ -16,28 +16,17 @@
 #include "../num_traits/set_rounding.h"
 #include "../numbers/signedness.h"
 #include "constants.h"
+#include "to_chars_capacity.h"
 
 #include <array>
 #include <charconv>
 #include <limits>
-#include <numbers>
 #include <string_view>
 #include <system_error>
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        // cnl::_impl::max_to_chars_chars
-        template<typename Scalar, int Base = 10>
-        struct max_to_chars_chars {
-        private:
-            static constexpr auto _sign_chars = static_cast<int>(cnl::numbers::signedness_v<Scalar>);
-            static constexpr auto _integer_chars = static_cast<int>(std::numeric_limits<Scalar>::digits * std::numbers::ln2 / std::numbers::ln10) + 1;
-
-        public:
-            static constexpr auto value = _sign_chars + _integer_chars;
-        };
-
         // cnl::_impl::itoc
         [[nodiscard]] constexpr auto itoc(int value)
         {
@@ -156,7 +145,7 @@ namespace cnl {
     [[nodiscard]] constexpr auto to_chars_static(number auto const& value)
     {
         using number = std::remove_cvref_t<decltype(value)>;
-        constexpr auto max_num_chars = _impl::max_to_chars_chars<number, Base>::value;
+        constexpr auto max_num_chars = _impl::to_chars_capacity<number>{}(Base);
 
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         to_chars_static_result<max_num_chars> result;
