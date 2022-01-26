@@ -9,7 +9,7 @@
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
 
-#include <boost/version.hpp>
+#include <boost/version.hpp>  // NOLINT(llvm-include-order)
 #include <gtest/gtest.h>
 
 #include "boost.throw_exception.h"

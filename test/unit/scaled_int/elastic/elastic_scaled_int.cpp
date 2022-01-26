@@ -115,10 +115,10 @@ namespace test_ctor {
 }
 
 namespace test_addition {
-    static constexpr auto lhs = cnl::elastic_scaled_integer<31>{1};
-    static constexpr auto rhs = cnl::elastic_scaled_integer<40, cnl::power<-31>>{1};
-    static constexpr auto expected = cnl::elastic_scaled_integer<63, cnl::power<-31>>{2};
-    static constexpr auto sum = lhs + rhs;
+    constexpr auto lhs = cnl::elastic_scaled_integer<31>{1};
+    constexpr auto rhs = cnl::elastic_scaled_integer<40, cnl::power<-31>>{1};
+    constexpr auto expected = cnl::elastic_scaled_integer<63, cnl::power<-31>>{2};
+    constexpr auto sum = lhs + rhs;
     static_assert(identical(expected, sum), "cnl::elastic_scaled_integer addition");
 }
 

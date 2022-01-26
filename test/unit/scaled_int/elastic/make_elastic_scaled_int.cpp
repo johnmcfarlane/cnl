@@ -18,7 +18,7 @@ using cnl::_impl::identical;
 using namespace cnl::literals;
 using cnl::elastic_scaled_integer;
 
-static constexpr auto int_digits = std::numeric_limits<int>::digits;
+constexpr auto int_digits = std::numeric_limits<int>::digits;
 
 static_assert(
         identical(
@@ -172,7 +172,7 @@ static_assert(
         "using too many bytes to represent -256");
 
 // some numbers are so big that you don't have the luxury of choosing
-static constexpr auto unsigned_limit = cnl::intmax_t{std::numeric_limits<unsigned>::max()} + 1;
+constexpr auto unsigned_limit = cnl::intmax_t{std::numeric_limits<unsigned>::max()} + 1;
 static_assert(
         sizeof(make_elastic_scaled_integer(cnl::constant<unsigned_limit>())) == sizeof(int),
         "using too many bytes to represent 2^32");

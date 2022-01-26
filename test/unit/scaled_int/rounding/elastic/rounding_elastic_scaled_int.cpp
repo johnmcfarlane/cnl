@@ -54,7 +54,7 @@ namespace {
     }
 
     namespace test_shift {
-        static constexpr auto a = rounding_elastic_scaled_integer<16, -8>{1};
+        constexpr auto a = rounding_elastic_scaled_integer<16, -8>{1};
         static_assert(
                 identical(rounding_elastic_scaled_integer<16, -8>{2}, a << 1),
                 "rounding_elastic_scaled_integer shift");
@@ -142,7 +142,7 @@ namespace {
 
     namespace test_static_cast {
 #if defined(CNL_INT128_ENABLED)
-        static constexpr auto c = static_cast<rounding_elastic_scaled_integer<24, -20>>(
+        constexpr auto c = static_cast<rounding_elastic_scaled_integer<24, -20>>(
                 rounding_elastic_scaled_integer<48, -40>{0.21875});
         static_assert(
                 identical(rounding_elastic_scaled_integer<24, -20>{0.21875}, c),

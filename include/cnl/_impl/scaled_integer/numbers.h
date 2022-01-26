@@ -32,7 +32,7 @@ namespace cnl {
             constexpr auto four = scaled_integer<Rep, power<3 - digits_v<Rep>>>{4.};
 
             auto previous = fp{3.};
-            for (auto n = 2; n != (max_iterations << 1); n += 4) {
+            for (auto n = 2LL; n != (max_iterations << 1); n += 4) {
                 auto const addend = four / ((n + 0L) * (n + 1L) * (n + 2L));
                 auto const subtrahend = four / ((n + 2L) * (n + 3L) * (n + 4L));
                 auto next = fp{previous + addend - subtrahend};
@@ -51,14 +51,14 @@ namespace cnl {
         }
 
         template<typename Rep, int Exponent>
-        [[nodiscard]] constexpr auto e(int const max_iterations)
+        [[nodiscard]] constexpr auto e(Rep const max_iterations)
         {
             using fp = scaled_integer<Rep, power<Exponent>>;
             constexpr auto one = scaled_integer<Rep, power<2 - digits_v<Rep>>>{1.};
 
             auto previous = fp{2.};
-            auto factor = 2;
-            for (auto n = 2; n != max_iterations; ++n, factor *= n) {
+            auto factor{Rep{2}};
+            for (auto n{Rep{2}}; n != max_iterations; ++n, factor *= n) {
                 auto const addend = one / factor;
                 auto next = fp{previous + addend};
                 if (next == previous) {

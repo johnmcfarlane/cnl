@@ -13,6 +13,7 @@ jobs:
   # Build and test latest on Linux using only CMake
   cmake:
     strategy:
+      fail-fast: false
       matrix:
         compiler: [gcc, clang]
         include:
@@ -21,9 +22,9 @@ jobs:
             toolchain: clang-libc++.cmake
             container: johnmcfarlane/cnl_ci:clang-head-libcpp
           - compiler: gcc
-            stdlib-flag: ""
-            toolchain: gcc-head.cmake
-            container: johnmcfarlane/cnl_ci:gcc-head
+            stdlib-flag: "-fsanitize=address,undefined"
+            toolchain: gcc.cmake
+            container: johnmcfarlane/cnl_ci:gcc-12
         build_type: ["Release", "Debug"]
         cxx-extensions: ["ON", "OFF"]
         exceptions: ["ON", "OFF"]
@@ -51,7 +52,7 @@ jobs:
         run: |
           git clone https://github.com/google/googletest.git
           cd googletest
-          git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
+          git checkout 8d51dc50eb7e7698427fed81b85edad0e032112e
           cmake \
             -DCMAKE_CXX_COMPILER_LAUNCHER:STRING=ccache \
             -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
@@ -96,7 +97,9 @@ jobs:
 
       - name: Run shellcheck
         shell: bash
-        run: $GITHUB_WORKSPACE/test/scripts/shellcheck
+        run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          $GITHUB_WORKSPACE/test/scripts/shellcheck
 
   # Test markdown
   markdownlint:

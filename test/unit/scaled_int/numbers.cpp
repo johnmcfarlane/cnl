@@ -62,13 +62,11 @@ namespace {
                         std::numbers::e_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::e_v<long double>),
                 .000002L);
-#if !defined(__arm__)
         EXPECT_LT(
                 get_error(
                         std::numbers::e_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::e_v<long double>),
                 .000000001L);
-#endif
     }
 
     TEST(scaled_integer_constants, log2e)  // NOLINT
@@ -136,13 +134,11 @@ namespace {
                         std::numbers::pi_v<cnl::scaled_integer<std::int32_t, cnl::power<-16>>>,
                         std::numbers::pi_v<long double>),
                 .0000021L);
-#if !defined(__arm__)
         EXPECT_LT(
                 get_error(
                         std::numbers::pi_v<cnl::scaled_integer<std::uint64_t, cnl::power<-62>>>,
                         std::numbers::pi_v<long double>),
                 .000000001L);
-#endif
     }
 
     TEST(scaled_integer_constants, invpi)  // NOLINT

@@ -22,17 +22,17 @@ namespace std {
         using rep_numeric_limits = numeric_limits<Rep>;
 
     public:
-        [[nodiscard]] static constexpr auto min() noexcept
+        [[nodiscard]] static constexpr auto min()
         {
             return cnl::_impl::from_rep<value_type>(rep_numeric_limits::min());
         }
 
-        [[nodiscard]] static constexpr auto max() noexcept
+        [[nodiscard]] static constexpr auto max()
         {
             return cnl::_impl::from_rep<value_type>(rep_numeric_limits::max());
         }
 
-        [[nodiscard]] static constexpr auto lowest() noexcept
+        [[nodiscard]] static constexpr auto lowest()
         {
             return cnl::_impl::from_rep<value_type>(rep_numeric_limits::lowest());
         }
@@ -47,7 +47,7 @@ namespace std {
             return static_cast<value_type>(rep_numeric_limits::round_error());
         }
 
-        [[nodiscard]] static constexpr auto infinity() noexcept
+        [[nodiscard]] static constexpr auto infinity()
         {
             return static_cast<value_type>(rep_numeric_limits::infinity());
         }

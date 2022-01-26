@@ -23,8 +23,8 @@ namespace {
     }
 
     namespace test_nearest_round_down {
-        static constexpr auto expected = cnl::scaled_integer<int, cnl::power<-1>>{0.5};
-        static constexpr auto actual = cnl::convert<
+        constexpr auto expected = cnl::scaled_integer<int, cnl::power<-1>>{0.5};
+        constexpr auto actual = cnl::convert<
                 cnl::nearest_rounding_tag,
                 cnl::scaled_integer<int, cnl::power<-1>>>{}(
                 cnl::scaled_integer<int, cnl::power<-4>>{0.3125});
@@ -33,8 +33,8 @@ namespace {
     }
 
     namespace test_nearest_round_up {
-        static constexpr auto expected = cnl::scaled_integer<int, cnl::power<-2>>{-0.25};
-        static constexpr auto actual = cnl::convert<
+        constexpr auto expected = cnl::scaled_integer<int, cnl::power<-2>>{-0.25};
+        constexpr auto actual = cnl::convert<
                 cnl::nearest_rounding_tag,
                 cnl::scaled_integer<int, cnl::power<-2>>>{}(
                 cnl::scaled_integer<int, cnl::power<-4>>{-0.3125});
@@ -43,8 +43,8 @@ namespace {
     }
 
     namespace test_nearest_round_up_float {
-        static constexpr auto expected = cnl::scaled_integer<int, cnl::power<-2>>{-0.25};
-        static constexpr auto actual = cnl::convert<
+        constexpr auto expected = cnl::scaled_integer<int, cnl::power<-2>>{-0.25};
+        constexpr auto actual = cnl::convert<
                 cnl::nearest_rounding_tag,
                 cnl::scaled_integer<int, cnl::power<-2>>>{}(-0.3125F);
 
@@ -52,8 +52,8 @@ namespace {
     }
 
     namespace test_truncate_round_up {
-        static constexpr auto expected = cnl::scaled_integer<int, cnl::power<>>{1};
-        static constexpr auto actual = cnl::convert<
+        constexpr auto expected = cnl::scaled_integer<int, cnl::power<>>{1};
+        constexpr auto actual = cnl::convert<
                 cnl::nearest_rounding_tag,
                 cnl::scaled_integer<int, cnl::power<>>>{}(
                 cnl::scaled_integer<int, cnl::power<-2>>{0.75});
@@ -108,8 +108,8 @@ namespace {
     }
 
     namespace test_convert_nearest_rounding_elastic_number {
-        static constexpr auto a = cnl::scaled_integer<int, cnl::power<-4>>{0.3125};
-        static constexpr auto b = cnl::custom_operator<
+        constexpr auto a = cnl::scaled_integer<int, cnl::power<-4>>{0.3125};
+        constexpr auto b = cnl::custom_operator<
                 cnl::_impl::convert_op,
                 cnl::op_value<cnl::scaled_integer<int, cnl::power<-4>>, cnl::native_rounding_tag>,
                 cnl::op_value<cnl::scaled_integer<int, cnl::power<-1>>, cnl::nearest_rounding_tag>>{}(a);

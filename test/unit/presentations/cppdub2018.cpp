@@ -22,6 +22,7 @@ using cnl::make_scaled_integer;
 using cnl::power;
 using cnl::scaled_integer;
 
+#if !defined(_MSC_VER) || _MSC_VER < 1932  // wg21.link/LWG3657
 template<>
 struct std::hash<filesystem::path> {
     auto operator()(filesystem::path const& p) const
@@ -29,6 +30,7 @@ struct std::hash<filesystem::path> {
         return filesystem::hash_value(p);
     }
 };
+#endif
 
 namespace a {
     using std::unique_ptr;

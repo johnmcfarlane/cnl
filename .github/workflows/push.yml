@@ -13,7 +13,7 @@ jobs:
       matrix:
         int128: ["True", "False"]
 
-    container: johnmcfarlane/cnl_ci:clang-head-libcpp
+    container: johnmcfarlane/cnl_ci:clang-14-libcpp
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -51,7 +51,7 @@ jobs:
         run: |
           conan install \
             --build=missing \
-            --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-head-libc++ \
+            --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-14-libc++ \
             --options clang_tidy=True \
             --options int128=${{ matrix.int128 }} \
             --options sanitize=False \
@@ -73,24 +73,23 @@ jobs:
     strategy:
       matrix:
         name: [
-          clang-head-libc++, clang-head-libstdc++,
+          clang-14-libc++, clang-14-libstdc++,
           clang-13-libc++, clang-13-libstdc++,
           clang-12-libstdc++,
           clang-11-libstdc++,
           clang-10-libstdc++,
-          gcc-head, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7
+          gcc-12, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7
         ]
         include:
-          # Clang HEAD
-          - name: clang-head-libc++
-            generator: "Unix Makefiles"
-            linux-container: johnmcfarlane/cnl_ci:clang-head-libcpp
+          # Clang-14
+          - name: clang-14-libc++
+            linux-container: johnmcfarlane/cnl_ci:clang-14-libcpp
             os-version: ubuntu-20.04
-            profile: linux-clang-head-libc++
-          - name: clang-head-libstdc++
-            linux-container: johnmcfarlane/cnl_ci:clang-head-libstdcpp
+            profile: linux-clang-14-libc++
+          - name: clang-14-libstdc++
+            linux-container: johnmcfarlane/cnl_ci:clang-14-libstdcpp
             os-version: ubuntu-20.04
-            profile: linux-clang-head-libstdc++
+            profile: linux-clang-14-libstdc++
 
           # Clang-13
           - name: clang-13-libc++
@@ -121,11 +120,11 @@ jobs:
             os-version: ubuntu-20.04
             profile: linux-clang-10-libstdc++
 
-          # GCC HEAD
-          - name: gcc-head
-            linux-container: johnmcfarlane/cnl_ci:gcc-head
+          # GCC-12
+          - name: gcc-12
+            linux-container: johnmcfarlane/cnl_ci:gcc-12
             os-version: ubuntu-20.04
-            profile: linux-gcc-head
+            profile: linux-gcc-12
 
           # GCC-11
           - name: gcc-11
@@ -314,6 +313,7 @@ jobs:
       - name: Show/test for changes
         shell: bash
         run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
           git diff
           if [[ `git status --porcelain` ]]; then exit 1; fi
 

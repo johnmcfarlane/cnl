@@ -61,23 +61,23 @@ namespace test_convert_nearest_rounding_native_datatypes {
 }
 
 namespace test_convert_nearest_rounding_elastic_scaled_integer {
-    static constexpr auto a = cnl::elastic_scaled_integer<8, cnl::power<-4>>{0.3125};
-    static constexpr auto b = cnl::convert<
+    constexpr auto a = cnl::elastic_scaled_integer<8, cnl::power<-4>>{0.3125};
+    constexpr auto b = cnl::convert<
             cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, cnl::power<-1>>>{}(a);
     static_assert(identical(cnl::elastic_scaled_integer<4, cnl::power<-1>>{0.5}, b));
 
-    static constexpr auto c = cnl::convert<
+    constexpr auto c = cnl::convert<
             cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, cnl::power<-2>>>{}(a);
     static_assert(identical(cnl::elastic_scaled_integer<4, cnl::power<-2>>{0.25}, c));
 }
 
 namespace test_convert_nearest_rounding_scaled_integer {
-    static constexpr auto a = cnl::scaled_integer<int, cnl::power<-4>>{0.3125};
-    static constexpr auto b = cnl::convert<
+    constexpr auto a = cnl::scaled_integer<int, cnl::power<-4>>{0.3125};
+    constexpr auto b = cnl::convert<
             cnl::nearest_rounding_tag, cnl::scaled_integer<int, cnl::power<-1>>>{}(a);
     static_assert(identical(cnl::scaled_integer<int, cnl::power<-1>>{0.5}, b));
 
-    static constexpr auto c = cnl::convert<
+    constexpr auto c = cnl::convert<
             cnl::nearest_rounding_tag, cnl::scaled_integer<int, cnl::power<-2>>>{}(a);
     static_assert(identical(cnl::scaled_integer<int, cnl::power<-2>>{0.25}, c));
 }

@@ -10,8 +10,6 @@
 #include <cnl/_impl/wide_integer/set_digits.h>
 #include <cnl/wide_integer.h>
 
-#include <cnl/wide_integer.h>
-
 #include <type_traits>
 
 namespace {

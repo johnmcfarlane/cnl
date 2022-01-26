@@ -6,6 +6,8 @@
 
 // example code presented on the front page of the Doxygen documentation
 
+// NOLINTBEGIN(readability-duplicate-include)
+
 ////////////////////////////////////////////////////////////////////////////////
 // test_function - run given function and test its output
 
@@ -217,3 +219,5 @@ TEST(index, elastic_example)  // NOLINT
     test_function(elastic_example2, "254.00390625\n");
 }
 #endif
+
+// NOLINTEND(readability-duplicate-include)
