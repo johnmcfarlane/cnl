@@ -9,6 +9,10 @@ on:
 jobs:
   # Build and test many combinations on Linux/OS X using Conan
   clang-tidy:
+    strategy:
+      matrix:
+        int128: ["True", "False"]
+
     container: johnmcfarlane/cnl_ci:clang-head-libcpp
     runs-on: ubuntu-20.04
     steps:
@@ -49,7 +53,7 @@ jobs:
             --build=missing \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-head-libc++ \
             --options clang_tidy=True \
-            --options int128=False \
+            --options int128=${{ matrix.int128 }} \
             --options sanitize=False \
             --env CONAN_CMAKE_GENERATOR=Ninja \
             $GITHUB_WORKSPACE

@@ -14,7 +14,7 @@ jobs:
   cmake:
     strategy:
       matrix:
-        compiler: [clang, gcc]
+        compiler: [gcc, clang]
         include:
           - compiler: clang
             stdlib-flag: "-stdlib=libc++"
@@ -24,7 +24,7 @@ jobs:
             stdlib-flag: ""
             toolchain: gcc-head.cmake
             container: johnmcfarlane/cnl_ci:gcc-head
-        build_type: ["Debug", "Release"]
+        build_type: ["Release", "Debug"]
         cxx-extensions: ["ON", "OFF"]
         exceptions: ["ON", "OFF"]
 
