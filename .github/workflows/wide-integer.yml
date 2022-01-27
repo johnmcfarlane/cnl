@@ -2,12 +2,8 @@
 name: wide-integer
 
 on:
-  pull_request:
-    branches:
-      - '**'
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 2 * * *'
 
 jobs:
   # Check for updates to wide-integer library
