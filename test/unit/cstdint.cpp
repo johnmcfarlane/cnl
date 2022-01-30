@@ -7,12 +7,10 @@
 /// \file
 /// \brief file containing tests of the `cnl/bits/common.h` definitions
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
+#include <test.h>
 
 namespace {
-    using cnl::_impl::identical;
-
     namespace test_cnl_intmax_c {
         static_assert(identical(cnl::intmax_t{1}, CNL_INTMAX_C(1)));
         static_assert(identical(cnl::intmax_t{-5}, CNL_INTMAX_C(-0b101)));

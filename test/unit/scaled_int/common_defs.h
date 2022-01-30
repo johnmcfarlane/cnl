@@ -12,7 +12,7 @@
 
 #include <cnl/_impl/num_traits/adopt_width.h>
 #include <cnl/_impl/type_traits/assert_same.h>
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <type_traits>
 
@@ -60,6 +60,5 @@ template<typename Rep = test_int, class Scale = cnl::power<>>
 using scaled_integer = cnl::scaled_integer<Rep, Scale>;
 
 using cnl::_impl::assert_same;  // NOLINT(google-global-names-in-headers)
-using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
 
 #endif

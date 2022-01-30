@@ -13,6 +13,8 @@
 
 #include <cnl/scaled_integer.h>
 
+#include <test.h>
+
 #include <algorithm>
 #include <array>
 #include <cstdint>

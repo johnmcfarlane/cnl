@@ -9,9 +9,7 @@
 
 #include <cnl/scaled_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <array>
 #include <iterator>

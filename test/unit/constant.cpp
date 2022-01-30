@@ -15,13 +15,11 @@
 #include <cnl/integer.h>
 #include <cnl/number.h>
 
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <type_traits>
 
 namespace {
-    using cnl::_impl::identical;
-
     namespace test_concepts {
         static_assert(cnl::integer<cnl::constant<42>>);
         static_assert(cnl::integer<cnl::constant<42> const>);

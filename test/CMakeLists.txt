@@ -52,6 +52,7 @@ if (${GTest_FOUND})
     # workaround for github.com/conan-io/conan-center-index/issues/3222
     set(CNL_GTEST_MAIN_TARGET GTest::Main CACHE STRING "alternative GTest target name")
 
+    add_subdirectory(framework)
     add_subdirectory(unit)
 else ()
     message(STATUS "Google Test is required to build unit tests.")

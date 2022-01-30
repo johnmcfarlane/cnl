@@ -4,17 +4,13 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
 #include <type_traits>
 
 using cnl::power;
-using cnl::_impl::identical;
-
 template<class T, class U>
 inline constexpr bool is_same_v = std::is_same<T, U>::value;
 

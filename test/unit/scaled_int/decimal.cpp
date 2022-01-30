@@ -4,13 +4,11 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
+#include <test.h>
 
 template<typename Rep, int Exponent>
 using decimal_scaled_integer = cnl::scaled_integer<Rep, cnl::power<Exponent, 10>>;
-
-using cnl::_impl::identical;
 
 namespace test_ctor_int {
     static_assert(

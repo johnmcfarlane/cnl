@@ -9,11 +9,7 @@
 #include <cnl/_impl/num_traits/rounding.h>
 #include <cnl/_impl/rounding/native_rounding_tag.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 static_assert(cnl::is_integer_v<cnl::_impl::math::wide_integer::uintwide_t<64>>);
 

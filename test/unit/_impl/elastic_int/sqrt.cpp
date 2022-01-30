@@ -8,9 +8,8 @@
 
 #include <cnl/elastic_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
-using cnl::_impl::identical;
 using namespace cnl::literals;
 
 static_assert(identical(

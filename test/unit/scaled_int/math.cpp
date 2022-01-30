@@ -4,8 +4,6 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gtest/gtest.h>
-
 #include <cnl/_impl/scaled_integer/math.h>
 #include <cnl/scaled_integer.h>
 

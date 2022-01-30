@@ -14,8 +14,6 @@
 
 #include <cnl/fraction.h>
 
-#include <gtest/gtest.h>
-
 #include "common_defs.h"
 
 #include "fraction_ctor.h"

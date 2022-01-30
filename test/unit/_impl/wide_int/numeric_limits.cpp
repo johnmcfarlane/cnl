@@ -9,14 +9,11 @@
 
 #include <cnl/_impl/wide_integer/numeric_limits.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/wide_integer.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
-
-using cnl::_impl::identical;
 
 namespace {
     static_assert(

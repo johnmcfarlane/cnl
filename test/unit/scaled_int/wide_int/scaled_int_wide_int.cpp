@@ -10,8 +10,6 @@
 
 #include <cinttypes>
 
-#include <gtest/gtest.h>
-
 // TODO: Every `#if !defined(TEST_WIDE_INTEGER)` is a TODO
 #define TEST_WIDE_INTEGER
 #define TEST_WIDE_INTEGER_INT

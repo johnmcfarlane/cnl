@@ -11,7 +11,7 @@
 #include <cnl/numeric.h>
 
 #include <cnl/_impl/config.h>
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <concepts>
 #include <limits>
@@ -42,8 +42,6 @@ static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // number_test
-
-using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
 
 // performs tests that should pass for all numeric types (except maybe const_integer);
 // invokes specific tests that only pass for subject types

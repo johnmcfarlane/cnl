@@ -8,7 +8,7 @@
 #include <cnl/scaled_integer.h>
 
 #include <cnl/_impl/num_traits/to_rep.h>
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <cinttypes>
 #include <limits>
@@ -28,8 +28,6 @@ using test_int = cnl::rounding_integer<int, cnl::native_rounding_tag>;
 
 namespace {
     using cnl::rounding_integer;
-    using cnl::_impl::identical;
-
     template<class Rep = int, int Exponent = 0, cnl::rounding_tag RoundingTag = cnl::nearest_rounding_tag>
     using rounding_scaled_integer =
             cnl::scaled_integer<cnl::rounding_integer<Rep, RoundingTag>, cnl::power<Exponent>>;

@@ -7,17 +7,13 @@
 /// \file
 /// \brief tests of C++17-only examples listed in paper, P0675
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/num_traits.h>
 #include <cnl/rounding_integer.h>
 #include <cnl/scaled_integer.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
 #include <type_traits>
-
-using cnl::_impl::identical;
 
 namespace acme {
     template<class Rep>

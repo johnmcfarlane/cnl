@@ -9,10 +9,8 @@
 
 #include <cnl/_impl/cmath/abs.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace test_abs {
     static_assert(identical(cnl::_impl::abs(-302398479), 302398479));

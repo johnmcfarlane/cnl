@@ -6,14 +6,10 @@
 
 #include <cnl/_impl/charconv/to_chars.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <cstdint>
 #include <limits>
-
-using cnl::_impl::identical;
 
 #if !defined(_MSC_VER)
 namespace {

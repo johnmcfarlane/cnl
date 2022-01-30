@@ -7,11 +7,7 @@
 #include <cnl/_impl/narrow_cast.h>
 
 #include <cnl/_impl/cstdint/types.h>
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace test_narrow_cast {
     static_assert(identical(

@@ -10,11 +10,7 @@
 #include <cnl/_impl/duplex_integer/ctors.h>
 #include <cnl/_impl/duplex_integer/operators.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     namespace test_not {

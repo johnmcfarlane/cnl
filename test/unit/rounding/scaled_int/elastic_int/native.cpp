@@ -4,11 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_scaled_integer.h>
 #include <cnl/rounding.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     namespace test_native_round_down {

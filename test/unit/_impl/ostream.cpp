@@ -9,7 +9,7 @@
 
 #include <cnl/_impl/ostream.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
 

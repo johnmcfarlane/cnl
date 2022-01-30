@@ -8,9 +8,7 @@
 #include <cnl/overflow_integer.h>
 #include <cnl/rounding_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 template<int Digits>
 using saturated_elastic_integer = cnl::rounding_integer<

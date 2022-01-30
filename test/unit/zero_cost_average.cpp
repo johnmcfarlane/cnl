@@ -10,9 +10,7 @@
 #include <cnl/elastic_scaled_integer.h>
 
 #include <cnl/_impl/narrow_cast.h>
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 using namespace cnl;
 using namespace cnl::literals;
@@ -79,7 +77,7 @@ constexpr auto average_elastic(float input1, float input2)
 }
 
 using namespace literals;
-using cnl::_impl::identical;
+
 static_assert(identical(65536_cnl2, elastic_scaled_integer<1, power<16>>{65536}));
 static_assert(identical(1_cnl2 / 65536_cnl2, elastic_scaled_integer<1, power<-16>>{0.0000152587890625}));
 

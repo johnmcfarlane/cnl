@@ -13,13 +13,9 @@
 #include <cnl/_impl/duplex_integer/operators.h>
 #include <cnl/cstdint.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
-
-using cnl::_impl::identical;
 
 namespace {
     namespace test_ctor {

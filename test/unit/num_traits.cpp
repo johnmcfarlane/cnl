@@ -6,15 +6,13 @@
 
 #include <cnl/num_traits.h>
 
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <limits>
 #include <string>
 #include <type_traits>
 
 namespace {
-    using cnl::_impl::identical;
-
     namespace testint {
         static_assert(
                 std::is_same<
