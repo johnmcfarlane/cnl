@@ -11,6 +11,7 @@
 
 #include <cnl/cstdint.h>
 #include <cnl/wide_integer.h>
+
 #include <test.h>
 
 #include <type_traits>

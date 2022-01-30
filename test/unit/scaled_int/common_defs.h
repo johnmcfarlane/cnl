@@ -11,7 +11,6 @@
 #define TEST_SCALED_INTEGER_COMMON_DEFS_H
 
 #include <cnl/_impl/num_traits/adopt_width.h>
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <test.h>
 
 #include <type_traits>
@@ -58,7 +57,5 @@ using uint128_t = cnl::set_digits_t<test_unsigned, 128>;
 
 template<typename Rep = test_int, class Scale = cnl::power<>>
 using scaled_integer = cnl::scaled_integer<Rep, Scale>;
-
-using cnl::_impl::assert_same;  // NOLINT(google-global-names-in-headers)
 
 #endif

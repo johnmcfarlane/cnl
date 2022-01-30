@@ -63,7 +63,7 @@ namespace {
             auto actual = -cnl::_impl::duplex_integer<
                     cnl::_impl::duplex_integer<std::int64_t, std::uint64_t>,
                     cnl::_impl::duplex_integer<std::uint64_t, std::uint64_t>>{1};
-            ASSERT_EQ(expected, actual);
+            CNL_ASSERT_EQ(expected, actual);
         }
 #endif
     }
@@ -79,7 +79,7 @@ namespace {
         auto const lhs{narrower{0}};
         auto const rhs{wider{0x1'00000000'00000000_wide}};
         auto const actual(lhs + rhs);
-        ASSERT_EQ(expected, actual);
+        CNL_ASSERT_EQ(expected, actual);
     }
 
     namespace test_add {
@@ -186,7 +186,7 @@ namespace {
         auto lhs = t{0x1'00000000LL};
         auto rhs = t{0x1'00000000'00000000_wide};
         auto actual = lhs * rhs;
-        ASSERT_EQ(expected, actual);
+        CNL_ASSERT_EQ(expected, actual);
     }
 
     TEST(duplex_integer, multiply2)  // NOLINT
@@ -201,7 +201,7 @@ namespace {
         auto const lhs{t{1} << 64};
         auto const rhs{t{1} << 32};
         auto const actual(lhs * rhs);
-        ASSERT_EQ(expected, actual);
+        CNL_ASSERT_EQ(expected, actual);
     }
 
     TEST(duplex_integer, multiply3)  // NOLINT
@@ -216,7 +216,7 @@ namespace {
         auto const rhs{t{0x10'00000000LL}};
         auto const actual(lhs * rhs);
         auto const expected{t{0x1'00000000'00000000'00000000'00000000'00000000_wide}};
-        ASSERT_EQ(expected, actual);
+        CNL_ASSERT_EQ(expected, actual);
     }
 
     TEST(duplex_integer, multiply4)  // NOLINT
@@ -231,7 +231,7 @@ namespace {
         auto const lhs{t{0x4'00000003'00000002'00000001_wide}};
         auto const rhs{t{0x2'00000001LL}};
         auto const actual(lhs * rhs);
-        ASSERT_EQ(expected, actual);
+        CNL_ASSERT_EQ(expected, actual);
     }
 
     TEST(duplex_integer, multiply5)  // NOLINT
@@ -246,7 +246,7 @@ namespace {
         auto const lhs{t{0x12725DD1D243ABA0E75FE645C_wide}};
         auto const rhs{t{0x123456789ALL}};
         auto const actual(lhs * rhs);
-        ASSERT_EQ(expected, actual);
+        CNL_ASSERT_EQ(expected, actual);
     }
 
     TEST(duplex_integer, multiply6)  // NOLINT
@@ -261,7 +261,7 @@ namespace {
         auto const lhs{t{1532495540865888858358347027150309183_wide}};
         auto const rhs{t{1000000000000000000LL}};
         auto const actual(lhs * rhs);
-        ASSERT_EQ(expected, actual);
+        CNL_ASSERT_EQ(expected, actual);
     }
 
     namespace test_multiply {
@@ -479,14 +479,14 @@ namespace {
             auto expected = cnl::_impl::duplex_integer<int, unsigned>{0x12};
             auto actual = cnl::_impl::duplex_integer<int, unsigned>{0x1234}
                         / cnl::_impl::duplex_integer<int, unsigned>{0x100};
-            ASSERT_EQ(expected, actual);
+            CNL_ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, int_divide_by_duplex)  // NOLINT
         {
             auto expected = 0x12;
             auto actual = 0x1234 / cnl::_impl::duplex_integer<int, unsigned>{0x100};
-            ASSERT_EQ(expected, actual);
+            CNL_ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, divide128)  // NOLINT
@@ -502,7 +502,7 @@ namespace {
             auto const denominator = type{3};
             auto actual = numerator / denominator;
 
-            ASSERT_EQ((expected), (actual));
+            CNL_ASSERT_EQ((expected), (actual));
         }
 
         TEST(duplex_integer, divide160)  // NOLINT
@@ -520,7 +520,7 @@ namespace {
             auto const denominator = type{3};
             auto actual = numerator / denominator;
 
-            ASSERT_EQ((expected), (actual));
+            CNL_ASSERT_EQ((expected), (actual));
         }
 
 #if defined(CNL_INT128_ENABLED)
@@ -538,7 +538,7 @@ namespace {
             auto denom = duplex_integer(9);
             auto actual = nume / denom;
 
-            ASSERT_EQ(expected, actual);
+            CNL_ASSERT_EQ(expected, actual);
         }
 #endif
     }
@@ -571,14 +571,14 @@ namespace {
             auto expected = cnl::_impl::duplex_integer<int, unsigned>{0x34};
             auto actual = cnl::_impl::duplex_integer<int, unsigned>{0x1234}
                         % cnl::_impl::duplex_integer<int, unsigned>{0x100};
-            ASSERT_EQ(expected, actual);
+            CNL_ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, int_modulo_by_duplex)  // NOLINT
         {
             auto expected = 0x12;
             auto actual = 0x1234 % cnl::_impl::duplex_integer<int, unsigned>{0x100};
-            ASSERT_EQ(expected, actual);
+            CNL_ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, modulo128)  // NOLINT
@@ -594,7 +594,7 @@ namespace {
             auto const denominator = type{3};
             auto actual = numerator % denominator;
 
-            ASSERT_EQ((expected), (actual));
+            CNL_ASSERT_EQ((expected), (actual));
         }
 
         TEST(duplex_integer, modulo160)  // NOLINT
@@ -612,7 +612,7 @@ namespace {
             auto const denominator = type{3};
             auto actual = numerator % denominator;
 
-            ASSERT_EQ((expected), (actual));
+            CNL_ASSERT_EQ((expected), (actual));
         }
 
 #if defined(CNL_INT128_ENABLED)
@@ -627,7 +627,7 @@ namespace {
             auto const denominator = type{10};
             auto actual = numerator % denominator;
 
-            ASSERT_EQ((expected), (actual));
+            CNL_ASSERT_EQ((expected), (actual));
         }
 #endif
     }

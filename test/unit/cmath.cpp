@@ -15,7 +15,7 @@ static_assert(identical(2, cnl::sqrt(4)));
 
 TEST(cmake, sqrt_float)  // NOLINT
 {
-    auto const expected{3.5};
+    constexpr auto expected{3.5};
     auto const actual{cnl::sqrt(12.25)};
     ASSERT_EQ(expected, actual);
 }

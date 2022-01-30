@@ -32,8 +32,8 @@ static_assert(
 TEST(wide_integer, float_ctor)  // NOLINT
 {
     auto constexpr expected{cnl::_impl::math::wide_integer::uintwide_t<64>(42)};
-    auto const actual{cnl::_impl::math::wide_integer::uintwide_t<64>(42.F)};
-    ASSERT_EQ(expected, actual);
+    auto constexpr actual{cnl::_impl::math::wide_integer::uintwide_t<64>(42.F)};
+    CNL_ASSERT_EQ(expected, actual);
 }
 
 namespace test_conversion_op {
@@ -51,5 +51,5 @@ TEST(wide_integer, lowest_max)  // NOLINT
     using limits = std::numeric_limits<type>;
     constexpr auto expected{-1 - limits::max()};
     constexpr auto actual{limits::lowest()};
-    ASSERT_EQ(expected, actual);
+    CNL_ASSERT_EQ(expected, actual);
 }

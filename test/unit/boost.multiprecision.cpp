@@ -84,9 +84,9 @@ namespace test_to_rep {
 
 TEST(multiprecision, to_rep)  // NOLINT
 {
-    auto const expected = unsigned_multiprecision<5432>{123};
-    auto const actual = cnl::to_rep<unsigned_multiprecision<5432>>{}(123);
-    ASSERT_EQ(expected, actual);
+    constexpr auto expected = unsigned_multiprecision<5432>{123};
+    constexpr auto actual = cnl::to_rep<unsigned_multiprecision<5432>>{}(123);
+    CNL_ASSERT_EQ(expected, actual);
     ASSERT_TRUE(identical(expected, actual));
 }
 
@@ -99,27 +99,27 @@ namespace test_impl_to_rep {
 
 TEST(multiprecision, from_value)  // NOLINT
 {
-    auto const expected = unsigned_multiprecision<43212>{53};
-    auto const actual =
+    constexpr auto expected = unsigned_multiprecision<43212>{53};
+    constexpr auto actual =
             cnl::from_value<signed_multiprecision<47>, unsigned_multiprecision<43212>>{}(
                     unsigned_multiprecision<786>{53});
-    ASSERT_EQ(expected, actual);
+    CNL_ASSERT_EQ(expected, actual);
     ASSERT_TRUE(identical(expected, actual));
 }
 
 TEST(multiprecision, scale_positive)  // NOLINT
 {
-    auto const expected = signed_multiprecision<321>{768 * (1 << 5)};
-    auto const actual = cnl::_impl::scale<5, 2>(signed_multiprecision<321>{768});
-    ASSERT_EQ(expected, actual);
+    constexpr auto expected = signed_multiprecision<321>{768 * (1 << 5)};
+    constexpr auto actual = cnl::_impl::scale<5, 2>(signed_multiprecision<321>{768});
+    CNL_ASSERT_EQ(expected, actual);
     ASSERT_TRUE(identical(expected, actual));
 }
 
 TEST(multiprecision, scale_negative)  // NOLINT
 {
-    auto const expected = unsigned_multiprecision<321>{768 / (1 << 5)};
-    auto const actual = cnl::_impl::scale<-5, 2>(unsigned_multiprecision<321>{768});
-    ASSERT_EQ(expected, actual);
+    constexpr auto expected = unsigned_multiprecision<321>{768 / (1 << 5)};
+    constexpr auto actual = cnl::_impl::scale<-5, 2>(unsigned_multiprecision<321>{768});
+    CNL_ASSERT_EQ(expected, actual);
     ASSERT_TRUE(identical(expected, actual));
 }
 
@@ -130,26 +130,26 @@ TEST(multiprecision, add)  // NOLINT
 {
     using int64 = unsigned_multiprecision<64>;
 
-    auto augend = int64{123456789012345678LL};
-    auto addend = int64{876543210987654321LL};
+    constexpr auto augend = int64{123456789012345678LL};
+    constexpr auto addend = int64{876543210987654321LL};
 
-    auto sum = augend + addend;
-    auto expected = int64{999999999999999999LL};
+    constexpr auto sum = augend + addend;
+    constexpr auto expected = int64{999999999999999999LL};
 
-    ASSERT_EQ(sum, expected);
+    CNL_ASSERT_EQ(sum, expected);
 }
 
 TEST(multiprecision, subtract)  // NOLINT
 {
     using int64 = cnl::unsigned_multiprecision<64>;
 
-    auto minuend = int64{999999999999999999LL};
-    auto subtrahend = int64{876543210987654321LL};
+    constexpr auto minuend = int64{999999999999999999LL};
+    constexpr auto subtrahend = int64{876543210987654321LL};
 
-    auto difference = minuend - subtrahend;
-    auto expected = int64{123456789012345678LL};
+    constexpr auto difference = minuend - subtrahend;
+    constexpr auto expected = int64{123456789012345678LL};
 
-    ASSERT_EQ(difference, expected);
+    CNL_ASSERT_EQ(difference, expected);
 }
 
 TEST(multiprecision, multiply)  // NOLINT
@@ -157,25 +157,25 @@ TEST(multiprecision, multiply)  // NOLINT
     using int64 = unsigned_multiprecision<64>;
     using int128_t = unsigned_multiprecision<128>;
 
-    auto factor = int64{123456789012345678LL};
+    constexpr auto factor = int64{123456789012345678LL};
 
-    auto product = static_cast<int128_t>(factor) * static_cast<int128_t>(factor);
+    constexpr auto product = static_cast<int128_t>(factor) * static_cast<int128_t>(factor);
     ASSERT_GT(product, factor);
 
-    auto quotient = product / factor;
-    ASSERT_EQ(factor, quotient);
+    constexpr auto quotient = product / factor;
+    CNL_ASSERT_EQ(int128_t{factor}, quotient);
 }
 
 TEST(multiprecision, divide)  // NOLINT
 {
     using int64 = unsigned_multiprecision<64>;
+    constexpr auto expected = int64{1};
 
-    auto div = int64{123456789012345678LL};
+    constexpr auto div = int64{123456789012345678LL};
 
-    auto quotient = div / div;  // NOLINT(misc-redundant-expression)
-    auto expected = 1;
+    constexpr auto quotient = div / div;  // NOLINT(misc-redundant-expression)
 
-    ASSERT_EQ(quotient, expected);
+    CNL_ASSERT_EQ(quotient, expected);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -185,26 +185,26 @@ TEST(scaled_integer_multiprecision, add)  // NOLINT
 {
     using int64 = scaled_integer<unsigned_multiprecision<64>>;
 
-    auto augend = int64{123456789012345678LL};
-    auto addend = int64{876543210987654321LL};
+    constexpr auto augend = int64{123456789012345678LL};
+    constexpr auto addend = int64{876543210987654321LL};
 
-    auto sum = augend + addend;
-    auto expected = int64{999999999999999999LL};
+    constexpr auto sum = augend + addend;
+    constexpr auto expected = int64{999999999999999999LL};
 
-    ASSERT_EQ(sum, expected);
+    CNL_ASSERT_EQ(sum, expected);
 }
 
 TEST(scaled_integer_multiprecision, subtract)  // NOLINT
 {
     using int64 = scaled_integer<unsigned_multiprecision<64>>;
 
-    auto minuend = int64{999999999999999999LL};
-    auto subtrahend = int64{876543210987654321LL};
+    constexpr auto minuend = int64{999999999999999999LL};
+    constexpr auto subtrahend = int64{876543210987654321LL};
 
-    auto difference = minuend - subtrahend;
-    auto expected = int64{123456789012345678LL};
+    constexpr auto difference = minuend - subtrahend;
+    constexpr auto expected = int64{123456789012345678LL};
 
-    ASSERT_EQ(difference, expected);
+    CNL_ASSERT_EQ(difference, expected);
 }
 
 TEST(scaled_integer_multiprecision, multiply)  // NOLINT
@@ -212,25 +212,25 @@ TEST(scaled_integer_multiprecision, multiply)  // NOLINT
     using int64 = scaled_integer<unsigned_multiprecision<64>>;
     using int128_t = scaled_integer<unsigned_multiprecision<128>>;
 
-    auto factor = int64{123456789012345678LL};
+    constexpr auto factor = int64{123456789012345678LL};
 
-    auto product = static_cast<int128_t>(factor) * static_cast<int128_t>(factor);
+    constexpr auto product = static_cast<int128_t>(factor) * static_cast<int128_t>(factor);
     ASSERT_GT(product, factor);
 
-    auto quotient = product / factor;
-    ASSERT_EQ(factor, quotient);
+    constexpr auto quotient = product / factor;
+    CNL_ASSERT_EQ(int128_t{factor}, quotient);
 }
 
 TEST(scaled_integer_multiprecision, divide)  // NOLINT
 {
     using int64 = scaled_integer<unsigned_multiprecision<64>>;
+    constexpr auto expected = int64{1};
 
-    auto div = int64{123456789012345678LL};
+    constexpr auto div = int64{123456789012345678LL};
 
-    auto quotient = div / div;  // NOLINT(misc-redundant-expression)
-    auto expected = 1;
+    constexpr auto quotient = div / div;  // NOLINT(misc-redundant-expression)
 
-    ASSERT_EQ(quotient, expected);
+    CNL_ASSERT_EQ(quotient, expected);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -248,20 +248,20 @@ static_assert(cnl::digits_v<signed_multiprecision<24>> == 24);
 
 TEST(scaled_integer_multiprecision, shift_left_constant)  // NOLINT
 {
-    auto lhs = cnl::unsigned_multiprecision<15>{1536};
-    auto rhs = cnl::constant<3>{};
-    auto actual = lhs << rhs;
-    auto expected = cnl::unsigned_multiprecision<15>{1536 << 3};
-    ASSERT_EQ(expected, actual);
+    constexpr auto lhs = cnl::unsigned_multiprecision<15>{1536};
+    constexpr auto rhs = cnl::constant<3>{};
+    constexpr auto actual = lhs << rhs;
+    constexpr auto expected = cnl::unsigned_multiprecision<15>{1536 << 3};
+    CNL_ASSERT_EQ(expected, actual);
 }
 
 TEST(scaled_integer_multiprecision, shift_right_constant)  // NOLINT
 {
-    auto lhs = cnl::unsigned_multiprecision<15>{1536};
-    auto rhs = cnl::constant<3>{};
-    auto actual = lhs >> rhs;
-    auto expected = cnl::unsigned_multiprecision<15>{1536 >> 3};
-    ASSERT_EQ(expected, actual);
+    constexpr auto lhs = cnl::unsigned_multiprecision<15>{1536};
+    constexpr auto rhs = cnl::constant<3>{};
+    constexpr auto actual = lhs >> rhs;
+    constexpr auto expected = cnl::unsigned_multiprecision<15>{1536 >> 3};
+    CNL_ASSERT_EQ(expected, actual);
 }
 
 #endif
@@ -303,7 +303,7 @@ TEST(scaled_integer_multiprecision, signed_multiprecision_leading_bits)  // NOLI
 TEST(scaled_integer_multiprecision, sqrt)  // NOLINT
 {
     using length_t = cnl::scaled_integer<boost::multiprecision::int128_t>;
-    length_t x = length_t{25};
-    auto y = cnl::sqrt(x);
-    ASSERT_EQ(y, 5);
+    constexpr auto x = length_t{25};
+    constexpr auto y = cnl::sqrt(x);
+    CNL_ASSERT_EQ(length_t{5}, y);
 }

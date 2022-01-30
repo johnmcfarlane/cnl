@@ -18,7 +18,7 @@ using std::is_same;
 
 namespace sample1 {
     // range of a*b is UCHAR_MAX*UCHAR_MAX but range of return value is UCHAR_MAX
-    auto multiply(uint8_t a, uint8_t b)
+    constexpr auto multiply(uint8_t a, uint8_t b)
     {
         return static_cast<uint8_t>(a * b);
     }
@@ -31,12 +31,12 @@ namespace sample1 {
 
     TEST(p0381, multiply_uint8_ok)  // NOLINT
     {
-        ASSERT_EQ(100, multiply(10, 10));
+        CNL_ASSERT_EQ(std::uint8_t{100}, multiply(10, 10));
     }
 
     TEST(p0381, multiply_uint8_overflow)  // NOLINT
     {
-        ASSERT_NE(400, multiply(20, 20));
+        ASSERT_NE(400, int{multiply(20, 20)});
     }
 }
 
@@ -44,7 +44,7 @@ using std::declval;
 
 namespace sample2 {
     // range of a*b is UINT_MAX*UINT_MAX but range of return value is UINT_MAX
-    auto multiply(unsigned a, unsigned b)
+    constexpr auto multiply(unsigned a, unsigned b)
     {
         return a * b;
     }
@@ -61,7 +61,7 @@ namespace sample2 {
 
     TEST(p0381, multiply_unsigned_ok)  // NOLINT
     {
-        ASSERT_EQ(400U, multiply(20U, 20U));
+        CNL_ASSERT_EQ(400U, multiply(20U, 20U));
     }
 
     TEST(p0381, multiply_unsigned_overflow)  // NOLINT
@@ -73,7 +73,7 @@ namespace sample2 {
 }
 
 namespace sample3 {
-    auto multiply(uint32_t a, uint32_t b)
+    constexpr auto multiply(uint32_t a, uint32_t b)
     {
         using result_type = uint64_t;
         return result_type{a} * result_type{b};
@@ -86,12 +86,12 @@ namespace sample3 {
 
     TEST(p0381, multiply_unsigned_ok)  // NOLINT
     {
-        ASSERT_EQ(400U, multiply(20U, 20U));
+        CNL_ASSERT_EQ(std::uint64_t{400}, multiply(20U, 20U));
     }
 
     TEST(p0381, multiply_unsigned_still_ok)  // NOLINT
     {
-        ASSERT_EQ(
+        CNL_ASSERT_EQ(
                 static_cast<uint64_t>(UINT_MAX) * static_cast<uint64_t>(UINT_MAX),
                 static_cast<uint64_t>(multiply(UINT_MAX, UINT_MAX)));
     }
@@ -104,7 +104,7 @@ namespace sample4 {
 #if defined(CNL_BOOST_ENABLED)
 namespace sample5 {
     template<class Operand>
-    auto multiply(Operand a, Operand b)
+    constexpr auto multiply(Operand a, Operand b)
     {
         constexpr auto operand_width = sizeof(Operand) * CHAR_BIT * 2;
         using result_type = typename boost::uint_t<operand_width>::fast;
@@ -133,12 +133,12 @@ namespace sample5 {
 
     TEST(p0381, multiply_unsigned_ok)  // NOLINT
     {
-        ASSERT_EQ(400U, multiply(20U, 20U));
+        CNL_ASSERT_EQ(std::uint64_t{400UL}, multiply(20U, 20U));
     }
 
     TEST(p0381, multiply_unsigned_still_ok)  // NOLINT
     {
-        ASSERT_EQ(
+        CNL_ASSERT_EQ(
                 static_cast<uint64_t>(UINT_MAX) * static_cast<uint64_t>(UINT_MAX),
                 static_cast<uint64_t>(multiply(UINT_MAX, UINT_MAX)));
     }

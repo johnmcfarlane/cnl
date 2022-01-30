@@ -22,11 +22,11 @@ namespace {
     namespace test_division_native {
         TEST(static_integer, division_native)  // NOLINT
         {
-            auto ex = cnl::static_integer<2, cnl::native_rounding_tag>{3 / 4};
-            auto n = cnl::static_integer<2, cnl::native_rounding_tag>{3};
-            auto d = cnl::static_integer<3, cnl::native_rounding_tag>{4};
-            auto q = n / d;
-            ASSERT_EQ(ex, q);
+            constexpr auto ex = cnl::static_integer<2, cnl::native_rounding_tag>{3 / 4};
+            constexpr auto n = cnl::static_integer<2, cnl::native_rounding_tag>{3};
+            constexpr auto d = cnl::static_integer<3, cnl::native_rounding_tag>{4};
+            constexpr auto q = n / d;
+            CNL_ASSERT_EQ(ex, q);
         }
         static_assert(
                 identical(

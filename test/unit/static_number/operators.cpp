@@ -74,17 +74,17 @@ namespace {
 
     TEST(static_number, stress)  // NOLINT
     {
-        auto expected = 2809;
+        constexpr auto expected = 2809;
 
-        auto s = cnl::make_static_number<cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>(70)
-               / 3;
-        auto s2 = s * s;
-        auto s2po = s2 + 1;
-        auto s2pooten = s2po / 10;
-        auto s4pooten = s2pooten * s2pooten;
-        auto actual = static_cast<int>(s4pooten);
+        constexpr auto s = cnl::make_static_number<cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>(70)
+                         / 3;
+        constexpr auto s2 = s * s;
+        constexpr auto s2po = s2 + 1;
+        constexpr auto s2pooten = s2po / 10;
+        constexpr auto s4pooten = s2pooten * s2pooten;
+        constexpr auto actual = static_cast<int>(s4pooten);
 
-        ASSERT_EQ(expected, actual);
+        CNL_ASSERT_EQ(expected, actual);
     }
 
 #if defined(CNL_DEBUG)

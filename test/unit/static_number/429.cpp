@@ -24,5 +24,5 @@ TEST(a, b)  // NOLINT
 
     constexpr t1 a = 1;
     constexpr t2 g = a;
-    ASSERT_EQ(1 << 1, cnl::unwrap(g));
+    CNL_ASSERT_EQ(1 << 1, cnl::unwrap(g));
 }
