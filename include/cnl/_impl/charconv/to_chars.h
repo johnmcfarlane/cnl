@@ -110,7 +110,7 @@ namespace cnl {
         }
 
         using native_rounding_type = set_rounding_t<decltype(value), native_rounding_tag>;
-        auto const& native_rounding_value = static_cast<native_rounding_type>(value);
+        auto const& native_rounding_value = static_cast<native_rounding_type const&>(value);
 
         return _impl::to_chars_non_zero<native_rounding_type>(
                 first, last, native_rounding_value, base);

@@ -16,7 +16,6 @@
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_ASSERT_EQ(a, b) \
-    static_assert(identical(a, b)); \
     ASSERT_EQ(a, b);
 
 // cnl::_impl::identical - compiles iff same type; returns true iff equal
