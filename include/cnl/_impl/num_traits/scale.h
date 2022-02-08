@@ -46,6 +46,18 @@ namespace cnl {
             : _impl::default_scale<Digits, Radix, S> {
     };
 
+    template<int Digits, int Radix, template<typename, typename>
+    class TNUM, typename S, typename Tag>
+    struct scale<Digits, Radix, TNUM<S, Tag>, _impl::enable_if_t<(
+        Digits<0 && cnl::_impl::is_integral<S>::value)>>
+    {
+        CNL_NODISCARD constexpr auto operator()(TNUM<S, Tag> const& s) const
+        -> decltype(s/_impl::power_value<S, -Digits, Radix>())
+        {
+            return s/_impl::power_value<S, -Digits, Radix>();
+        }
+    };
+
     namespace _impl {
         // cnl::_impl::scale - convenience wrapper for cnl::scale
         template<int Digits, int Radix=2, class S>
