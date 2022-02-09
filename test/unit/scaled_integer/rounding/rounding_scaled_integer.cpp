@@ -82,4 +82,12 @@ namespace {
         static_assert(identical(dest_type{0}, dest_type{source_type{.75}}), "");
         static_assert(identical(dest_type{1}, dest_type{source_type{1.}}), "");
     }
+
+    TEST(rounding_scaled_integer, 991)
+    {
+        using DecX = cnl::scaled_integer<cnl::rounding_integer<long long>, cnl::power<-1, 100>>;
+        DecX num1 = 10.554;
+        DecX num2 = 10.545;
+        std::cout<<num1<<" "<<num2<<std::endl;
+    }
 }
