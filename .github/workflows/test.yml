@@ -156,7 +156,7 @@ jobs:
             exceptions: "True"
             generator: "Ninja"
             int128: "False"
-            linux-container: johnmcfarlane/cnl_ci:gcc-10
+            linux-container: johnmcfarlane/cnl_ci:gcc-10-arm
             os-version: ubuntu-20.04
             sanitize: "False"
             std: 20
@@ -176,10 +176,6 @@ jobs:
     - name: Install Brew packages
       if: ( matrix.os == 'osx' )
       run: brew install conan gcc@10 ninja
-
-    - name: Install ARMv7 packages
-      if: ( matrix.arch == 'armv7' )
-      run: apt-get install --quiet --yes g++-10-arm-linux-gnueabi libboost-dev
 
     - name: Initialise Conan
       run: |
@@ -310,7 +306,7 @@ jobs:
 
   # Install on mature Linux distro using only CMake
   linux-cmake-install:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
 
