@@ -115,3 +115,12 @@ Fully qualify identifiers in *test*. The exceptions is `cnl::_impl::identical`
 which is never the subjects of tests. Keep things out of the global namespace
 where possible. Wrap individual compile-time tests in a separate
 `test_some_feature` as exemplified throughout most of the test suite.
+
+## Philosophy
+
+### Being Kind to Your Future Self
+
+#### `grep`ability
+
+Especially important when creating a reference between two things, ask yourself: is this identifier greppable?
+In other words, how easy will it be to search for something in order to find out more about it.
