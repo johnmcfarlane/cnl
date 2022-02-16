@@ -124,3 +124,11 @@ where possible. Wrap individual compile-time tests in a separate
 
 Especially important when creating a reference between two things, ask yourself: is this identifier greppable?
 In other words, how easy will it be to search for something in order to find out more about it.
+
+### Isolation and Multiplexity
+
+We acknowledge that when you take a simple program with global variables and encapsulate those variables in an object, it allows the program to process multiple items of work without those items interferring with one another. We further acknowledge than where we can treat these items as immutable, it brings many further advantages. These principle extends to software in general. In the case of a software project, informs the following principles:
+
+* You should be able to clone your project multiple times into multiple separate working directories and *view* them in them in isolation from one another. Working directories can be located anywhere on the readable filesystem for *viewing*.
+* You should be able to configure, build, test and install your project in multiple separate build directories in isolation from one another and *use* them in isolation. Build directories can be located anywhere on the read/writeable filesystem for *using*.
+* You should be able to clone your project multiple times into multiple separate working directories and *develop* them in them in isolation from one another. Working directories can be located anywhere on the readable filesystem for *developing*.
