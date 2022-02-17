@@ -118,12 +118,26 @@ where possible. Wrap individual compile-time tests in a separate
 
 ## Philosophy
 
-### Being Kind to Your Future Self
+### Fail Loud
 
-#### `grep`ability
+### `grep`ability
 
+`grep`ability is a specific form of traceability, and traceability is a good thing.
 Especially important when creating a reference between two things, ask yourself: is this identifier greppable?
 In other words, how easy will it be to search for something in order to find out more about it.
+
+### Don't Glob
+
+Absence of a file is not the filing of absense.
+
+If you want to add a CMake library consisting of all of the .cpp files in a directory, list those files explicitly - ideally in an [`add_library`](https://cmake.org/cmake/help/latest/command/add_library.html) call.
+
+Named elements and their points of reference links in a graph.
+It should be reasonably easy to traverse this graph.
+Globbing obscures the link.
+
+If you need a file but you accidentally deleted it, you want to Fail Loud.
+But globbing silences this failure.
 
 ### Isolation and Multiplexity
 
@@ -132,3 +146,10 @@ We acknowledge that when you take a simple program with global variables and enc
 * You should be able to clone your project multiple times into multiple separate working directories and *view* them in them in isolation from one another. Working directories can be located anywhere on the readable filesystem for *viewing*.
 * You should be able to configure, build, test and install your project in multiple separate build directories in isolation from one another and *use* them in isolation. Build directories can be located anywhere on the read/writeable filesystem for *using*.
 * You should be able to clone your project multiple times into multiple separate working directories and *develop* them in them in isolation from one another. Working directories can be located anywhere on the readable filesystem for *developing*.
+
+### Isolation + Don't Glob
+
+If you had two repos and none of the file paths were the same, it ought to be possible to store them in the same directory without any possibility of colision. 
+
+### Being Kind to Your Future Self
+
