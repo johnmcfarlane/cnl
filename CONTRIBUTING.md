@@ -151,5 +151,62 @@ We acknowledge that when you take a simple program with global variables and enc
 
 If you had two repos and none of the file paths were the same, it ought to be possible to store them in the same directory without any possibility of colision. 
 
-### Being Kind to Your Future Self
+### Be Kind to Your Future Self
 
+### Don't Be Kind to Computers
+
+Does my computer work too hard? Is the work I give my computer as easy as it can be? Can I save a byte here, an instruction there? 
+Stop worrying about your computer.
+Computers have no feelings (yet) and don't care *what* data goes through them. They are happy to execute poorly-organised programs full of spaghetti code and badly-named variables. Clearly they have poor taste and should not be consulted when making software design choices.
+
+Yes, if you an algorithm with the wrong complexity guarantees, you computer will grind to a halt as datasets grow.
+But even your choice of algorithm is a message to your future self: "this operation is random access", "the order of this sequence's must remain stable", etc..
+If your function is _O(n^2)_, it's helpful to everyone (both your computer and and your fellow androids) if you care about that _(n^2)_.
+But don't dwell on the _O_.
+
+Write code which is easy to maintain and easy for your collaborators (and future self) to read.
+It's easy to write code that is optimised for matinainability and then make it fast tomorrow.
+It's hard to write code that is optimised for performance and then make it maintainable later.
+
+It's even hard to write code that is optimised for performance today, and that still runs fast on computers later.
+Imagine you are asked to optimise some critical infrastructure that is 10 years old and conclude that it needs to run on a modern GPU.
+Do you think that will be easier to achieve if it is optimised for a human, or if it is optimised for a Pentium III?
+
+### Entities Have Many Attributes But Only One Name
+
+Naming is hard, really hard. Naming is also critical.
+In order to Be Kind to Your Future Self, not only do you need to give an entity a good name, but if the entity changes, you must revise the name.
+Two major pitfalls beset the budding namer:
+
+Just because something is true of an entity doesn't mean it belongs in the name. Is your middle name Reader? Why not?! You're reading, aren't you?
+
+A good rule of thumb: is the thing still well named if an incidental detail about it changes. E.g.
+
+* `new_resource_manager` - is this still a good name after five years? If not, `new` is *circumstantial*.
+* `resource_manager_2018` - is this still in use in 2019? Is not, `2018` has become *dated*.
+* `book_resource_manager<T>` - sure, you're using this entity to manage books currently. But if `T` was `pebble`, `jingle` or `solar_system`, would it still do a good job managing those resources? If so, `book` is *overspecific*?
+
+#### It's Possible to Name an Entity Without Naming It.
+
+Now I've convinced you not to use `new`, `2018` or `book`, let's keep going.
+
+Some words have little or no meaning in the context of software. Remember, software is just data and operations on data. Many badly-chosen names fit into one or both of those categories.
+
+Useless proxies for 'data' include:
+
+* `object`,
+* `item`,
+* `element`, and...
+* `resource`!
+
+Useless proxies for `operations on data` include:
+
+* `process`,
+* `run`,
+* `complete`,
+* `execute`, and...
+* `manage`!
+
+In highly generic code, these are good names for entities... occasionally. Most everywhere else, they are the absence of a name. You didn't spend the time to understand what the entity *was* so you gave up.
+
+The result is that you're computer is happy. But you have made your future self sad.
