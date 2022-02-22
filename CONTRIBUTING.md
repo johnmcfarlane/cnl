@@ -141,11 +141,29 @@ But globbing silences this failure.
 
 ### Isolation and Multiplexity
 
-We acknowledge that when you take a simple program with global variables and encapsulate those variables in an object, it allows the program to process multiple items of work without those items interferring with one another. We further acknowledge than where we can treat these items as immutable, it brings many further advantages. These principle extends to software in general. In the case of a software project, informs the following principles:
+We acknowledge that when you take a simple program with global variables and encapsulate those variables in an object, it allows the program to process multiple items of work without those items interferring with one another. We further acknowledge that where we can treat these items as immutable, it brings many further advantages. These principles extend to software in general. In the case of a software project, they inform the following rules:
 
-* You should be able to clone your project multiple times into multiple separate working directories and *view* them in them in isolation from one another. Working directories can be located anywhere on the readable filesystem for *viewing*.
-* You should be able to configure, build, test and install your project in multiple separate build directories in isolation from one another and *use* them in isolation. Build directories can be located anywhere on the read/writeable filesystem for *using*.
-* You should be able to clone your project multiple times into multiple separate working directories and *develop* them in them in isolation from one another. Working directories can be located anywhere on the readable filesystem for *developing*.
+1. You should be able to clone your project multiple times into multiple separate working directories and *view* them in them in isolation from one another. Working directories can be located anywhere on the readable filesystem for *viewing*.
+1. You should be able to configure, build, test and install your project in multiple separate build directories in isolation from one another and *use* them in isolation. Build directories can be located anywhere on the read/writeable filesystem for *using*. Working directories can be located anywhere on the readable filesystem for *using*.
+1. You should be able to configure, build, test and install your project in multiple separate build directories in isolation from one another and *test* them in isolation. Build directories can be located anywhere on the read/writeable filesystem for *using*. Working directories can be located anywhere on the readable filesystem for *using* (with the exception below).
+1. You should be able to clone your project multiple times into multiple separate working directories and *develop* them in isolation from one another. Working directories can be located anywhere on the read/writeable filesystem for *developing*.
+
+#### Exception: Using the Working Directory as the Expected Result of a Test
+
+Some tests are far easier to implement when the working directory is writeable.
+They test an operation that is performed on the contents of the working directory.
+They use the state of the working directory before the operation as the *expected result*, and the state after as the *actual result*.
+Testing that expected and actual results are the same is a matter of testing whether there are unstaged changes.
+This can be performed in a Git repository with `git diff --exit-code`.
+
+These tests represent an exception to rule (3) and do not include unit tests; unit tests should *never* require a writeable working directory.
+
+Like all the best tests, these tests must be deterministic on success.
+
+Examples:
+
+* Some linters work by applying fixes to linted files. If the files are well linted, this operation should not change the working directory, but it *will* write to it.
+* Some tests of data transformations are performed at the filesystem level. Acceptance tests in which the code under test performs a large amount of work, may measure success in terms of whether the output is as expected - even if it's not clear *why* the output is exactly so. A functional change to the program may result in widespread change to the expected data. Updating acceptance tests accordingly may be a major effort, unless performing the test is the same task as changing the results.
 
 ### Isolation + Don't Glob
 
