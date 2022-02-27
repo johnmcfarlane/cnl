@@ -228,3 +228,29 @@ Useless proxies for `operations on data` include:
 In highly generic code, these are good names for entities... occasionally. Most everywhere else, they are the absence of a name. You didn't spend the time to understand what the entity *was* so you gave up.
 
 The result is that you're computer is happy. But you have made your future self sad.
+
+### Avoid Circular Dependency
+
+Dependency may arise in many settings. Header files that include one another are a sure sign then something is wrong.
+Generally, where there are dependencies, the system can be visualised as a directed graph - a graph with arrows for edges.
+If you can follow the arrows around in a circle, the graph is circular, or cyclic.
+A cyclic graph is far harder to deal with than an acyclic graph for reasons that are beyond this document.
+
+One example of where a cyclic graph is bad news, is when it describes the build and package systems.
+
+Conan's [_cmake_ generator](https://docs.conan.io/en/latest/integrations/build_system/cmake/cmake_generator.html) is one way to provide a CMake project with its essential packages.
+Thus, the Conan system refers to the CMake system within a codebase project.
+
+But the _cmake_ generator requires that the CMake system includes Conan commands.
+Thus, the CMake system refers to the Conan system within a codebase project.
+
+This is not end of the world; most Conan+CMake projects use this generator quite happily.
+But consider a project which wishes to remain package system-agnostic?
+What if I wish to support vcpkg _as well as_ Conan?
+The Conan-specific code in the CMake scripts are now unwanted at best, and breaking at worst.
+Further, they're entirely unnecessary.
+
+By using a decoupled generator, such as the [_cmake_find_package_ generator](https://docs.conan.io/en/latest/integrations/build_system/cmake/cmake_find_package_generator.html),
+both package managers are supported in the same project and the CMake is cleaner to boot.
+
+The moral of the story: don't go 'round in circles!
