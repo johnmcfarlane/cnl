@@ -1,0 +1,6 @@
+include(linux-gcc)
+[settings]
+compiler.version=13
+[options]
+[build_requires]
+[env]

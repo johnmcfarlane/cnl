@@ -73,14 +73,26 @@ jobs:
     strategy:
       matrix:
         name: [
+          clang-head-libc++, clang-head-libstdc++,
           clang-14-libc++, clang-14-libstdc++,
           clang-13-libc++, clang-13-libstdc++,
           clang-12-libstdc++,
           clang-11-libstdc++,
           clang-10-libstdc++,
+          gcc-head,
           gcc-12, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7
         ]
         include:
+          # Clang HEAD
+          - name: clang-head-libc++
+            linux-container: johnmcfarlane/cnl_ci:clang-head-libcpp
+            os-version: ubuntu-20.04
+            profile: linux-clang-15-libc++
+          - name: clang-head-libstdc++
+            linux-container: johnmcfarlane/cnl_ci:clang-head-libstdcpp
+            os-version: ubuntu-20.04
+            profile: linux-clang-15-libstdc++
+
           # Clang-14
           - name: clang-14-libc++
             linux-container: johnmcfarlane/cnl_ci:clang-14-libcpp
@@ -119,6 +131,12 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:clang-10-libstdcpp
             os-version: ubuntu-20.04
             profile: linux-clang-10-libstdc++
+
+          # GCC Head
+          - name: gcc-head
+            linux-container: johnmcfarlane/cnl_ci:gcc-head
+            os-version: ubuntu-20.04
+            profile: linux-gcc-13
 
           # GCC-12
           - name: gcc-12

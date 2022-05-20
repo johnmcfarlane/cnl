@@ -1,0 +1,6 @@
+include(linux-clang-libc++)
+[settings]
+compiler.version=15
+[options]
+sanitize=False
+[build_requires]
