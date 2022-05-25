@@ -1,7 +1,3 @@
 include(linux-gcc)
 [settings]
 compiler.version=12
-[options]
-[build_requires]
-[env]
-CONAN_CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_DIR/gcc.cmake
