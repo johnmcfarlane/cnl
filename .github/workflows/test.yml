@@ -54,7 +54,6 @@ jobs:
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-tidy \
             --options int128=${{ matrix.int128 }} \
             --options sanitize=False \
-            --env CONAN_CMAKE_GENERATOR=Ninja \
             $GITHUB_WORKSPACE
 
       - name: Build tests
@@ -200,8 +199,6 @@ jobs:
         run: |
           conan install \
             --build=missing \
-            --env:build CONAN_CMAKE_GENERATOR="${CONAN_CMAKE_GENERATOR:-Ninja}" \
-            --env:host CONAN_CMAKE_GENERATOR="${CONAN_CMAKE_GENERATOR:-Ninja}" \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
             $GITHUB_WORKSPACE
 
