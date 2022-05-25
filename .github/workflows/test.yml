@@ -137,7 +137,7 @@ jobs:
             generator: "Unix Makefiles"
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
-            profile: linux-gcc-10
+            profile: linux-gcc
 
           # OS X Clang (latest)
           - name: osx-clang-13
