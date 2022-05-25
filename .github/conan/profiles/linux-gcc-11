@@ -3,7 +3,3 @@ include(linux-gcc)
 compiler.version=11
 [options]
 sanitize=False
-[build_requires]
-[env]
-CC=gcc-11
-CXX=g++-11
