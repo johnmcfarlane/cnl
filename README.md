@@ -87,7 +87,7 @@ or even include the root header directly in your code:
 ### Test
 
 The test suite uses CMake and depends on Google Test and Google Benchmark.
-Optional integration tests use Boost.Multiprecision and Boost.SIMD.
+Optional integration tests use Boost.Multiprecision.
 
 1. Conan can be used to pull in essential dependencies.
    This example assumes GCC but other tool chain files are provided:
