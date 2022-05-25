@@ -51,8 +51,7 @@ jobs:
         run: |
           conan install \
             --build=missing \
-            --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-14-libc++ \
-            --options clang_tidy=True \
+            --profile $GITHUB_WORKSPACE/.github/conan/profiles/linux-clang-tidy \
             --options int128=${{ matrix.int128 }} \
             --options sanitize=False \
             --env CONAN_CMAKE_GENERATOR=Ninja \

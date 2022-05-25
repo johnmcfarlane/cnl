@@ -16,7 +16,6 @@ class CnlConan(ConanFile):
     topics = ("fixed-point", "value-types")
     settings = "os", "compiler", "build_type", "arch"
     options = {
-        "clang_tidy": [False, True],
         "cppcheck": [False, True],
         "enable_exceptions": [False, True],
         "int128": [None, False, True],
@@ -25,7 +24,6 @@ class CnlConan(ConanFile):
         "test": [None, "unit", "benchmark", "all"]
     }
     default_options = {
-        "clang_tidy": False,
         "cppcheck": False,
         "enable_exceptions": True,
         "int128": None,
@@ -55,7 +53,6 @@ class CnlConan(ConanFile):
         cmake = CMake(self, set_cmake_flags=True)
         cmake.verbose = False
 
-        cmake.definitions["CMAKE_CXX_CLANG_TIDY"] = "clang-tidy" if self.options.clang_tidy else ""
         cmake.definitions["CMAKE_CXX_CPPCHECK"] = "cppcheck" if self.options.cppcheck else ""
         cmake.definitions["CMAKE_SKIP_INSTALL_ALL_DEPENDENCY"] = "OFF" if self.options.test else "ON"
         cmake.definitions["CNL_EXCEPTIONS"] = "ON" if self.options.enable_exceptions else "OFF"

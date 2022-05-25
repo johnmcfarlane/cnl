@@ -1,0 +1,3 @@
+include(linux-clang-14-libc++)
+[env]
+CONAN_CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_DIR/clang-tidy.cmake

@@ -6,7 +6,6 @@ arch_build=x86_64
 compiler=Visual Studio
 compiler.cppstd=20
 [options]
-clang_tidy=False
 cppcheck=False
 int128=False
 iostreams=True
