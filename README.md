@@ -1,6 +1,6 @@
 # Compositional Numeric Library
 
-[![Test](https://github.com/johnmcfarlane/cnl/workflows/Test/badge.svg)](https://github.com/johnmcfarlane/cnl/actions?query=workflow:push+workflow:pr+branch:main)
+[![push](https://github.com/johnmcfarlane/cnl/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/johnmcfarlane/cnl/actions/workflows/test.yml)
 
 The Compositional Numeric Library (CNL) is a C++ library of fixed-precision
 numeric classes which enhance integers to deliver safer, simpler, cheaper
