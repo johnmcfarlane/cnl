@@ -21,7 +21,7 @@ jobs:
       - name: Restore Dependency Cache
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: conan-clang-tidy
+          CACHE_SLUG: clang-tidy-conan
         with:
           path: |
             /github/home/.conan/data
@@ -34,7 +34,7 @@ jobs:
       - name: Restore Compiler Cache
         uses: hendrikmuhs/ccache-action@v1
         env:
-          CACHE_SLUG: clang-tidy
+          CACHE_SLUG: clang-tidy-ccache
         with:
           key: ${{ env.CACHE_SLUG }}
 
@@ -163,7 +163,7 @@ jobs:
       - name: Restore Dependency Cache
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: conan-${{ matrix.name }}
+          CACHE_SLUG: conan-conan-${{ matrix.name }}
         with:
           path: |
             /github/home/.conan/data
@@ -181,7 +181,7 @@ jobs:
       - name: Restore Compiler Cache
         uses: hendrikmuhs/ccache-action@v1
         env:
-          CACHE_SLUG: conan-${{ matrix.name }}
+          CACHE_SLUG: conan-compiler-${{ matrix.name }}
         with:
           key: ${{ env.CACHE_SLUG }}
 
@@ -254,7 +254,7 @@ jobs:
       - name: Restore Dependency Cache
         uses: actions/cache@v2
         env:
-          CACHE_SLUG: conan-windows-${{ matrix.name }}-${{ matrix.build_type }}
+          CACHE_SLUG: windows-dep-${{ matrix.name }}-${{ matrix.build_type }}
         with:
           path: |
             ~\AppData\Local\pip\Cache
@@ -368,7 +368,7 @@ jobs:
       - name: Restore Compiler Cache
         uses: hendrikmuhs/ccache-action@v1
         env:
-          CACHE_SLUG: cmake-${{ matrix.compiler }}-${{ matrix.build_type }}-${{ matrix.cxx-extensions }}-${{ matrix.exceptions }}
+          CACHE_SLUG: cmake-ccache-${{ matrix.compiler }}-${{ matrix.build_type }}-${{ matrix.cxx-extensions }}-${{ matrix.exceptions }}
         with:
           key: ${{ env.CACHE_SLUG }}-${{ hashFiles('test/toolchain/**') }}
 
