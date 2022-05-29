@@ -24,29 +24,29 @@ CNL is continually tested on the following systems:
 
 Tested:
 
-* GCC 10, 11
-* Clang 10, 11, 12, 13
-* libstdc++ 10, 11
-* libc++ 13
-* [CMake](https://cmake.org/download/) 3.22
-* Conan 1.43
+* GCC 10, 11, 12
+* Clang 10, 11, 12, 13, 14
+* libstdc++ 10, 11, 12
+* libc++ 13, 14
+* [CMake](https://cmake.org/download/) 3.23.1
+* Conan 1.48.1
 
 ### OS X
 
 Tested:
 
 * GCC 11 / Clang 13
-* [CMake](https://cmake.org/download/) 3.22
-* Conan 1.43
+* [CMake](https://cmake.org/download/) 3.23.1
+* Conan 1.48.1
 
 ### Windows
 
 Tested:
 
-* Visual Studio 2019 Version 16 (19.29.30137)
-* Visual Studio 2022 Version 17 (19.30.30706)
-* [CMake](https://cmake.org/download/) 3.22
-* Conan 1.43
+* Visual Studio 2019 Version 16 (19.29.30145.0)
+* Visual Studio 2022 Version 17 (19.32.31329.0)
+* [CMake](https://cmake.org/download/) 3.23.1
+* Conan 1.48.1
 
 ## Instructions
 
