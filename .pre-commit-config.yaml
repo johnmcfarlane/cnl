@@ -17,3 +17,10 @@ repos:
     hooks:
       - id: markdownlint
         args: ["--style", "test/scripts/mdl.style"]
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.25.0
+    hooks:
+      - id: yamllint
+        args: ["--config-file", "test/scripts/yamllint.yaml", "--strict"]
+        exclude: ^\.github/conan/settings.yml$

@@ -413,18 +413,6 @@ jobs:
           git config --global --add safe.directory $GITHUB_WORKSPACE
           $GITHUB_WORKSPACE/test/scripts/shellcheck
 
-  # Test YAML
-  yamllint:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Run yamllint
-        shell: bash
-        run: |
-          sudo apt install yamllint
-          $GITHUB_WORKSPACE/test/scripts/yamllint
-
   # Lint with pre-commit
   lint:
     container: johnmcfarlane/cnl_ci:clang-14
