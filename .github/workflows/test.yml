@@ -454,4 +454,31 @@ jobs:
         run: |
           sudo apt install yamllint
           $GITHUB_WORKSPACE/test/scripts/yamllint
+
+  # Lint with pre-commit
+  lint:
+    container: johnmcfarlane/cnl_ci:clang-14
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Load package caches
+        uses: actions/cache@v2
+        env:
+          CACHE_SLUG: ${{ github.job }}-${{ matrix.name }}
+        with:
+          path: |
+            /github/home/.cache/pre-commit
+          key: ${{ env.CACHE_SLUG }}-${{ github.ref_name }}
+          restore-keys: |
+            ${{ env.CACHE_SLUG }}-main
+            ${{ env.CACHE_SLUG }}-${{ github.ref_name }}
+            ${{ env.CACHE_SLUG }}-
+
+      - name: Run pre-commit
+        shell: bash
+        run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          $GITHUB_WORKSPACE/test/scripts/lint
 ...
