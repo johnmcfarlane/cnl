@@ -6,6 +6,12 @@ repos:
       - id: trailing-whitespace
         exclude: ^(.*).md$
 
+  - repo: https://github.com/pocc/pre-commit-hooks
+    rev: v1.1.1
+    hooks:
+      - id: clang-format
+        args: ["-style=file", "-i"]
+
   - repo: https://github.com/markdownlint/markdownlint
     rev: v0.11.0
     hooks:

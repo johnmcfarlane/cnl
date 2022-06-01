@@ -25,8 +25,7 @@ namespace cnl {
     template<class T>
     concept rounding_tag = _impl::is_rounding_tag<T>::value;
 
-    namespace _impl
-    {
+    namespace _impl {
         template<rounding_tag Tag1, rounding_tag Tag2>
         struct is_same_tag_family<Tag1, Tag2>
             : std::true_type {
