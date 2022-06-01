@@ -5,3 +5,9 @@ repos:
     hooks:
       - id: trailing-whitespace
         exclude: ^(.*).md$
+
+  - repo: https://github.com/markdownlint/markdownlint
+    rev: v0.11.0
+    hooks:
+      - id: markdownlint
+        args: ["--style", "test/scripts/mdl.style"]
