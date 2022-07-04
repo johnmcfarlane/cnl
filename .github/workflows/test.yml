@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - '**'
+  workflow_dispatch:
 
 jobs:
   # Build and test many combinations on Linux/OS X using Conan
