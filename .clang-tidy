@@ -46,7 +46,7 @@ Checks: >
 
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'
-AnalyzeTemporaryDtors: false
+AnalyzeTemporaryDtors: False
 FormatStyle:     none
 User:            john
 CheckOptions:
