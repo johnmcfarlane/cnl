@@ -54,10 +54,16 @@ auto square_scaled_integer(float input)
 auto square_elastic(float input)
 {
     // alias to scaled_integer<elastic_integer<31, int>, -16>
-    auto fixed = elastic_scaled_integer<15, power<-16>>{input};
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+    auto fixed = new elastic_scaled_integer<15, power<-16>>{input};
 
     // concise, safe and zero-cost!
-    auto prod = fixed * fixed;
+    auto prod = *fixed * *fixed;
+
+    if (input > 42) {
+        // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+        delete fixed;
+    }
 
     return static_cast<float>(prod);
 }
