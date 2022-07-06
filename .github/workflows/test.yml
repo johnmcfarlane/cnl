@@ -10,6 +10,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   clang-tidy:
     strategy:
+      fail-fast: false
       matrix:
         int128: ["True", "False"]
 
@@ -70,6 +71,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   conan:
     strategy:
+      fail-fast: false
       matrix:
         name: [
           clang-14-libc++, clang-14-libstdc++,
@@ -140,12 +142,12 @@ jobs:
 
           # OS X Clang (latest)
           - name: osx-clang-13
-            os-version: macos-10.15
+            os-version: macos-12
             profile: osx-clang-13
 
           # OS X GCC-11
           - name: osx-gcc-11
-            os-version: macos-10.15
+            os-version: macos-12
             profile: osx-gcc-11
 
           # GCC-10 (for ARMv7)
@@ -175,7 +177,7 @@ jobs:
             ${{ env.CACHE_SLUG }}-
 
       - name: Install Brew packages
-        if: ( matrix.os-version == 'macos-10.15' )
+        if: ( matrix.os-version == 'macos-12' )
         run: brew install ccache conan ninja
 
       - name: Restore Compiler Cache
@@ -225,6 +227,7 @@ jobs:
   # Build and test on Windows using Conan
   windows:
     strategy:
+      fail-fast: false
       matrix:
         name: [2022-64, 2022-32, 2019-64, 2019-32]
         include:
