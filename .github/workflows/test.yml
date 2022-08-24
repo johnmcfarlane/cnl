@@ -11,6 +11,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   clang-tidy:
     strategy:
+      fail-fast: false
       matrix:
         int128: ["True", "False"]
 
@@ -71,6 +72,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   conan:
     strategy:
+      fail-fast: false
       matrix:
         name: [
           clang-14-libc++, clang-14-libstdc++,
@@ -223,82 +225,6 @@ jobs:
         run: |
           conan search
 
-  # Build and test on Windows using Conan
-  windows:
-    strategy:
-      matrix:
-        name: [2022-64, 2022-32, 2019-64, 2019-32]
-        include:
-          - name: 2022-64
-            build-profile: msvc-17-x86_64
-            host-profile: msvc-17-x86_64
-            runs-on: "windows-2022"
-          - name: 2022-32
-            build-profile: msvc-17-x86_64
-            host-profile: msvc-17-x86
-            runs-on: "windows-2022"
-          - name: 2019-64
-            build-profile: msvc-16-x86_64
-            host-profile: msvc-16-x86_64
-            runs-on: "windows-2019"
-          - name: 2019-32
-            build-profile: msvc-16-x86_64
-            host-profile: msvc-16-x86
-            runs-on: "windows-2019"
-        build_type: ["Debug", "Release"]
-
-    runs-on: ${{matrix.runs-on}}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Restore Dependency Cache
-        uses: actions/cache@v2
-        env:
-          CACHE_SLUG: windows-dep-${{ matrix.name }}-${{ matrix.build_type }}
-        with:
-          path: |
-            ~\AppData\Local\pip\Cache
-            ~\.conan\data
-          key: ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-${{ hashFiles('conanfile.py','.github/conan/**','test/toolchain/**') }}
-          restore-keys: |
-            ${{ env.CACHE_SLUG }}-main-
-            ${{ env.CACHE_SLUG }}-${{ github.ref_name }}-
-            ${{ env.CACHE_SLUG }}-
-
-      - name: Install Conan
-        run: |
-          pip.exe install conan;
-
-      - name: Cache Report
-        run: |
-          conan search
-
-      - name: Create build directory
-        run: mkdir ${{runner.workspace}}\build
-
-      - name: Install dependencies
-        working-directory: ${{runner.workspace}}/build
-        run: |
-          conan install `
-            --build=missing `
-            --profile:build $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.build-profile}} `
-            --profile:host $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.host-profile}} `
-            --settings:host build_type="${{matrix.build_type}}" `
-            $env:GITHUB_WORKSPACE
-
-      - name: Build and run tests
-        working-directory: ${{runner.workspace}}/build
-        run: conan build --build --configure --test $env:GITHUB_WORKSPACE
-
-      - name: Run benchmarks
-        working-directory: ${{runner.workspace}}/build
-        run: test\benchmark\${{matrix.build_type}}\test-benchmark.exe
-
-      - name: Cache Report
-        run: |
-          conan search
-
   # Test documentation generation
   doxygen:
     runs-on: ubuntu-18.04
@@ -322,72 +248,6 @@ jobs:
         with:
           name: documentation
           path: ${{github.workspace}}/htdocs
-
-  # Build and test latest on Linux using only CMake
-  cmake:
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler: [gcc, clang]
-        include:
-          - compiler: clang
-            stdlib-flag: "-stdlib=libstdc++"
-            toolchain: clang.cmake
-            container: johnmcfarlane/cnl_ci:clang-14-libstdcpp
-          - compiler: gcc
-            stdlib-flag: "-fsanitize=address,undefined"
-            toolchain: gcc.cmake
-            container: johnmcfarlane/cnl_ci:gcc-12
-        build_type: ["Release", "Debug"]
-        cxx-extensions: ["ON", "OFF"]
-        exceptions: ["ON", "OFF"]
-
-    container: ${{matrix.container}}
-    runs-on: ubuntu-20.04
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Restore Compiler Cache
-        uses: hendrikmuhs/ccache-action@v1
-        env:
-          CACHE_SLUG: cmake-ccache-${{ matrix.compiler }}-${{ matrix.build_type }}-${{ matrix.cxx-extensions }}-${{ matrix.exceptions }}
-        with:
-          key: ${{ env.CACHE_SLUG }}-${{ hashFiles('test/toolchain/**') }}
-
-      - name: Cache Report
-        run: |
-          ccache -s
-
-      - name: Build and Install GTest
-        env:
-          CXXFLAGS: ${{matrix.stdlib-flag}}
-        run: |
-          git clone https://github.com/google/googletest.git
-          cd googletest
-          git checkout 8d51dc50eb7e7698427fed81b85edad0e032112e
-          cmake \
-            -DCMAKE_CXX_COMPILER_LAUNCHER:STRING=ccache \
-            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            .
-          cmake --build . --target install
-
-      - name: Configure CNL
-        run: |
-          cmake \
-            -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-            -DCMAKE_CXX_COMPILER_LAUNCHER:STRING=ccache \
-            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx-extensions}} \
-            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-            -DCNL_EXCEPTIONS=${{matrix.exceptions}} \
-            -DCNL_SANITIZE=ON \
-            $GITHUB_WORKSPACE
-
-      - name: Build CNL
-        run: cmake --build $GITHUB_WORKSPACE --target test-all
-
-      - name: Test CNL
-        run: ctest --output-on-failure
 
   # Install on mature Linux distro using only CMake
   install:

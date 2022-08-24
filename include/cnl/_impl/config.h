@@ -150,4 +150,8 @@
 #define CNL_STR_HELPER(x) #x  // NOLINT(cppcoreguidelines-macro-usage)
 #define CNL_STR(x) CNL_STR_HELPER(x)  // NOLINT(cppcoreguidelines-macro-usage)
 
+#if defined(_M_ARM64)
+#error This is arm 64-bit!!
+#endif
+
 #endif  // CNL_IMPL_CONFIG_H

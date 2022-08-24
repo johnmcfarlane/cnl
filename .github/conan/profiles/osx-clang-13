@@ -1,7 +1,7 @@
 include(osx)
 [settings]
 arch=armv8
-arch_build=x86_64
+arch_build=armv8
 compiler=clang
 compiler.version=13
 compiler.libcxx=libc++

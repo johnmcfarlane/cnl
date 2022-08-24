@@ -51,7 +51,7 @@ class CnlConan(ConanFile):
 
     def build(self):
         cmake = CMake(self, set_cmake_flags=True)
-        cmake.verbose = False
+        cmake.verbose = True
 
         cmake.definitions["CMAKE_CXX_CPPCHECK"] = "cppcheck" if self.options.cppcheck else ""
         cmake.definitions["CMAKE_SKIP_INSTALL_ALL_DEPENDENCY"] = "OFF" if self.options.test else "ON"
