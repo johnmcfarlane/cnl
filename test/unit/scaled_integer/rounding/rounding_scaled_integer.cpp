@@ -90,4 +90,49 @@ namespace {
         DecX num2 = 10.545;
         std::cout<<num1<<" "<<num2<<std::endl;
     }
+
+    TEST(rounding_scaled_integer, 991AssignTest)
+    {
+        using DecX_2 = cnl::scaled_integer<cnl::rounding_integer<long long>, cnl::power<-2, 10>>;
+        using DecX_4 = cnl::scaled_integer<cnl::rounding_integer<long long>, cnl::power<-4, 10>>;
+        
+        DecX_2 n1 = 10.0151;
+        DecX_2 n2 = 10.0249;
+        EXPECT_EQ(n1, n2); // 10.02
+
+        int64_t xn = (int64_t)n1;
+        double  xm = (double)n2;
+        EXPECT_EQ(xn, 10);
+        EXPECT_DOUBLE_EQ(xm, 10.02);
+        
+        static_assert(std::is_same_v<decltype(n1*n2), DecX_4>);
+        EXPECT_EQ(n1*n2, DecX_4{100.4004});
+        EXPECT_DOUBLE_EQ((double)(n1*n2), 100.4004);
+
+        n1 += 0.6;
+        EXPECT_EQ((int)n1, 11);
+
+        n1 += 0.38;
+        EXPECT_EQ(n1, 11);
+
+        xn += n1;
+        xm -= n1;
+    }
+
+    TEST(rounding_scaled_integer, 991CmpTest)
+    {
+        using DecX_2 = cnl::scaled_integer<cnl::rounding_integer<long long>, cnl::power<-2, 10>>;
+        
+        DecX_2 n1;
+        DecX_2 n2 = 10.019;
+        DecX_2 n3{20.029};
+        EXPECT_DOUBLE_EQ((double)n2, 10.02);
+        EXPECT_DOUBLE_EQ((double)n3, 20.03);
+
+        n1 = 3.999; //4.00 instead
+        n3 = DecX_2(8);
+        EXPECT_NE(n1, 3.9899999999999999999999999);
+        EXPECT_EQ(n1, 4.0000000000000000000000001);
+        EXPECT_EQ(n3, 8);
+    }
 }
