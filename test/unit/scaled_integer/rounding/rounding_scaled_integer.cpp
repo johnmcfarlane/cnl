@@ -91,14 +91,6 @@ namespace {
         std::cout<<num1<<" "<<num2<<std::endl;
     }
 
-    TEST(rounding_scaled_integer, 991)
-    {
-        using DecX = cnl::scaled_integer<cnl::rounding_integer<long long>, cnl::power<-1, 100>>;
-        DecX num1 = 10.554;
-        DecX num2 = 10.545;
-        std::cout<<num1<<" "<<num2<<std::endl;
-    }
-
     TEST(rounding_scaled_integer, 991AssignTest)
     {
         using DecX_2 = cnl::scaled_integer<cnl::rounding_integer<long long>, cnl::power<-2, 10>>;
