@@ -1,6 +1,6 @@
 ---
 Checks: >
-  -*,
+  *,
   llvm-include-order,
   -llvmlibc-*,
   -clang-analyzer-osx.*,
