@@ -71,6 +71,16 @@ namespace cnl {
                     scale<Digits, Radix, Rep>{}(_impl::to_rep(s)));
         }
     };
+    
+    template<int Digits, int Radix, class Rep, class RoundingTag>
+    struct scale<Digits, Radix, _impl::number<Rep, RoundingTag>,
+            _impl::enable_if_t<Digits < 0 && _impl::is_rounding_tag<RoundingTag>::value>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::number<Rep, RoundingTag> const& s) const
+        -> decltype(s/_impl::power_value<Rep, -Digits, Radix>())
+        {
+            return s/_impl::power_value<Rep, -Digits, Radix>();
+        }
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::set_rep<rounding_integer, Rep>
