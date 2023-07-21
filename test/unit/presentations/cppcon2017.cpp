@@ -20,7 +20,7 @@ namespace filesystem = std::filesystem;
 template<typename Rep = int, int Exponent = 0, int Radix = 2>
 using fixed_point = cnl::scaled_integer<Rep, cnl::power<Exponent, Radix>>;
 
-#if !defined(_MSC_VER) || _MSC_VER < 1932  // wg21.link/LWG3657
+#if (defined(_MSC_VER) && _MSC_VER < 1932)  || (defined(__GNUC__) && __cplusplus < 201703L) // wg21.link/LWG3657
 template<>
 struct std::hash<filesystem::path> {
     auto operator()(filesystem::path const& p) const
