@@ -7,5 +7,4 @@ boost:header_only=True
 boost:without_fiber=True
 boost:without_locale=True
 boost:without_log=True
-cmake:with_openssl=False
 test=all

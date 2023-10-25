@@ -8,7 +8,7 @@ on:
 jobs:
   # Check for updates to wide-integer library
   update-check:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container: johnmcfarlane/cnl_ci:base-21.10
     steps:
       - uses: actions/checkout@v2
