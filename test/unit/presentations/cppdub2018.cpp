@@ -16,30 +16,30 @@
 #include <filesystem>
 #include <type_traits>
 
-namespace filesystem = std::filesystem;
-
 using cnl::make_scaled_integer;
 using cnl::power;
 using cnl::scaled_integer;
 
-#if (defined(_MSC_VER) && _MSC_VER < 1932)  || (defined(__GNUC__) && __cplusplus < 201703L) // wg21.link/LWG3657
+#if (defined(_MSC_VER) && _MSC_VER < 1932) || (defined(__GNUC__) && __cplusplus < 201703L)  // wg21.link/LWG3657
 template<>
-struct std::hash<filesystem::path> {
-    auto operator()(filesystem::path const& p) const
+struct std::hash<std::filesystem::path> {
+    auto operator()(std::filesystem::path const& p) const
     {
-        return filesystem::hash_value(p);
+        return std::filesystem::hash_value(p);
     }
 };
 #endif
 
+#if (defined(__clang__) && (__clang_major__ > 14))  // wg21.link/LWG3657
 namespace a {
     using std::unique_ptr;
     using std::unordered_map;
     using byte = std::uint8_t;
 
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-avoid-non-const-global-variables)
-    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;
+    unordered_map<std::filesystem::path, unique_ptr<byte[]>> cache;
 }
+#endif
 
 namespace b {
 #if defined(CNL_IOSTREAMS_ENABLED)

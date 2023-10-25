@@ -177,7 +177,9 @@ jobs:
 
       - name: Install Brew packages
         if: ( matrix.os-version == 'macos-12' )
-        run: brew install ccache conan ninja
+        run: |
+          brew install ccache conan@1 ninja
+          echo "/usr/local/opt/conan@1/bin:$PATH" >> $GITHUB_PATH
 
       - name: Restore Compiler Cache
         uses: hendrikmuhs/ccache-action@v1
@@ -268,7 +270,7 @@ jobs:
 
       - name: Install Conan
         run: |
-          pip.exe install conan;
+          pip.exe install conan<2;
 
       - name: Cache Report
         run: |
@@ -301,7 +303,7 @@ jobs:
 
   # Test documentation generation
   doxygen:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     container: johnmcfarlane/cnl_ci:base-21.10
     steps:
       - uses: actions/checkout@v2
@@ -391,7 +393,7 @@ jobs:
 
   # Install on mature Linux distro using only CMake
   install:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
