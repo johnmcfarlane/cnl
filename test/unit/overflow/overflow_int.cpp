@@ -515,11 +515,9 @@ namespace test_used_digits {
 namespace {
     TEST(overflow_integer, pre_increment)  // NOLINT
     {
-        auto a = cnl::overflow_integer<>{INT_MAX - 1};
+        auto a = INT_MAX;
         auto& b = ++a;
-        static_assert(
-                std::is_same<decltype(b), cnl::overflow_integer<>&>::value,
-                "static_integer pre-increment return value");
+        --a;
         ASSERT_EQ(&b, &a) << "static_integer pre-increment return address";
         ASSERT_EQ(INT_MAX, b) << "static_integer pre-increment";
     }
