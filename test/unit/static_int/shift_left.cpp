@@ -6,7 +6,7 @@
 
 #include <cnl/static_integer.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 // can only be compiled with constant evaluation limits raised
 #if defined(CNL_IMPL_ONEROUS_EVALUATION)

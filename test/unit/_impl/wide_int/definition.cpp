@@ -9,15 +9,11 @@
 
 #include <cnl/_impl/wide_integer/definition.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
 #include <cnl/wide_integer.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <type_traits>
-
-using cnl::_impl::identical;
 
 namespace {
     namespace test_parameters {

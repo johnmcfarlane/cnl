@@ -1,6 +1,6 @@
 #include <cnl/all.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
 

@@ -4,14 +4,10 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/static_number.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <type_traits>
-
-using cnl::_impl::identical;
 
 namespace {
     namespace test_multiply {

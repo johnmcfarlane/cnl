@@ -9,11 +9,7 @@
 
 #include <cnl/cmath.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 static_assert(identical(2, cnl::sqrt(4)));
 

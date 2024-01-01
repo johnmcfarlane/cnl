@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_scaled_integer.h>
+#include <test.h>
 
 #include <algorithm>
 #include <limits>
@@ -14,7 +14,6 @@
 // cnl::make_elastic_scaled_integer
 
 using cnl::make_elastic_scaled_integer;
-using cnl::_impl::identical;
 using namespace cnl::literals;
 using cnl::elastic_scaled_integer;
 

@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -15,13 +15,9 @@
 #pragma warning(pop)
 #endif
 
-#include <gtest/gtest.h>
-
 #include <limits>
 
 namespace {
-    using cnl::_impl::identical;
-
     namespace test_native_overflow {
 
         // convert

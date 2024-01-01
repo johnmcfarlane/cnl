@@ -20,8 +20,6 @@ using test_int = cnl::overflow_integer<int, cnl::_impl::throwing_overflow_tag>;
 
 #include "../scaled_int_common.h"
 
-#include <gtest/gtest.h>
-
 ////////////////////////////////////////////////////////////////////////////////
 // throwing_integer-specific exceptions tests
 

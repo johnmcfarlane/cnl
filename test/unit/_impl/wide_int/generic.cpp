@@ -9,13 +9,9 @@
 
 #include <cnl/_impl/wide_tag/custom_operator.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cmath.h>
 #include <cnl/wide_integer.h>
-
-#include <gtest/gtest.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     TEST(wide_integer, multiply)  // NOLINT

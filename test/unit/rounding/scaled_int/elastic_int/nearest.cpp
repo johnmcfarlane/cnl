@@ -4,14 +4,12 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_scaled_integer.h>
 #include <cnl/rounding.h>
 #include <cnl/rounding_integer.h>
+#include <test.h>
 
 #include <limits>
-
-using cnl::_impl::identical;
 
 namespace {
     namespace test_nearest_round_down {

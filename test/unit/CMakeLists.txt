@@ -139,13 +139,6 @@ set(sample_sources
 find_package(Boost 1.71.0)
 
 ######################################################################
-# add_gtest_dependency
-
-function(add_gtest_dependency target)
-    target_link_libraries("${target}" ${CNL_GTEST_MAIN_TARGET})
-endfunction(add_gtest_dependency)
-
-######################################################################
 # add test-unit target
 
 add_custom_target(test-unit)
@@ -155,9 +148,8 @@ add_dependencies(test-all test-unit)
 # test plain - the all.cpp project with *no* tests of compiler flags
 
 add_executable(test-unit-plain all.cpp)
-target_link_libraries(test-unit-plain Cnl)
+target_link_libraries(test-unit-plain Cnl cnl_test)
 add_test(test-unit-plain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-unit-plain")
-add_gtest_dependency(test-unit-plain)
 add_dependencies(test-unit test-unit-plain)
 
 ######################################################################
@@ -175,11 +167,8 @@ function(make_test source compile_flags)
     add_executable("${target}" "${source}")
     target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
     set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${compile_flags}")
-    target_link_libraries("${target}" Cnl)
+    target_link_libraries("${target}" Cnl cnl_test)
     add_test("${target}" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${target}")
-
-    # Google Test dependency
-    add_gtest_dependency("${target}")
 
     # Boost dependency
     if(Boost_FOUND)

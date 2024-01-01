@@ -4,12 +4,10 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/rounding.h>
+#include <test.h>
 
 namespace {
-    using cnl::_impl::identical;
-
     namespace test_nearest_rounding {
 
         namespace convert {

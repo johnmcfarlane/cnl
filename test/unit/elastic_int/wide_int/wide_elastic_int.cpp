@@ -7,15 +7,11 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/wide_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <type_traits>
 
 namespace {
-    using cnl::_impl::identical;
-
     template<int Digits = cnl::digits_v<int>, typename Narrowest = int>
     using wide_elastic_integer = cnl::elastic_integer<
             Digits, cnl::wide_integer<cnl::digits_v<Narrowest>, Narrowest>>;

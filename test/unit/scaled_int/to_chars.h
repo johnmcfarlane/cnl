@@ -11,8 +11,6 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/scaled_integer.h>
 
-#include <gtest/gtest.h>
-
 #include <array>
 #include <iterator>
 #include <limits>

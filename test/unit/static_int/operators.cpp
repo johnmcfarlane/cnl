@@ -7,9 +7,7 @@
 #include <cnl/static_integer.h>
 
 #include <cnl/_impl/config.h>
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <type_traits>
 

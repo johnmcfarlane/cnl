@@ -9,10 +9,8 @@
 
 #include <cnl/wide_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wide_integer/operators.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     static_assert(

@@ -11,11 +11,9 @@
 #include <cnl/_impl/duplex_integer/numeric_limits.h>
 #include <cnl/_impl/duplex_integer/operators.h>
 
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <limits>
-
-using cnl::_impl::identical;
 
 namespace {
     namespace test_is_specialize {

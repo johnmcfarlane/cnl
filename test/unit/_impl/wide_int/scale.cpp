@@ -12,11 +12,7 @@
 #include <cnl/_impl/num_traits/fixed_width_scale.h>
 #include <cnl/wide_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     namespace test_power_value {

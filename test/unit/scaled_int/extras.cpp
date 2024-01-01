@@ -4,15 +4,11 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 using cnl::power;
 using cnl::scaled_integer;
-using cnl::_impl::identical;
-
 TEST(utils_tests, sin)  // NOLINT
 {
     ASSERT_EQ(sin(scaled_integer<std::uint8_t, power<-6>>(0)), 0);

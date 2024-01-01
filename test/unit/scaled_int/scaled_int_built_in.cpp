@@ -23,8 +23,6 @@ using test_int = int;
 
 namespace test_literals_initialization {
     using cnl::scaled_integer;
-    using cnl::_impl::identical;
-
     using namespace cnl::literals;
 
     static_assert(identical(scaled_integer<int, cnl::power<0>>{1}, cnl::make_scaled_integer(1_c)));

@@ -6,7 +6,7 @@
 
 #include <cnl/static_number.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
 

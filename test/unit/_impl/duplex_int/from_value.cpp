@@ -10,10 +10,8 @@
 #include <cnl/_impl/duplex_integer/from_value.h>
 
 #include <cnl/_impl/duplex_integer.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 using duplex_63_int = cnl::_impl::duplex_integer<std::int32_t, std::uint32_t>;
 using duplex_127_int = cnl::_impl::duplex_integer<

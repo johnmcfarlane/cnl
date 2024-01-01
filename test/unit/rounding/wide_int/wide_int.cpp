@@ -7,9 +7,7 @@
 #include <cnl/rounding.h>
 #include <cnl/wide_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     namespace test_convert_native_rounding {

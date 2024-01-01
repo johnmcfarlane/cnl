@@ -4,19 +4,16 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/rounding_integer.h>
+#include <test.h>
 
 #include "../number_test.h"
-
-#include <gtest/gtest.h>
 
 #include <limits>
 #include <type_traits>
 
 namespace {
     using cnl::rounding_integer;
-    using cnl::_impl::identical;
     using std::is_same;
 
     namespace default_parameters {

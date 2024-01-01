@@ -6,7 +6,7 @@
 
 #include <cnl/num_traits.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <type_traits>
 

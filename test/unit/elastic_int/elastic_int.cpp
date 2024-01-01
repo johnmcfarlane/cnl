@@ -12,18 +12,15 @@
 #include <cnl/_impl/charconv/to_chars.h>
 #include <cnl/_impl/narrow_cast.h>
 #include <cnl/_impl/rounding.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
 #include <cnl/numeric.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
 #include <type_traits>
 
 namespace {
     using cnl::elastic_integer;
-    using cnl::_impl::identical;
     using namespace cnl::literals;
 
     ////////////////////////////////////////////////////////////////////////////////

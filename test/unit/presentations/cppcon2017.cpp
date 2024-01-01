@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/fraction.h>
 #include <cnl/scaled_integer.h>
+#include <test.h>
 
 #include <cstddef>
 #include <iostream>
@@ -119,7 +119,7 @@ namespace i {
 namespace j {
     constexpr auto n = fixed_point<uint8_t, -8>{0.99609375};
     constexpr auto nn = n * n;  // fixed_point<int, -16>{0.9922027587890625};
-    static_assert(cnl::_impl::identical(fixed_point<int, -16>{0.9922027587890625}, nn));
+    static_assert(identical(fixed_point<int, -16>{0.9922027587890625}, nn));
 }
 
 namespace k {
@@ -137,11 +137,11 @@ namespace l {
     constexpr auto e = elastic_integer<31>{0x7FFFFFFF};  // r has 31 or more digits
 
     constexpr auto ee = e * e;
-    static_assert(cnl::_impl::identical(elastic_integer<62>{INT64_C(0x3FFFFFFF00000001)}, ee));
+    static_assert(identical(elastic_integer<62>{INT64_C(0x3FFFFFFF00000001)}, ee));
 
     constexpr auto _2ee = ee + ee;
     static_assert(
-            cnl::_impl::identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee));
+            identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee));
 }
 
 namespace m {
@@ -149,11 +149,11 @@ namespace m {
 
     constexpr auto sq = fpe * fpe;
     static_assert(
-            cnl::_impl::identical(fixed_point<elastic_integer<62>, -62>{0.9922027587890625}, sq));
+            identical(fixed_point<elastic_integer<62>, -62>{0.9922027587890625}, sq));
 
 #if defined(CNL_INT128_ENABLED)
     constexpr auto q = make_scaled_integer(make_fraction(sq, sq));
-    static_assert(cnl::_impl::identical(fixed_point<elastic_integer<124>, -62>{1}, q));
+    static_assert(identical(fixed_point<elastic_integer<124>, -62>{1}, q));
 #endif
 }
 
@@ -163,10 +163,10 @@ namespace n {
     constexpr auto i = overflow_integer<uint8_t>{255};
 
     constexpr auto j = i + 1;
-    static_assert(cnl::_impl::identical(overflow_integer<int>{256}, j));
+    static_assert(identical(overflow_integer<int>{256}, j));
 
     //    constexpr overflow<uint8_t> k = i + 1;
-    //    static_assert(cnl::_impl::identical(overflow<int>{256}, k));
+    //    static_assert(identical(overflow<int>{256}, k));
 }
 
 #if defined(CNL_P1021) && !defined(_MSC_VER)
@@ -175,26 +175,26 @@ namespace n {
 using namespace cnl::literals;
 namespace o {
     constexpr auto x = cnl::fixed_point{42ul};  // fixed_point<unsigned long, 0>{42}
-    static_assert(cnl::_impl::identical(fixed_point<unsigned long, 0>{42}, x));
+    static_assert(identical(fixed_point<unsigned long, 0>{42}, x));
 
     constexpr auto z = cnl::fixed_point{128_c};
-    static_assert(cnl::_impl::identical(fixed_point<int, 7>{128}, z));
+    static_assert(identical(fixed_point<int, 7>{128}, z));
 
     constexpr auto a = cnl::fixed_point{0b10000000000000000000000000000000000000000_c};
-    static_assert(cnl::_impl::identical(
+    static_assert(identical(
             fixed_point<int, 40>{0b10000000000000000000000000000000000000000L}, a));
 
     constexpr auto b = cnl::fixed_point{0b11111111111111111111111111111111111111111_c};
-    static_assert(cnl::_impl::identical(
+    static_assert(identical(
             fixed_point<std::int64_t, 0>{0b11111111111111111111111111111111111111111L}, b));
 
     constexpr auto c = elastic_integer{2017_c};
-    static_assert(cnl::_impl::identical(elastic_integer<11>{2017}, c));
+    static_assert(identical(elastic_integer<11>{2017}, c));
 
     constexpr auto e = 0x7f000_elastic;
-    static_assert(cnl::_impl::identical(fixed_point<elastic_integer<7>, 12>{0x7f000}, e));
+    static_assert(identical(fixed_point<elastic_integer<7>, 12>{0x7f000}, e));
 
     constexpr auto s = e >> 1_c;
-    static_assert(cnl::_impl::identical(fixed_point<elastic_integer<7>, 11>{0x3f800}, s));
+    static_assert(identical(fixed_point<elastic_integer<7>, 11>{0x3f800}, s));
 }
 #endif

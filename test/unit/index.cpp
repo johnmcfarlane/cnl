@@ -13,7 +13,8 @@
 
 #include <cnl/_impl/config.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
+
 #include <iostream>
 
 #if defined(CNL_IOSTREAMS_ENABLED)

@@ -9,10 +9,8 @@
 
 #include <cnl/_impl/wrapper/operators.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wrapper.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     namespace test_equals {

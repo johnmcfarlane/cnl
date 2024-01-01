@@ -8,7 +8,7 @@
 
 #include <cnl/_impl/config.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <sstream>
 #include <type_traits>

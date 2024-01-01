@@ -7,7 +7,7 @@
 #include <cnl/static_integer.h>
 #include <cnl/static_number.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 template<int Digits, int Exponent>
 using saturated_elastic_scaled_integer = cnl::scaled_integer<

@@ -5,15 +5,13 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/_impl/num_traits/fixed_width_scale.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/static_integer.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <type_traits>
 
 namespace {
-    using cnl::_impl::identical;
     using cnl::_impl::rep_of_t;
     using cnl::_impl::tag_of_t;
 
