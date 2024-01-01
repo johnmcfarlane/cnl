@@ -7,18 +7,14 @@
 /// \file
 /// \brief file containing tests of the `cnl/fraction.h` definitions
 
-#include <gtest/gtest.h>
-
 #include <cnl/fraction.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
+#include <test.h>
 
 #include <type_traits>
 
 namespace {
-    using cnl::_impl::identical;
-
     namespace test_copy_ctor {
         static_assert(
                 identical(

@@ -9,24 +9,20 @@
 
 #include <cnl/_impl/wide_tag/custom_operator.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cmath.h>
 #include <cnl/wide_integer.h>
-
-#include <gtest/gtest.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     TEST(wide_integer, multiply)  // NOLINT
     {
         using namespace cnl::literals;
         using w = cnl::wide_integer<130>;
-        auto expected = w{584178474632390847141000000000000000000_wide};
-        auto lhs = w{584178474632390847141_wide};
-        auto rhs = w{1000000000000000000_wide};
-        auto actual = lhs * rhs;
-        ASSERT_EQ(expected, actual);
+        constexpr auto expected = w{584178474632390847141000000000000000000_wide};
+        constexpr auto lhs = w{584178474632390847141_wide};
+        constexpr auto rhs = w{1000000000000000000_wide};
+        constexpr auto actual = lhs * rhs;
+        CNL_ASSERT_EQ(expected, actual);
     }
 
     namespace test_equals {
@@ -78,9 +74,9 @@ namespace {
 
         TEST(wide_integer, minus)  // NOLINT
         {
-            auto expected = cnl::wide_integer<1000, int>{-17292375928362489LL};
-            auto actual = -cnl::wide_integer<1000, int>{17292375928362489LL};
-            ASSERT_EQ(expected, actual);
+            constexpr auto expected = cnl::wide_integer<1000, int>{-17292375928362489LL};
+            constexpr auto actual = -cnl::wide_integer<1000, int>{17292375928362489LL};
+            CNL_ASSERT_EQ(expected, actual);
         }
     }
 
@@ -131,13 +127,13 @@ namespace {
         {
             using namespace cnl::literals;
             using cnl::wide_integer;
-            auto expected = 0x5555555555555555555555555555555555555555555555555_wide;
+            constexpr auto expected = wide_integer<200>{0x5555555555555555555555555555555555555555555555555_wide};
 
-            auto nume = wide_integer<200>{1} << 196;
-            auto denom = wide_integer<200>{3};
-            auto actual = nume / denom;
+            constexpr auto nume = wide_integer<200>{1} << 196;
+            constexpr auto denom = wide_integer<200>{3};
+            constexpr auto actual = nume / denom;
 
-            ASSERT_EQ(expected, actual);
+            CNL_ASSERT_EQ(expected, actual);
         }
     }
 

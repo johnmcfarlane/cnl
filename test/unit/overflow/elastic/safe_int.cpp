@@ -9,8 +9,6 @@
 
 #include "../../number_test.h"
 
-#include <gtest/gtest.h>
-
 #include <limits>
 #include <type_traits>
 
@@ -29,7 +27,6 @@ namespace cnl {
 }
 
 namespace {
-    using cnl::_impl::identical;
     using cnl::_impl::rep_of_t;
     using std::is_same;
 

@@ -7,13 +7,11 @@
 /// \file
 /// \brief Demonstration of selectively applying functions to numbers.
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/overflow_integer.h>
 #include <cnl/rounding_integer.h>
+#include <test.h>
 
 using namespace cnl;
-using cnl::_impl::identical;
-
 // rounding safe integer
 template<
         class Rep = int, rounding_tag RoundingTag = nearest_rounding_tag,

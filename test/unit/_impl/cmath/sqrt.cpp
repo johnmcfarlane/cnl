@@ -6,9 +6,7 @@
 
 #include <cnl/_impl/cmath/sqrt.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 static_assert(identical(0xffffffffLLU, cnl::sqrt(0xfffffffe00000001LLU)));
 static_assert(identical(0xfffffffeLLU, cnl::sqrt(0xfffffffe00000000LLU)));

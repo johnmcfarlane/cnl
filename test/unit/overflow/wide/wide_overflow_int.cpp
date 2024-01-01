@@ -8,7 +8,7 @@
 #include <cnl/overflow_integer.h>
 #include <cnl/wide_integer.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <cmath>
 

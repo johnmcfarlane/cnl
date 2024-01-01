@@ -9,10 +9,8 @@
 
 #include <cnl/bit.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     namespace test_rotl {

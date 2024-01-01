@@ -10,7 +10,6 @@
 #include <cnl/_impl/wrapper/declaration.h>
 
 #include <cnl/_impl/numbers/set_signedness.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wrapper/integer.h>
 #include <cnl/_impl/wrapper/is_composite.h>
 #include <cnl/_impl/wrapper/operators.h>
@@ -18,10 +17,9 @@
 #include <cnl/_impl/wrapper/set_rep.h>
 #include <cnl/fixed_point.h>
 #include <cnl/number.h>
+#include <test.h>
 
 #include <type_traits>
-
-using cnl::_impl::identical;
 
 namespace {
     namespace test_concepts {

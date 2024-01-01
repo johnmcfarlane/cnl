@@ -8,7 +8,7 @@
 
 #include <cnl/_impl/config.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <sstream>
 #include <type_traits>
@@ -72,29 +72,29 @@ TEST(snippets, scaled_integer_division)  // NOLINT
     // Euros have subunits of 100^-1
     using euros = scaled_integer<int, power<-1, 100>>;
 
-    auto funds{euros{5.00_cnl}};
-    auto candle_price{euros{1.10_cnl}};
+    constexpr auto funds{euros{5.00_cnl}};
+    constexpr auto candle_price{euros{1.10_cnl}};
 
     cout << "Q: If I have €" << funds
          << " and candles cost €" << candle_price
          << ", how many candles can I buy?\n";
 
     // 5.00 / 1.10 = 4
-    auto num_candles{funds / candle_price};
+    constexpr auto num_candles{funds / candle_price};
 
     // 5.00 % 1.10 = 0.60
-    auto change{funds % candle_price};
+    constexpr auto change{funds % candle_price};
 
     cout << "A: I get "
          << num_candles << " candles and €"
          << change << " change.\n";
     //! [scaled_integer division example]
 
-    static_assert(std::is_same_v<decltype(num_candles), scaled_integer<int, power<0, 100>>>);
-    ASSERT_EQ(4, num_candles);
+    constexpr auto expected_num_candles{scaled_integer<int, power<0, 100>>{4}};
+    CNL_ASSERT_EQ(expected_num_candles, num_candles);
 
-    static_assert(std::is_same_v<decltype(change), euros>);
-    ASSERT_EQ(0.60, change);
+    constexpr auto expected_change{euros{.60}};
+    CNL_ASSERT_EQ(expected_change, change);
 
     auto constexpr expected_cout{"Q: If I have €5 and candles cost €1.1, how many candles can I buy?\n"
                                  "A: I get 4 candles and €.6 change.\n"};

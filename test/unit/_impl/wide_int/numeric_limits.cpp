@@ -9,14 +9,11 @@
 
 #include <cnl/_impl/wide_integer/numeric_limits.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/wide_integer.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
-
-using cnl::_impl::identical;
 
 namespace {
     static_assert(
@@ -42,7 +39,7 @@ TEST(wide_integer_numeric_limits, lowest_max)  // NOLINT
 {
     using type = cnl::wide_integer<10>;
     using limits = std::numeric_limits<type>;
-    constexpr auto expected{-1 - limits::max()};
+    constexpr auto expected{type{-1 - limits::max()}};
     constexpr auto actual{limits::lowest()};
-    ASSERT_EQ(expected, actual);
+    CNL_ASSERT_EQ(expected, actual);
 }

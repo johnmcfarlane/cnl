@@ -5,12 +5,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/_impl/custom_operator/overloads.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/overflow.h>
+#include <test.h>
 
 namespace {
-    using cnl::_impl::identical;
-
     namespace test_arithmetic {
         static_assert(
                 cnl::_impl::homogeneous_operator_tag<cnl::undefined_overflow_tag>);

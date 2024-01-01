@@ -11,20 +11,17 @@
 #pragma warning(disable : 4146)
 #endif
 
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <cnl/all.h>
 
 #include "../number_test.h"
-
-#include <gtest/gtest.h>
 
 #include <limits>
 #include <sstream>
 #include <type_traits>
 
 using cnl::overflow_integer;
-using cnl::_impl::identical;
 using std::declval;
 using std::is_same;
 

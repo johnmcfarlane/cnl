@@ -8,7 +8,7 @@
 #include <cnl/rounding_integer.h>
 #include <cnl/scaled_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <cinttypes>
 

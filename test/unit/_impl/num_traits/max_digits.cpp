@@ -6,11 +6,9 @@
 
 #include <cnl/_impl/config.h>
 #include <cnl/_impl/num_traits/max_digits.h>
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 namespace {
-    using cnl::_impl::identical;
-
 #if defined(CNL_INT128_ENABLED)
     static_assert(
             identical(cnl::_impl::max_digits<std::uint8_t>, 128), "cnl::_impl::max_digits<>");

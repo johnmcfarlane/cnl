@@ -7,24 +7,21 @@
 #include <cnl/fraction.h>
 
 #include <cnl/_impl/config.h>
-#include <cnl/_impl/type_traits/identical.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <string>
 #include <type_traits>
 
+template<typename Numerator, typename Denominator>
+[[nodiscard]] constexpr auto identical(
+        cnl::fraction<Numerator, Denominator> const& a,
+        cnl::fraction<Numerator, Denominator> const& b)
+{
+    return identical(a.numerator, b.numerator) && identical(a.denominator, b.denominator);
+}
+
 namespace {
-    using cnl::_impl::identical;
-
-    template<typename Numerator, typename Denominator>
-    [[nodiscard]] constexpr auto identical(
-            cnl::fraction<Numerator, Denominator> const& a,
-            cnl::fraction<Numerator, Denominator> const& b)
-    {
-        return identical(a.numerator, b.numerator) && identical(a.denominator, b.denominator);
-    }
-
     namespace test_parameters {
         static_assert(std::is_same_v<cnl::fraction<int, int>, cnl::fraction<>>);
         static_assert(std::is_same_v<cnl::fraction<short, short>, cnl::fraction<short>>);

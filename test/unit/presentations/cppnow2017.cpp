@@ -4,11 +4,9 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/overflow_integer.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <cstdint>
 #include <limits>
@@ -17,8 +15,6 @@
 
 using namespace std;
 using cnl::elastic_integer;
-using cnl::_impl::identical;
-
 template<typename Rep>
 using overflow_integer = cnl::overflow_integer<Rep, cnl::_impl::throwing_overflow_tag>;
 

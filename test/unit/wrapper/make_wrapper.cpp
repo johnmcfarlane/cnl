@@ -9,10 +9,8 @@
 
 #include <cnl/_impl/wrapper/make_wrapper.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wrapper/operators.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     static_assert(identical(cnl::_impl::wrapper<long>{1}, cnl::_impl::make_wrapper(1L)));

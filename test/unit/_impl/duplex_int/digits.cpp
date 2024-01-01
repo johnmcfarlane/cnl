@@ -9,9 +9,7 @@
 
 #include <cnl/_impl/duplex_integer/digits.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     static_assert(

@@ -6,13 +6,9 @@
 
 #include <cnl/all.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <limits>
-
-using cnl::_impl::identical;
 
 namespace {
     namespace elastic_scaled_integer_tie_to_pos_inf_rounding {

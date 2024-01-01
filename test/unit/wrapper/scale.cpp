@@ -9,9 +9,7 @@
 
 #include <cnl/_impl/wrapper/scale.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     static_assert(

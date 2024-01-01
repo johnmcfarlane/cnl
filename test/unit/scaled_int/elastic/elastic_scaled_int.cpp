@@ -12,15 +12,12 @@
 #include <cnl/elastic_scaled_integer.h>
 #include <cnl/fraction.h>
 
-#include <gtest/gtest.h>
-
 #include <limits>
 #include <type_traits>
 
 using std::is_same;
 
 using cnl::elastic_scaled_integer;
-using cnl::_impl::identical;
 using namespace cnl::literals;
 using cnl::make_elastic_scaled_integer;
 

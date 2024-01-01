@@ -7,18 +7,14 @@
 #include <cnl/_impl/scaled_integer/numbers.h>
 
 #include <cnl/_impl/cnl_assert.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <version>
 
 #if defined(__cpp_lib_math_constants)
 
 namespace {
-
-    using cnl::_impl::identical;
 
     ////////////////////////////////////////////////////////////////////////////////
     // simple one-off tests

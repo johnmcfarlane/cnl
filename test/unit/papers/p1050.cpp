@@ -4,14 +4,14 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/fraction.h>
 #include <cnl/scaled_integer.h>
 
+#include <test.h>
+
 namespace {
     using namespace cnl;
-    using _impl::identical;
     using namespace std;
 
     constexpr auto a = make_scaled_integer(cnl::fraction{1, 3});

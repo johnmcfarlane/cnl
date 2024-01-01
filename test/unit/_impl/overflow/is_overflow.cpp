@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/_impl/overflow/is_overflow.h>
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <limits>
 

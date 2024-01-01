@@ -7,13 +7,9 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <type_traits>
-
-using cnl::_impl::identical;
 
 namespace cnl {
     // rounding elastic integer

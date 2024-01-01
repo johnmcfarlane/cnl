@@ -7,7 +7,7 @@
 #include <cnl/static_integer.h>
 #include <cnl/static_number.h>
 
-#include <gtest/gtest.h>
+#include <test.h>
 
 template<int Digits, int Exponent>
 using saturated_elastic_scaled_integer = cnl::scaled_integer<
@@ -24,5 +24,5 @@ TEST(a, b)  // NOLINT
 
     constexpr t1 a = 1;
     constexpr t2 g = a;
-    ASSERT_EQ(1 << 1, cnl::unwrap(g));
+    CNL_ASSERT_EQ(1 << 1, cnl::unwrap(g));
 }

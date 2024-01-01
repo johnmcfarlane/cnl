@@ -7,11 +7,9 @@
 #include <cnl/rounding.h>
 #include <cnl/scaled_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <type_traits>
-
-using cnl::_impl::identical;
 
 namespace {
     namespace test_set_rounding {

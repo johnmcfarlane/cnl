@@ -6,11 +6,9 @@
 
 #include <cnl/numeric.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/constant.h>
 #include <cnl/cstdint.h>
-
-#include <gtest/gtest.h>
+#include <test.h>
 
 #include <cmath>
 #include <limits>
@@ -262,13 +260,13 @@ namespace {
 
         static_assert(leading_bits(std::numeric_limits<std::int64_t>::max()) == 0, "cnl::leading_bits");
 
-        static_assert(_impl::identical(cnl::leading_bits(INT64_C(1)), 62), "cnl::leading_bits");
+        static_assert(identical(cnl::leading_bits(INT64_C(1)), 62), "cnl::leading_bits");
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 cnl::leading_bits(CNL_INTMAX_C(0x7fffffff000000000000000000000000)) == 0,
                 "cnl::leading_bits");
         static_assert(
-                _impl::identical(cnl::leading_bits(CNL_INTMAX_C(0x0)), 127), "cnl::leading_bits");
+                identical(cnl::leading_bits(CNL_INTMAX_C(0x0)), 127), "cnl::leading_bits");
 #endif
 
         TEST(numeric, leading_bits)  // NOLINT

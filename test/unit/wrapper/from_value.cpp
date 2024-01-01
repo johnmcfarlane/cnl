@@ -9,10 +9,8 @@
 
 #include <cnl/_impl/wrapper/from_value.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wrapper/operators.h>
-
-using cnl::_impl::identical;
+#include <test.h>
 
 namespace {
     static_assert(

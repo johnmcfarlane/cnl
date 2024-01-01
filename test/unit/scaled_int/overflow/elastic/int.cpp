@@ -9,12 +9,10 @@
 #include <cnl/overflow_integer.h>
 #include <cnl/scaled_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
+#include <test.h>
 
 #include <cstdint>
 #include <type_traits>
-
-using cnl::_impl::identical;
 
 namespace {
     template<int IntegerDigits, int FractionalDigits, class Narrowest>

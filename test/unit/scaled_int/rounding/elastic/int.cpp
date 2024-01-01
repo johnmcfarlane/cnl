@@ -9,9 +9,9 @@
 #include <cnl/rounding_integer.h>
 #include <cnl/scaled_integer.h>
 
-#include <string>
+#include <test.h>
 
-#include <gtest/gtest.h>
+#include <string>
 
 namespace {
     template<int Digits, int Exponent>

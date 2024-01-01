@@ -12,8 +12,6 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/scaled_integer.h>
 
-#include <gtest/gtest.h>
-
 namespace {
     using namespace cnl;
     using _impl::identical;
