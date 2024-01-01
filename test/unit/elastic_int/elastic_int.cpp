@@ -777,7 +777,7 @@ namespace {
 
         static_assert(
                 identical(
-                        cnl::to_chars_static_result<5>{{'3', 'e', '8', 0}, 3},
+                        cnl::to_chars_static_result<4>{{'3', 'e', '8', 0}, 3},
                         cnl::to_chars_static<16>(cnl::make_elastic_integer(1000_c))));
 #endif
 

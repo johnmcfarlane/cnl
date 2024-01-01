@@ -644,7 +644,7 @@ TEST(elastic_scaled_integer, to_string_thousand)  // NOLINT
 TEST(elastic_scaled_integer, to_string_thousandth)  // NOLINT
 {
     auto const n{.001_cnl};
-    static_assert(5 == cnl::_impl::to_chars_capacity<std::remove_cvref_t<decltype(n)>>{}());
+    static_assert(6 == cnl::_impl::to_chars_capacity<std::remove_cvref_t<decltype(n)>>{}());
 
     auto const expected{".001"};
     auto const actual{cnl::to_string(n)};

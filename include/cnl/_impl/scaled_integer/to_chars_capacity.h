@@ -13,24 +13,6 @@
 
 /// compositional numeric library
 namespace cnl::_impl {
-    constexpr auto num_digits_from_binary(int num_digits, int radix)
-    {
-        switch (radix) {
-        case 2:
-            return num_digits;
-        case 8:
-            return (num_digits + 2) / 3;
-        case 10:
-            return (num_digits * 1000 + 3322) / 3321;
-        case 16:
-            return (num_digits + 3) / 4;
-        default: {
-            auto const binary_digits_per_digit{used_digits(radix - 1)};
-            return (num_digits + binary_digits_per_digit - 1) / binary_digits_per_digit;
-        }
-        }
-    }
-
     constexpr auto num_digits_to_binary(int num_digits, int radix)
     {
         switch (radix) {
@@ -66,7 +48,7 @@ namespace cnl::_impl {
                     num_digits_to_binary(std::max(0, exponent), radix)};
             auto const num_integer_bits{
                     num_significant_integer_bits + num_trailing_integer_bits};
-            auto const integer_chars = num_digits_from_binary(num_integer_bits, 10);
+            auto const integer_chars = num_digits_from_binary(num_integer_bits, base);
             auto const radix_chars = static_cast<int>(fractional_digits > 0);
             auto const fractional_chars = std::max(0, fractional_digits);
 
