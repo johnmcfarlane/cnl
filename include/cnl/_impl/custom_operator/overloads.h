@@ -115,6 +115,8 @@ namespace cnl {
 
         CNL_DEFINE_COMPARISON_OPERATOR(>=, greater_than_or_equal_op)
 
+        CNL_DEFINE_COMPARISON_OPERATOR(<=>, three_way_comp_op)
+
         // pre increment/decrement
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)

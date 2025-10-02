@@ -180,6 +180,14 @@ namespace cnl {
             }
         };
 
+        struct three_way_comp_op {
+            template<class Lhs, class Rhs>
+            [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            {
+                return lhs <=> rhs;  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
+            }
+        };
+
         struct pre_increment_op {
             template<class Rhs>
             constexpr auto operator()(Rhs& rhs) const
@@ -377,6 +385,8 @@ namespace cnl {
         inline constexpr auto is_comparison_op<less_than_or_equal_op> = true;
         template<>
         inline constexpr auto is_comparison_op<greater_than_or_equal_op> = true;
+        template<>
+        inline constexpr auto is_comparison_op<three_way_comp_op> = true;
 
         template<class T>
         inline constexpr auto is_binary_op = is_binary_arithmetic_op<T> || is_shift_op<T> || is_comparison_op<T>;
