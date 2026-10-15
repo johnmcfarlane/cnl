@@ -166,6 +166,10 @@ add_dependencies(test-unit test-unit-plain)
 # given the path to a source file containing gtest tests,
 # creates and returns a target that runs them
 function(make_test source compile_flags)
+    if(CMAKE_CXX_CLANG_TIDY)
+        set_property(SOURCE "${source}" APPEND PROPERTY
+                OBJECT_DEPENDS "${PROJECT_SOURCE_DIR}/.clang-tidy")
+    endif()
 
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-unit-foo-bar")
     string(REPLACE ".cpp" "" stripped "${source}")
